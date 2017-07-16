@@ -9,11 +9,20 @@ import java.util.ResourceBundle;
  */
 public class Message {
 
+    /*show info message*/
+    public static void info(ResourceBundle resourceBundle, String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(resourceBundle.getString("InfoTitle"));
+        alert.setHeaderText(resourceBundle.getString("InfoHeaderTex"));
+        alert.setContentText(resourceBundle.getString(message));
+        alert.showAndWait();
+    }
+
     /*show alert message*/
     public static void warningAlert(ResourceBundle resourceBundle, String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(resourceBundle.getString("AlertTitle"));
-        alert.setHeaderText(resourceBundle.getString("SelectDirAlertHeaderTex"));
+        alert.setHeaderText(resourceBundle.getString("WarningAlertHeaderTex"));
         alert.setContentText(resourceBundle.getString(message));
         alert.showAndWait();
     }

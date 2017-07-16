@@ -53,6 +53,9 @@ public class MainController implements Initializable {
     @FXML
     private Button settingsBtn;
 
+    @FXML
+    private Button aboutBtn;
+
     private ResourceBundle resourceBundle;
 
     private File firstDirectory;
@@ -153,6 +156,7 @@ public class MainController implements Initializable {
         this.clearBtn.setText(resourceBundle.getString("Clear"));
         this.openResultBtn.setText(resourceBundle.getString("Open"));
         this.settingsBtn.setText(resourceBundle.getString("Settings"));
+        this.aboutBtn.setText(resourceBundle.getString("AppInfo"));
     }
 
     /*updates text for infoLbl Label depending of
@@ -202,8 +206,8 @@ public class MainController implements Initializable {
     }
 
     private void setVisibility(boolean visibility){
-        resultLbl.setVisible(visibility);
-        openResultBtn.setVisible(visibility);
+        this.resultLbl.setVisible(visibility);
+        this.openResultBtn.setVisible(visibility);
     }
 
     @FXML
@@ -220,5 +224,8 @@ public class MainController implements Initializable {
         mainApp.showSettingsEditDialog(this.resourceBundle, this.comparer);
     }
 
-
+    @FXML
+    private void showAppInfo(){
+        Message.info(this.resourceBundle,"AboutApp");
+    }
 }

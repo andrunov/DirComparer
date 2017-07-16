@@ -85,6 +85,16 @@ public class SettingsController {
         }
     }
 
+    @FXML
+    private void showFilterInfo(){
+        Message.info(this.resourceBundle,"FilterInfo");
+    }
+
+    @FXML
+    private void showMinLengthInfo(){
+        Message.info(this.resourceBundle,"MinLengthInfo");
+    }
+
     /*check that user input correct data*/
     private boolean isInputValid() {
         String filterExtensions = this.filterTextField.getText();
