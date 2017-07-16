@@ -1,0 +1,38 @@
+.background {
+-fx-background-color: rgba(148, 182, 222, 0.67);
+}
+
+.hbox {
+    -fx-background-color: rgba(57, 75, 107, 0.8);
+}
+
+.label {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: midnightblue;
+    -fx-opacity: 0.9;
+}
+
+
+.button {
+-fx-border-color: navy;
+-fx-border-width: 2;
+-fx-background-radius: 5;
+-fx-border-radius: 5;
+-fx-background-color: aliceblue;
+-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+-fx-font-size: 10pt;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: darkgrey;
+}
+
+.button:focused {
+    -fx-border-color: brown;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
