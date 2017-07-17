@@ -120,7 +120,7 @@ public class MainController implements Initializable {
         }
         this.comparer.setResourceBundle(this.resourceBundle);
         if (this.comparer.execute()) {
-            setTextDirLabel(resultLbl, "Result", " " + this.comparer.getReportName());
+            setTextDirLabel(resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
             setVisibility(true);
         }
     }
@@ -164,7 +164,10 @@ public class MainController implements Initializable {
     private void updateTextInfoLbl(){
         setTextDirLabel(firstDirLbl,"FirstDirectory",getDirInfo(firstDirectory));
         setTextDirLabel(secondDirLbl,"SecondDirectory",getDirInfo(secondDirectory));
-        setTextDirLabel(resultLbl,"Result"," " + this.comparer.getReportName());
+        String reportName = this.comparer.getReportName();
+        if(reportName != null) {
+            setTextDirLabel(resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
+        }
         if ((firstDirectory ==null)&&(secondDirectory ==null)){
             infoLbl.setText(resourceBundle.getString("InfoDefault"));
         }
@@ -191,6 +194,15 @@ public class MainController implements Initializable {
             }else {
                 result = ": " + directory.getName();
             }
+        }
+        return result;
+    }
+
+    private String getFileInfo(String filePath){
+        String result = "";
+        File file = new File(filePath);
+        if (file.exists()){
+            result = ": " + file.getParentFile().getName() + "\\" + file.getName();
         }
         return result;
     }
