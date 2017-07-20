@@ -290,6 +290,7 @@ public class FileComparer
                 printFileList(writer,this.sizeEquality);
             }else {
                 printHeadSingleDirectory(writer);
+                printSchemeSingleDirectory(writer);
             }
 
             /*3 level - equality of 3 words and more*/
@@ -316,12 +317,24 @@ public class FileComparer
                 + " " + this.resourceBundle.getString("Files")
                 + " " + this.resourceBundle.getString("InDirectory")
                 + " " + this.startDirectoryName;
-        writer.println();
-        writer.println();
         writer.println("***********************************************************************************************************");
         writer.printf("%-5s%-100.100s%2s","*",title,"*");
         writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
         writer.println("\r\n***********************************************************************************************************");
+    }
+
+    private void printSchemeSingleDirectory(PrintWriter writer){
+        writer.print(" ---------------------------------------------------------------------------------------------------------");
+        writer.printf("\r\n%-2s%-103s%2s", "|", this.resourceBundle.getString("Schema"),"|");
+        writer.printf("\r\n%-5s%102s", "|", "|");
+        writer.printf("\r\n%-2s%-87.87s%9.9s%1s%3s%5s","|",this.resourceBundle.getString("ComparingFileSingle"),this.resourceBundle.getString("FileSize"),",", "mb","|");
+        writer.printf("\r\n%-5s%102s", "|", "|");
+        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",this.resourceBundle.getString("SimilarFileSingle") + " №1",this.resourceBundle.getString("FileSize"),",", "mb","|");
+        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",this.resourceBundle.getString("SimilarFileSingle") + " №2",this.resourceBundle.getString("FileSize"),",", "mb","|");
+        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",this.resourceBundle.getString("SimilarFileSingle") + " №3",this.resourceBundle.getString("FileSize"),",", "mb","|");
+        writer.print("\r\n ---------------------------------------------------------------------------------------------------------");
+
+
     }
 
     private void printHeadTwoDirectory(PrintWriter writer) {
