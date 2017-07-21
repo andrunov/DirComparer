@@ -1,10 +1,10 @@
 package comparer.model;
 
-import comparer.util.*;
+import comparer.util.AppPreferences;
+import comparer.util.Message;
+import comparer.util.Writer;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -75,6 +75,14 @@ public class FileComparer
         }
     }
 
+    public String getStartDirectoryName() {
+        return startDirectoryName;
+    }
+
+    public String getEndDirectoryName() {
+        return endDirectoryName;
+    }
+
     public void setStartDirectoryName(String startDirectoryName) {
         this.startDirectoryName = startDirectoryName;
         setReportName(startDirectoryName);
@@ -108,8 +116,40 @@ public class FileComparer
         this.filter = filter;
     }
 
+    public List<FileInfo> getFullEquality() {
+        return fullEquality;
+    }
+
+    public List<FileInfo> getNameEquality() {
+        return nameEquality;
+    }
+
+    public List<FileInfo> getSizeEquality() {
+        return sizeEquality;
+    }
+
+    public List<FileInfo> getNameSimilarityHigh() {
+        return nameSimilarityHigh;
+    }
+
+    public List<FileInfo> getNameSimilarityLow() {
+        return nameSimilarityLow;
+    }
+
+    public List<FileInfo> getNoSimilarity() {
+        return noSimilarities;
+    }
+
+    public List<FileInfo> getStartDirectory() {
+        return startDirectory;
+    }
+
+    public List<FileInfo> getEndDirectory() {
+        return endDirectory;
+    }
+
     /*this method contains main logic of comparing
-        calls out */
+                    calls out */
     public boolean execute(){
         boolean result = startPreparations();
         if (result) {
@@ -118,7 +158,7 @@ public class FileComparer
                 result = compareDirectories();
                 if (result) {
                     result = finishPreparations();
-                    printResult();
+                    new Writer(this,"UTF8").write();
                 }
             } catch (Exception e) {
                 Message.errorAlert(this.resourceBundle, e.getMessage());
@@ -268,129 +308,7 @@ public class FileComparer
         return list;
     }
 
-    /*print result of comparing*/
-    private void printResult(){
-        try{
-            PrintWriter writer = new PrintWriter(this.reportName, "UTF-8");
-            /*condition for single directory comparing*/
-            if (!startDirectoryName.equals(endDirectoryName))
-            {
-                printHeadTwoDirectory(writer);
-                /*1-st level - 100 equality*/
-                printTitle(writer,resourceBundle.getString("1stLevelEquality"));
-                printFileList(writer,this.fullEquality);
 
-                /*2 level - 100% names equality*/
-                printTitle(writer,resourceBundle.getString("2ndLevelEquality"));
-                printFileList(writer,this.nameEquality);
-
-                 /*3 level - 100% sizes equality*/
-                printTitle(writer,resourceBundle.getString("3thLevelEquality"));
-                printFileList(writer,this.sizeEquality);
-            }else {
-                printHeadSingleDirectory(writer);
-                printSchemeSingleDirectory(writer);
-            }
-
-            /*3 level - equality of 3 words and more*/
-            printTitle(writer,resourceBundle.getString("4thLevelEquality"));
-            printFileList(writer,nameSimilarityHigh);
-
-            /*4 level - equality from 1 to 2 words*/
-            printTitle(writer,resourceBundle.getString("5thLevelEquality"));
-            printFileList(writer,nameSimilarityLow);
-
-            /*5 level - no equalities
-            * in this point in this.startDirectory is only filesInfo that no has similarities */
-            printTitle(writer,resourceBundle.getString("6thLevelEquality"));
-            printFileList(writer,this.noSimilarities);
-            writer.close();
-        } catch (IOException e) {
-            Message.errorAlert(this.resourceBundle,e.getMessage());
-        }
-    }
-
-    private void printHeadSingleDirectory(PrintWriter writer) {
-        String title = this.resourceBundle.getString("Analyzed")
-                + " " + this.startDirectory.size()
-                + " " + this.resourceBundle.getString("Files")
-                + " " + this.resourceBundle.getString("InDirectory");
-        writer.println("***********************************************************************************************************");
-        writer.printf("%-5s%-100.100s%2s","*",title,"*");
-        List<String> listDirectory = comparer.util.Formatter.splitStringInRows(this.startDirectoryName,100);
-        for (String s : listDirectory){
-            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
-        }
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-        List<String> listReport = comparer.util.Formatter.splitStringInRows(this.reportName,100);
-        writer.printf("%-5s%-100.100s%2s","*",this.resourceBundle.getString("ReportSaveIn"),"*");
-        for (String s : listReport){
-            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
-        }
-        writer.println("\r\n***********************************************************************************************************");
-    }
-
-    private void printSchemeSingleDirectory(PrintWriter writer){
-        writer.print(" ---------------------------------------------------------------------------------------------------------");
-        writer.printf("\r\n%-2s%-103s%2s", "|", this.resourceBundle.getString("Schema"),"|");
-        writer.printf("\r\n%-5s%102s", "|", "|");
-        writer.printf("\r\n%-2s%-87.87s%9.9s%1s%3s%5s","|",this.resourceBundle.getString("ComparingFileSingle"),this.resourceBundle.getString("FileSize"),",", "mb","|");
-        writer.printf("\r\n%-5s%102s", "|", "|");
-        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",this.resourceBundle.getString("SimilarFileSingle") + " №1",this.resourceBundle.getString("FileSize"),",", "mb","|");
-        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",this.resourceBundle.getString("SimilarFileSingle") + " №2",this.resourceBundle.getString("FileSize"),",", "mb","|");
-        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",this.resourceBundle.getString("SimilarFileSingle") + " №3",this.resourceBundle.getString("FileSize"),",", "mb","|");
-        writer.print("\r\n ---------------------------------------------------------------------------------------------------------");
-
-
-    }
-
-    private void printHeadTwoDirectory(PrintWriter writer) {
-        String title1 = this.resourceBundle.getString("Analyzed")
-                        + " " + this.startDirectory.size()
-                        + " " + this.resourceBundle.getString("Files")
-                        + " " + this.resourceBundle.getString("InDirectory")
-                        + " " + this.startDirectoryName;
-        String title2 = this.resourceBundle.getString("Analyzed")
-                + " " + this.endDirectory.size()
-                + " " + this.resourceBundle.getString("Files")
-                + " " + this.resourceBundle.getString("InDirectory")
-                + " " + this.endDirectoryName;
-
-        writer.println("***********************************************************************************************************");
-        writer.printf("%-5s%-100.100s%2s","*",title1,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.printf("\r\n%-5s%-100.100s%2s","*",title2,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n***********************************************************************************************************");
-    }
-
-    private void printTitle(PrintWriter writer,String title){
-        writer.println();
-        writer.println();
-        writer.println("***********************************************************************************************************");
-        writer.printf("%-5s%-100.100s%2s","*",title,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-    }
-
-    private void printFound(PrintWriter writer, int quantity){
-        if (quantity==0){
-            writer.printf("%-5s%-100.100s%2s","*",this.resourceBundle.getString("NotFound"),"*");
-        }else {
-            writer.printf("%-5s%-8s%-1s%4d%-1s%-86.86s%2s", "*", this.resourceBundle.getString("Found"), " ",quantity, " ", this.resourceBundle.getString("Files"), "*");
-        }
-        writer.println("\r\n***********************************************************************************************************");
-    }
-
-
-    private void printFileList(PrintWriter writer, List<? extends Comparable> fileNameList){
-         printFound(writer,fileNameList.size());
-         for (Comparable fileName : fileNameList)
-         {
-             writer.println(fileName.toString());
-         }
-    }
 
     /*first iteration of compare. Find files with 100% matching of names and size*/
     private List<FileInfo> getFullEqualities(){
