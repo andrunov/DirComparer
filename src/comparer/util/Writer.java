@@ -12,10 +12,13 @@ import java.util.ResourceBundle;
  */
 public class Writer {
 
+    /*writer to write file into files*/
     private PrintWriter writer;
 
+    /*link to fileComparer*/
     private FileComparer comparer;
 
+    /*encoding*/
     private String encoding;
 
     public Writer(FileComparer comparer, String encoding) {
@@ -23,6 +26,7 @@ public class Writer {
         this.encoding = encoding;
     }
 
+    /*write logic*/
     public void write(){
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         try{
@@ -65,11 +69,11 @@ public class Writer {
         } catch (IOException e) {
             Message.errorAlert(resourceBundle,e.getMessage());
         }
-
     }
 
 
 
+    /*head for single-directory case*/
     private void printHeadSingleDirectory(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         String title = resourceBundle.getString("Analyzed")
@@ -92,6 +96,7 @@ public class Writer {
         writer.println("\r\n***********************************************************************************************************");
     }
 
+    /*head for two directory case*/
     private void printHeadTwoDirectory(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         String title1 = resourceBundle.getString("Analyzed")
@@ -124,6 +129,7 @@ public class Writer {
         writer.println("\r\n***********************************************************************************************************");
     }
 
+    /*print schema for single-directory case*/
     private void printSchemeSingleDirectory(PrintWriter writer){
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.print(" ---------------------------------------------------------------------------------------------------------");
@@ -137,6 +143,7 @@ public class Writer {
         writer.print("\r\n ---------------------------------------------------------------------------------------------------------");
     }
 
+    /*print schema for two-directory case*/
     private void printSchemeTwoDirectory(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.print(" ---------------------------------------------------------------------------------------------------------");
@@ -174,6 +181,7 @@ public class Writer {
         writer.print("\r\n ---------------------------------------------------------------------------------------------------------");
     }
 
+    /*print title*/
     private void printTitle(PrintWriter writer,String title){
         writer.println();
         writer.println();
@@ -183,6 +191,7 @@ public class Writer {
         writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
     }
 
+    /*print result of files were found*/
     private void printFound(PrintWriter writer, int quantity){
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         if (quantity==0){
@@ -193,7 +202,7 @@ public class Writer {
         writer.println("\r\n***********************************************************************************************************");
     }
 
-
+    /*print list*/
     private void printFileList(PrintWriter writer, List<? extends Comparable> fileNameList){
         printFound(writer,fileNameList.size());
         for (Comparable fileName : fileNameList)
