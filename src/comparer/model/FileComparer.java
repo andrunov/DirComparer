@@ -314,18 +314,20 @@ public class FileComparer
         String title = this.resourceBundle.getString("Analyzed")
                 + " " + this.startDirectory.size()
                 + " " + this.resourceBundle.getString("Files")
-                + " " + this.resourceBundle.getString("InDirectory")
-                + " " + this.startDirectoryName;
+                + " " + this.resourceBundle.getString("InDirectory");
         writer.println("***********************************************************************************************************");
         writer.printf("%-5s%-100.100s%2s","*",title,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-        List<String> list = comparer.util.Formatter.splitStringInRows(this.reportName,100);
-        writer.printf("%-5s%-100.100s%2s","*",this.resourceBundle.getString("ReportSaveIn"),"*");
-        for (String s : list){
+        List<String> listDirectory = comparer.util.Formatter.splitStringInRows(this.startDirectoryName,100);
+        for (String s : listDirectory){
             writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
         }
-
+        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
+        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+        List<String> listReport = comparer.util.Formatter.splitStringInRows(this.reportName,100);
+        writer.printf("%-5s%-100.100s%2s","*",this.resourceBundle.getString("ReportSaveIn"),"*");
+        for (String s : listReport){
+            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
+        }
         writer.println("\r\n***********************************************************************************************************");
     }
 
