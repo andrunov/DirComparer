@@ -89,6 +89,12 @@ public class MainController implements Initializable {
 
     @FXML
     private void choseFirstDirectory(){
+        /*not null reportName means that
+        some compares happens before.
+        reset comparer in such case*/
+        if (this.comparer.getReportName()!= null){
+            clear();
+        }
         File directory = chooseDirectory();
         if (directory != null) {
             this.firstDirectory = directory;
@@ -101,6 +107,12 @@ public class MainController implements Initializable {
 
     @FXML
     private void choseSecondDirectory(){
+          /*not null reportName means that
+        some compares happens before.
+        reset comparer in such case*/
+        if (this.comparer.getReportName()!= null){
+            clear();
+        }
         File directory = chooseDirectory();
         if (directory != null) {
             this.secondDirectory = directory;
@@ -114,10 +126,13 @@ public class MainController implements Initializable {
     private void execute(){
         if (firstDirectory != null) {
             this.comparer.setStartDirectoryName(firstDirectory.getAbsolutePath());
+        }else {
+             /*if selected single directory save it as firstDirectory*/
+            if (secondDirectory != null) {
+                this.comparer.setStartDirectoryName(secondDirectory.getAbsolutePath());
+            }
         }
-        if (secondDirectory != null) {
-            this.comparer.setEndDirectoryName(secondDirectory.getAbsolutePath());
-        }
+
         this.comparer.setResourceBundle(this.resourceBundle);
         if (this.comparer.execute()) {
             setTextDirLabel(resultLbl, "Result", getFileInfo(this.comparer.getReportName()));

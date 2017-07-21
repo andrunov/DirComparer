@@ -72,17 +72,32 @@ public class Formatter {
         return stringTrimmed.equals("");
     }
 
+    public static List<String> splitStringInRows(String string, int rowLength){
+        List<String> result = new ArrayList<>();
+        int counter = string.length()/rowLength;
+        for (int i = 0; i <counter; i++){
+            result.add(string.substring(i*rowLength,(i+1)*rowLength));
+        }
+        result.add(string.substring(counter*rowLength));
+
+        return result;
+
+    }
+
     public static void main(String[] args) {
 //        String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
 //        String filename = "008. Голубые гитары - О чём плачут гитары (1971)гитары.mp3";
 //        List<String> list = splitString(filename,3);
 //        System.out.println(list);
-        String filterExtensions = "mp3 vma frt";
-        System.out.println(filterExtensions.matches("[a-zA-Z0-9\\s]+"));
+//        String filterExtensions = "mp3 vma frt";
+//        System.out.println(filterExtensions.matches("[a-zA-Z0-9\\s]+"));
 
 //        System.out.println(stringIsEmpty(""));
 //        System.out.println(stringIsEmpty(" "));
 //        System.out.println(stringIsEmpty("    "));
 //        System.out.println(stringIsEmpty(null));
+          String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
+        System.out.println(splitStringInRows(filename,19));
+
     }
 }

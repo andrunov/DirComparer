@@ -1,7 +1,6 @@
 package comparer.model;
 
-import comparer.util.AppPreferences;
-import comparer.util.Message;
+import comparer.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -320,6 +319,13 @@ public class FileComparer
         writer.println("***********************************************************************************************************");
         writer.printf("%-5s%-100.100s%2s","*",title,"*");
         writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
+        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+        List<String> list = comparer.util.Formatter.splitStringInRows(this.reportName,100);
+        writer.printf("%-5s%-100.100s%2s","*",this.resourceBundle.getString("ReportSaveIn"),"*");
+        for (String s : list){
+            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
+        }
+
         writer.println("\r\n***********************************************************************************************************");
     }
 
@@ -374,6 +380,7 @@ public class FileComparer
         }
         writer.println("\r\n***********************************************************************************************************");
     }
+
 
     private void printFileList(PrintWriter writer, List<? extends Comparable> fileNameList){
          printFound(writer,fileNameList.size());
