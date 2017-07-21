@@ -31,6 +31,8 @@ public class Writer {
             if (!this.comparer.getStartDirectoryName().equals(this.comparer.getEndDirectoryName()))
             {
                 printHeadTwoDirectory(writer);
+                printSchemeTwoDirectory(writer);
+
                 /*1-st level - 100 equality*/
                 printTitle(writer,resourceBundle.getString("1stLevelEquality"));
                 printFileList(writer,this.comparer.getFullEquality());
@@ -66,23 +68,57 @@ public class Writer {
 
     }
 
+
+
     private void printHeadSingleDirectory(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         String title = resourceBundle.getString("Analyzed")
                 + " " + this.comparer.getStartDirectory().size()
                 + " " + resourceBundle.getString("Files")
-                + " " + resourceBundle.getString("InDirectory");
+                + " " + resourceBundle.getString("InDirectory") + ": ";
         writer.println("***********************************************************************************************************");
         writer.printf("%-5s%-100.100s%2s","*",title,"*");
-        List<String> listDirectory = Formatter.splitStringInRows(this.comparer.getStartDirectoryName(),100);
-        for (String s : listDirectory){
+        List<String> list = Formatter.splitStringInRows(this.comparer.getStartDirectoryName(),100);
+        for (String s : list){
             writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
         }
         writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
         writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-        List<String> listReport = Formatter.splitStringInRows(this.comparer.getReportName(),100);
+        list = Formatter.splitStringInRows(this.comparer.getReportName(),100);
         writer.printf("%-5s%-100.100s%2s","*",resourceBundle.getString("ReportSaveIn"),"*");
-        for (String s : listReport){
+        for (String s : list){
+            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
+        }
+        writer.println("\r\n***********************************************************************************************************");
+    }
+
+    private void printHeadTwoDirectory(PrintWriter writer) {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+        String title1 = resourceBundle.getString("Analyzed")
+                + " " + this.comparer.getStartDirectory().size()
+                + " " + resourceBundle.getString("Files")
+                + " " + resourceBundle.getString("InDirectory") + ": ";
+        writer.println("***********************************************************************************************************");
+        writer.printf("%-5s%-100.100s%2s","*",title1,"*");
+        List<String> list = Formatter.splitStringInRows(this.comparer.getStartDirectoryName(),100);
+        for (String s : list){
+            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
+        }
+        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
+        String title2 = resourceBundle.getString("Analyzed")
+                + " " + this.comparer.getEndDirectory().size()
+                + " " + resourceBundle.getString("Files")
+                + " " + resourceBundle.getString("InDirectory");
+        writer.printf("\r\n%-5s%-100.100s%2s","*",title2,"*");
+        list = Formatter.splitStringInRows(this.comparer.getEndDirectoryName(),100);
+        for (String s : list){
+            writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
+        }
+        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
+        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+        list = Formatter.splitStringInRows(this.comparer.getReportName(),100);
+        writer.printf("%-5s%-100.100s%2s","*",resourceBundle.getString("ReportSaveIn"),"*");
+        for (String s : list){
             writer.printf("\r\n%-5s%-100.100s%2s","*",s,"*");
         }
         writer.println("\r\n***********************************************************************************************************");
@@ -99,29 +135,43 @@ public class Writer {
         writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",resourceBundle.getString("SimilarFileSingle") + " №2",resourceBundle.getString("FileSize"),",", "mb","|");
         writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s","|",resourceBundle.getString("SimilarFileSingle") + " №3",resourceBundle.getString("FileSize"),",", "mb","|");
         writer.print("\r\n ---------------------------------------------------------------------------------------------------------");
-
-
     }
 
-    private void printHeadTwoDirectory(PrintWriter writer) {
+    private void printSchemeTwoDirectory(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        String title1 = resourceBundle.getString("Analyzed")
-                + " " + this.comparer.getStartDirectory().size()
-                + " " + resourceBundle.getString("Files")
-                + " " + resourceBundle.getString("InDirectory")
-                + " " + this.comparer.getStartDirectoryName();
-        String title2 = resourceBundle.getString("Analyzed")
-                + " " + this.comparer.getEndDirectory().size()
-                + " " + resourceBundle.getString("Files")
-                + " " + resourceBundle.getString("InDirectory")
-                + " " + this.comparer.getEndDirectoryName();
-
-        writer.println("***********************************************************************************************************");
-        writer.printf("%-5s%-100.100s%2s","*",title1,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.printf("\r\n%-5s%-100.100s%2s","*",title2,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n***********************************************************************************************************");
+        writer.print(" ---------------------------------------------------------------------------------------------------------");
+        writer.printf("\r\n%-2s%-103s%2s", "|", resourceBundle.getString("Schema"),"|");
+        writer.printf("\r\n%-5s%102s", "|", "|");
+        writer.printf("\r\n%-2s%-87.87s%9.9s%1s%3s%5s"
+                ,"|"
+                ,resourceBundle.getString("ComparingFileSingle") + " (" + Formatter.getShortFilePath(this.comparer.getStartDirectoryName()) + ")"
+                ,resourceBundle.getString("FileSize")
+                ,","
+                , "mb"
+                ,"|");
+        writer.printf("\r\n%-5s%102s", "|", "|");
+        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s"
+                ,"|"
+                ,resourceBundle.getString("SimilarFileSingle") + " №1 (" + Formatter.getShortFilePath(this.comparer.getEndDirectoryName()) + ")"
+                ,resourceBundle.getString("FileSize")
+                ,","
+                , "mb"
+                ,"|");
+        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s"
+                ,"|"
+                ,resourceBundle.getString("SimilarFileSingle") + " №2 (" + Formatter.getShortFilePath(this.comparer.getEndDirectoryName()) + ")"
+                ,resourceBundle.getString("FileSize")
+                ,","
+                , "mb"
+                ,"|");
+        writer.printf("\r\n%-5s%-87.87s%9.9s%1s%3s%2s"
+                ,"|"
+                ,resourceBundle.getString("SimilarFileSingle") + " №3 (" + Formatter.getShortFilePath(this.comparer.getEndDirectoryName()) + ")"
+                ,resourceBundle.getString("FileSize")
+                ,","
+                , "mb"
+                ,"|");
+        writer.print("\r\n ---------------------------------------------------------------------------------------------------------");
     }
 
     private void printTitle(PrintWriter writer,String title){

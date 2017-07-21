@@ -72,6 +72,7 @@ public class Formatter {
         return stringTrimmed.equals("");
     }
 
+    /*split string in rows according roeLength in parameter*/
     public static List<String> splitStringInRows(String string, int rowLength){
         List<String> result = new ArrayList<>();
         int counter = string.length()/rowLength;
@@ -79,9 +80,11 @@ public class Formatter {
             result.add(string.substring(i*rowLength,(i+1)*rowLength));
         }
         result.add(string.substring(counter*rowLength));
-
         return result;
+    }
 
+    public static String getShortFilePath(String filePath){
+        return filePath.substring(0,3) + "..." + filePath.substring(filePath.lastIndexOf('\\'));
     }
 
     public static void main(String[] args) {
@@ -96,8 +99,10 @@ public class Formatter {
 //        System.out.println(stringIsEmpty(" "));
 //        System.out.println(stringIsEmpty("    "));
 //        System.out.println(stringIsEmpty(null));
-          String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
-        System.out.println(splitStringInRows(filename,19));
+//          String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
+//        System.out.println(splitStringInRows(filename,19));
+        String fileName = "D:\\MUSIC\\Retro\\COMPILATIONS\\Сборник01\\ххх";
+        System.out.println(getShortFilePath(fileName));
 
     }
 }

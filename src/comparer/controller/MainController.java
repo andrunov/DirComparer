@@ -99,7 +99,7 @@ public class MainController implements Initializable {
         if (directory != null) {
             this.firstDirectory = directory;
             AppPreferences.setDirectory(directory.getParentFile());
-            setTextDirLabel(firstDirLbl, "FirstDirectory", getDirInfo(directory));
+            setTextDirLabel(this.firstDirLbl, "FirstDirectory", getDirInfo(directory));
             updateTextInfoLbl();
         }
     }
@@ -117,25 +117,28 @@ public class MainController implements Initializable {
         if (directory != null) {
             this.secondDirectory = directory;
             AppPreferences.setDirectory(directory.getParentFile());
-            setTextDirLabel(secondDirLbl, "SecondDirectory", "" + getDirInfo(directory));
+            setTextDirLabel(this.secondDirLbl, "SecondDirectory", "" + getDirInfo(directory));
             updateTextInfoLbl();
         }
     }
 
     @FXML
     private void execute(){
-        if (firstDirectory != null) {
-            this.comparer.setStartDirectoryName(firstDirectory.getAbsolutePath());
+        if (this.firstDirectory != null) {
+            this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
+            if (this.secondDirectory != null) {
+                this.comparer.setEndDirectoryName(this.secondDirectory.getAbsolutePath());
+            }
         }else {
              /*if selected single directory save it as firstDirectory*/
-            if (secondDirectory != null) {
-                this.comparer.setStartDirectoryName(secondDirectory.getAbsolutePath());
+            if (this.secondDirectory != null) {
+                this.comparer.setStartDirectoryName(this.secondDirectory.getAbsolutePath());
             }
         }
 
         this.comparer.setResourceBundle(this.resourceBundle);
         if (this.comparer.execute()) {
-            setTextDirLabel(resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
+            setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
             setVisibility(true);
         }
     }
