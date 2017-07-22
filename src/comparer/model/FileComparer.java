@@ -191,8 +191,8 @@ public class FileComparer
         if (!this.startDirectoryName.equals(this.endDirectoryName)){
             this.fullEquality = getFullEqualities();
             this.nameEquality = getNamesEqualities();
-            this.sizeEquality = getSizeEqualities();
         }
+        this.sizeEquality = getSizeEqualities();
         this.nameSimilarityHigh = getSimilarities(HIGH_SIMILARITY_LOWER_LIMIT, HIGH_SIMILARITY_UPPER_LIMIT);
         this.nameSimilarityLow = getSimilarities(LOW_SIMILARITY_LOWER_LIMIT, LOW_SIMILARITY_UPPER_LIMIT);
         this.noSimilarities = getNoSimilarities();
@@ -212,8 +212,10 @@ public class FileComparer
 
     /*preparations before print result int file*/
     private boolean finishPreparations(){
+        deleteDuplications(this.sizeEquality);
         deleteDuplications(this.nameSimilarityHigh);
         deleteDuplications(this.nameSimilarityLow);
+        removeEmpties(this.sizeEquality);
         removeEmpties(this.nameSimilarityHigh);
         removeEmpties(this.nameSimilarityLow);
         Collections.sort(this.fullEquality);
