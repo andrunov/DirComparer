@@ -56,6 +56,9 @@ public class MainController implements Initializable {
     @FXML
     private Button aboutBtn;
 
+    @FXML
+    private Button exitBtn;
+
     private ResourceBundle resourceBundle;
 
     private File firstDirectory;
@@ -167,14 +170,15 @@ public class MainController implements Initializable {
 
     private void updateLocalText(){
         updateTextInfoLbl();
-        this.firstDirSelectBtn.setText(resourceBundle.getString("Select"));
-        this.secondDirSelectBtn.setText(resourceBundle.getString("Select"));
-        this.changeLocalButton.setText(resourceBundle.getString("ChangeLocal"));
-        this.executeButton.setText(resourceBundle.getString("Compare"));
-        this.clearBtn.setText(resourceBundle.getString("Clear"));
-        this.openResultBtn.setText(resourceBundle.getString("Open"));
-        this.settingsBtn.setText(resourceBundle.getString("Settings"));
-        this.aboutBtn.setText(resourceBundle.getString("AppInfo"));
+        this.firstDirSelectBtn.setText(this.resourceBundle.getString("Select"));
+        this.secondDirSelectBtn.setText(this.resourceBundle.getString("Select"));
+        this.changeLocalButton.setText(this.resourceBundle.getString("ChangeLocal"));
+        this.executeButton.setText(this.resourceBundle.getString("Compare"));
+        this.clearBtn.setText(this.resourceBundle.getString("Clear"));
+        this.openResultBtn.setText(this.resourceBundle.getString("Open"));
+        this.settingsBtn.setText(this.resourceBundle.getString("Settings"));
+        this.aboutBtn.setText(this.resourceBundle.getString("AppInfo"));
+        this.exitBtn.setText(this.resourceBundle.getString("Exit"));
     }
 
     /*updates text for infoLbl Label depending of
@@ -257,5 +261,10 @@ public class MainController implements Initializable {
     @FXML
     private void showAppInfo(){
         Message.info(this.resourceBundle,"AboutApp");
+    }
+
+    @FXML
+    private void doExitApp(){
+        this.mainApp.getPrimaryStage().close();
     }
 }
