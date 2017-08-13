@@ -1,6 +1,5 @@
 package comparer.controller;
 
-/*Controller class for main window*/
 
 import comparer.MainApp;
 import comparer.model.FileComparer;

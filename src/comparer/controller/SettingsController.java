@@ -1,7 +1,5 @@
 package comparer.controller;
 
-//*Controller class for settings window*/
-
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
 import comparer.model.Filter;
@@ -15,27 +13,35 @@ import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
+//*Controller class for SettingsWiew.fxml window*/
 public class SettingsController {
 
+    /*window stage*/
     private Stage dialogStage;
 
+    /*file comparer*/
     private FileComparer comparer;
 
+    /*language pocket*/
     private ResourceBundle resourceBundle;
 
+    /*field for filter text*/
     @FXML
     private TextField filterTextField;
 
+    /*field for min length of word*/
     @FXML
-    private TextField minLengthTextField;
+    private TextField minLengthWordField;
 
+    /*button for save settings and exit*/
     @FXML
     private Button saveBtn;
 
+    /*button for cancel changes and exit*/
     @FXML
     private Button cancelBtn;
 
-
+    /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
@@ -47,14 +53,12 @@ public class SettingsController {
         if (filter != null) {
             this.filterTextField.setText(Formatter.getArrayAsString(filter.getExtensions()));
         }
-        this.minLengthTextField.setText(String.valueOf(FileInfo.getMinLength()));
+        this.minLengthWordField.setText(String.valueOf(FileInfo.getMinLength()));
     }
 
 
     /**
      * set dialog stage for this window
-     *
-     * @param dialogStage
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -79,17 +83,19 @@ public class SettingsController {
             Filter filter = new Filter(extensions);
             AppPreferences.setFilterExtensions(extensions);
             this.comparer.setFilter(filter);
-            FileInfo.setMinLength(Integer.valueOf(this.minLengthTextField.getText()));
-            AppPreferences.setMinStringLength(this.minLengthTextField.getText());
+            FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));
+            AppPreferences.setMinStringLength(this.minLengthWordField.getText());
             dialogStage.close();
         }
     }
 
+    /*show info about filter*/
     @FXML
     private void showFilterInfo(){
         Message.info(this.resourceBundle,"FilterInfo");
     }
 
+    /*show info about min length of word*/
     @FXML
     private void showMinLengthInfo(){
         Message.info(this.resourceBundle,"MinLengthInfo");
@@ -98,7 +104,7 @@ public class SettingsController {
     /*check that user input correct data*/
     private boolean isInputValid() {
         String filterExtensions = this.filterTextField.getText();
-        String minLength = this.minLengthTextField.getText();
+        String minLength = this.minLengthWordField.getText();
         if (!filterExtensions.matches("[a-zA-Z0-9\\s]+")){
             Message.errorAlert(this.resourceBundle,"FilterExtensionException");
             return false;
