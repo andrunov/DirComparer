@@ -14,6 +14,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*words shorted than 3 letters not participate in compare*/
     private static int minLength;
 
+    /*static getter for minLength*/
     static {
         minLength = AppPreferences.getMinStringLength();
     }
@@ -58,15 +59,19 @@ public class FileInfo implements Comparable<FileInfo>
     /*field-marker that this object has participate in compares*/
     private boolean accepted;
 
+    /*default constructor*/
     public FileInfo() {
     }
 
+    /*constructor*/
     public FileInfo(String name, long size) {
         this.name = name;
         this.size = size;
         this.words = Formatter.splitString(name, minLength);
         this.accepted = false;
     }
+
+    /*getters and setters*/
 
     public String getName()
     {
@@ -119,6 +124,7 @@ public class FileInfo implements Comparable<FileInfo>
         FileInfo.minLength = minLength;
     }
 
+    /*to string method*/
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -136,6 +142,7 @@ public class FileInfo implements Comparable<FileInfo>
         return sb.toString();
     }
 
+    /*compare to method*/
     @Override
     public int compareTo(FileInfo other)
     {
@@ -146,6 +153,7 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
+    /*equals method*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -158,6 +166,7 @@ public class FileInfo implements Comparable<FileInfo>
 
     }
 
+    /*hash code method*/
     @Override
     public int hashCode() {
         int result = getName().hashCode();

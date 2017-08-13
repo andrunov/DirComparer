@@ -11,12 +11,16 @@ public class Filter implements FilenameFilter
     /*file extensions*/
     private String[] extensions;
 
+    /*default constructor*/
     public Filter() {
     }
 
+    /*constructor*/
     public Filter(String[] extensions) {
         this.extensions = extensions;
     }
+
+    /*getters and setters*/
 
     public String[] getExtensions() {
         return extensions;
@@ -26,6 +30,7 @@ public class Filter implements FilenameFilter
         this.extensions = extensions;
     }
 
+    /*accept only files with fitting extensions*/
     @Override
     public boolean accept(File dir, String name){
          String path = name.toLowerCase();

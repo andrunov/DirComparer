@@ -157,7 +157,7 @@ public class MainController implements Initializable {
         }
 
         this.comparer.setResourceBundle(this.resourceBundle);
-        if (this.comparer.execute()) {
+        if (this.comparer.compare()) {
             setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
             setVisibility(true);
         }

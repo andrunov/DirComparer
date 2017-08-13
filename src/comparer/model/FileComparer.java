@@ -75,6 +75,8 @@ public class FileComparer
         }
     }
 
+    /*getters and setters*/
+
     public String getStartDirectoryName() {
         return startDirectoryName;
     }
@@ -148,9 +150,8 @@ public class FileComparer
         return endDirectory;
     }
 
-    /*this method contains main logic of comparing
-                    calls out */
-    public boolean execute(){
+    /*this method contains main logic of comparing*/
+    public boolean compare(){
         boolean result = startPreparations();
         if (result) {
             try {
@@ -245,6 +246,7 @@ public class FileComparer
         return result;
     }
 
+    // TODO: 13.08.2017 remove comments
     /*find files with similar names according 1-st given parameter (file name)
     * and quantity of similar words (2-st parameter)*/
     private List<FileInfo> findSimilarities(FileInfo startFileInfo,int lowerLimit, int upperLimit){
