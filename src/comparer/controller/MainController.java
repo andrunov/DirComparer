@@ -20,49 +20,65 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    /*label of first directory*/
     @FXML
     private Label firstDirLbl;
 
+    /*label of second directory*/
     @FXML
     private Label secondDirLbl;
 
+    /*info label*/
     @FXML
     private Label infoLbl;
 
+    /*result label*/
     @FXML
     private Label resultLbl;
 
+    /*button for firs directory selection*/
     @FXML
     private Button firstDirSelectBtn;
 
+    /*button for second directory selection*/
     @FXML
     private Button secondDirSelectBtn;
 
+    /*button for change language pocket*/
     @FXML
     private Button changeLocalButton;
 
+    /*button for start comparing procedure*/
     @FXML
     private Button executeButton;
 
+    /*button for exit application*/
     @FXML
     private Button openResultBtn;
 
+    /*button for clear resources to default*/
     @FXML
     private Button clearBtn;
 
+    /*button for open settings window*/
     @FXML
     private Button settingsBtn;
 
+    /*button for open application info window*/
     @FXML
     private Button aboutBtn;
 
+    /*button for exit application*/
     @FXML
     private Button exitBtn;
 
+    /*language pocket*/
     private ResourceBundle resourceBundle;
 
+    /*first choose directory for comparing*/
     private File firstDirectory;
 
+    /*second choose directory for comparing*/
     private File secondDirectory;
 
     /*reference to compare engine class*/
@@ -71,9 +87,10 @@ public class MainController implements Initializable {
     /* Reference to the main application*/
     private MainApp mainApp;
 
-    /*desctop uses for open files just from JavaFX application*/
+    /*desktop uses for open files just from JavaFX application*/
     private Desktop desktop;
 
+    /*constructor*/
     public MainController() {
         this.comparer = new FileComparer();
         if (Desktop.isDesktopSupported()) {
@@ -83,13 +100,12 @@ public class MainController implements Initializable {
 
     /**
      * Is called by the main application to give a reference back to itself.
-     *
-     * @param mainApp
      */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
+    /*choose first directory*/
     @FXML
     private void choseFirstDirectory(){
         /*not null reportName means that
@@ -107,7 +123,7 @@ public class MainController implements Initializable {
         }
     }
 
-
+    /*choose second directory*/
     @FXML
     private void choseSecondDirectory(){
           /*not null reportName means that
@@ -125,8 +141,9 @@ public class MainController implements Initializable {
         }
     }
 
+    /*start comparing procedure*/
     @FXML
-    private void execute(){
+    private void executeComparing(){
         if (this.firstDirectory != null) {
             this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
             if (this.secondDirectory != null) {
@@ -146,18 +163,21 @@ public class MainController implements Initializable {
         }
     }
 
+    /*open dialog to choose directory*/
     private File chooseDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(AppPreferences.getDirectory());
         return directoryChooser.showDialog(null);
     }
 
+    /*initialize language pocket and set visibility to window elements*/
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
         setVisibility(false);
     }
 
+    /*change pocket language*/
     @FXML
     private void changeLocale(){
         if (this.resourceBundle.getLocale().getLanguage().equalsIgnoreCase("ru")){
@@ -168,6 +188,7 @@ public class MainController implements Initializable {
         updateLocalText();
     }
 
+    /*update text of window elements*/
     private void updateLocalText(){
         updateTextInfoLbl();
         this.firstDirSelectBtn.setText(this.resourceBundle.getString("Select"));
@@ -208,6 +229,7 @@ public class MainController implements Initializable {
          label.setText(resourceBundle.getString(bundleKey) + infoPath);
     }
 
+    /**/
     private String getDirInfo(File directory){
         String result = "";
         if (directory != null) {
@@ -220,6 +242,7 @@ public class MainController implements Initializable {
         return result;
     }
 
+    /*return string-represent directory name with closest parent directory*/
     private String getFileInfo(String filePath){
         String result = "";
         File file = new File(filePath);
@@ -229,6 +252,7 @@ public class MainController implements Initializable {
         return result;
     }
 
+    /*open saved txt-result file*/
     @FXML
     private void openResult(){
         try {
@@ -239,11 +263,13 @@ public class MainController implements Initializable {
         }
     }
 
+    /*set visibility to open result button and label*/
     private void setVisibility(boolean visibility){
         this.resultLbl.setVisible(visibility);
         this.openResultBtn.setVisible(visibility);
     }
 
+    /*clear fields to default*/
     @FXML
     private void clear(){
         this.comparer.cleanFields();
@@ -253,16 +279,19 @@ public class MainController implements Initializable {
         setVisibility(false);
     }
 
+    /*open settings window*/
     @FXML
     private void openSettings(){
         mainApp.showSettingsEditDialog(this.resourceBundle, this.comparer);
     }
 
+    /*show application info*/
     @FXML
     private void showAppInfo(){
         Message.info(this.resourceBundle,"AboutApp");
     }
 
+    /*exit application*/
     @FXML
     private void doExitApp(){
         this.mainApp.getPrimaryStage().close();
