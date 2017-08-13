@@ -18,15 +18,20 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/*Main app JavaFX class */
 public class MainApp extends Application {
 
+    /*primary app stage*/
     private Stage primaryStage;
+
+    /*root layout element*/
     private AnchorPane rootLayout;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    /*entry JavaFX method*/
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -92,6 +97,7 @@ public class MainApp extends Application {
         }
     }
 
+    /*getter for primary stage*/
     public Stage getPrimaryStage() {
         return primaryStage;
     }

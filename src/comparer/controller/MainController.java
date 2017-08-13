@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/*controller for MainView.fxml window*/
 public class MainController implements Initializable {
 
     /*label of first directory*/
