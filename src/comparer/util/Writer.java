@@ -21,6 +21,7 @@ public class Writer {
     /*encoding*/
     private String encoding;
 
+    /*constructor*/
     public Writer(FileComparer comparer, String encoding) {
         this.comparer = comparer;
         this.encoding = encoding;

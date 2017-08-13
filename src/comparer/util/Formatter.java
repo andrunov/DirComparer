@@ -55,6 +55,7 @@ public class Formatter {
         return list;
     }
 
+    /*transform String[] to String*/
     public static String getArrayAsString(String[] strings){
         StringBuilder sb = new StringBuilder();
         for (String s : strings){
@@ -83,10 +84,12 @@ public class Formatter {
         return result;
     }
 
+    /*transform full filePath to filename only*/
     public static String getShortFilePath(String filePath){
         return filePath.substring(0,3) + "..." + filePath.substring(filePath.lastIndexOf('\\'));
     }
 
+    // TODO: 13.08.2017  remove
     public static void main(String[] args) {
 //        String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
 //        String filename = "008. Голубые гитары - О чём плачут гитары (1971)гитары.mp3";
