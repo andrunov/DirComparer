@@ -167,8 +167,7 @@ public class MainController implements Initializable {
     private File chooseDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File initialDirectory = AppPreferences.getDirectory();
-        assert initialDirectory != null;
-        if (initialDirectory.exists()) {
+        if ((initialDirectory != null)&&(initialDirectory.exists())) {
             directoryChooser.setInitialDirectory(AppPreferences.getDirectory());
         }
         return directoryChooser.showDialog(null);

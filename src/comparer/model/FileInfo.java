@@ -129,12 +129,12 @@ public class FileInfo implements Comparable<FileInfo>
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(" ---------------------------------------------------------------------------------------------------------");
-        String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1024);
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
         sb.append(String.format("\r\n%-2s%-87.87s%10.10s%3s%5s","|",this.name,sizeFormatted, "mb","|"));
         if (!this.similarFiles.isEmpty()) {
             sb.append(String.format("\r\n%-5s%102s", "|", "|"));
             for (FileInfo fileInfo : similarFiles) {
-                sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize()*1.0/1024);
+                sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize()*1.0/1048576);
                 sb.append(String.format("\r\n%-5s%-87.87s%10.10s%3s%2s","|",fileInfo.getName(),sizeFormatted,"mb","|"));
             }
         }
