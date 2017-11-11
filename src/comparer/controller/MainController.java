@@ -38,7 +38,7 @@ public class MainController implements Initializable {
 
     /*button for firs directory selection*/
     @FXML
-    private Button firstDirSelectBtn;
+    public Button firstDirSelectBtn;
 
     /*button for second directory selection*/
     @FXML
