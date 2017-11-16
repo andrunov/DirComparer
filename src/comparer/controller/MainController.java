@@ -327,7 +327,7 @@ public class MainController implements Initializable {
         double defaultSize = control.getFont().getSize(); //default size
         double sizeByHeight = 0.42 * control.getHeight();
         double limitByWidth = (control.getText().length()*sizeByHeight)/control.getWidth();
-        System.out.println(limitByWidth);
-        return limitByWidth > 3 ? sizeByHeight : defaultSize ;
+//        System.out.println(limitByWidth + " " +control.getText());
+        return limitByWidth < 2 ? sizeByHeight : defaultSize ;
     }
 }
