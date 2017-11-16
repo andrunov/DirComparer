@@ -5,10 +5,12 @@ import comparer.MainApp;
 import comparer.model.FileComparer;
 import comparer.util.AppPreferences;
 import comparer.util.Message;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.stage.DirectoryChooser;
 
 import java.awt.*;
@@ -38,7 +40,7 @@ public class MainController implements Initializable {
 
     /*button for firs directory selection*/
     @FXML
-    public Button firstDirSelectBtn;
+    private Button firstDirSelectBtn;
 
     /*button for second directory selection*/
     @FXML
@@ -298,5 +300,41 @@ public class MainController implements Initializable {
     @FXML
     private void doExitApp(){
         this.mainApp.getPrimaryStage().close();
+    }
+
+    /*listener for observe change width and height of main window
+    and change font size of buttons and labels */
+    public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
+    {
+//        System.out.println("Height: " + oldValue + " Width: " + newValue);
+//        String text = mainController.firstDirSelectBtn.getText();
+//        Double size = 0.3 * (double)newValue;
+//        getTextSise(mainController.firstDirSelectBtn);
+        this.firstDirLbl.setStyle("-fx-font-size:"+getTextSise(this.firstDirLbl)+";");
+        this.secondDirLbl.setStyle("-fx-font-size:"+getTextSise(this.secondDirLbl)+";");
+        this.infoLbl.setStyle("-fx-font-size:"+getTextSise(this.infoLbl)+";");
+        this.resultLbl.setStyle("-fx-font-size:"+getTextSise(this.resultLbl)+";");
+        this.firstDirSelectBtn.setStyle("-fx-font-size:"+getTextSise(this.firstDirSelectBtn)+";");
+        this.secondDirSelectBtn.setStyle("-fx-font-size:"+getTextSise(this.secondDirSelectBtn)+";");
+        this.changeLocalButton.setStyle("-fx-font-size:"+getTextSise(this.changeLocalButton)+";");
+        this.executeButton.setStyle("-fx-font-size:"+getTextSise(this.executeButton)+";");
+        this.openResultBtn.setStyle("-fx-font-size:"+getTextSise(this.openResultBtn)+";");
+        this.clearBtn.setStyle("-fx-font-size:"+getTextSise(this.clearBtn)+";");
+        this.settingsBtn.setStyle("-fx-font-size:"+getTextSise(this.settingsBtn)+";");
+        this.aboutBtn.setStyle("-fx-font-size:"+getTextSise(this.aboutBtn)+";");
+        this.exitBtn.setStyle("-fx-font-size:"+getTextSise(this.exitBtn)+";");
+
+    };
+
+    private double getTextSise(Labeled control){
+        double result = 12; //default size
+        double sizeByHeight = 0.33333333 * control.getHeight();
+        double sizeByWidth = control.getWidth()/control.getText().length();
+
+        double limitByLength = 5 * control.getText().length();
+//        System.out.println("sizeByHeight: " + sizeByHeight + "  sizeByWidth: " + sizeByWidth + "  limiyByLingth: " + limitByLength);
+
+//        return sizeByWidth < sizeByHeight ? sizeByWidth : sizeByHeight;
+        return sizeByWidth > sizeByHeight ? sizeByHeight : sizeByWidth ;
     }
 }

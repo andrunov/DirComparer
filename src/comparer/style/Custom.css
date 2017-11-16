@@ -11,6 +11,7 @@
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: midnightblue;
     -fx-opacity: 0.9;
+    -fx-font-weight: bold;
 }
 
 
@@ -21,8 +22,8 @@
 -fx-border-radius: 5;
 -fx-background-color: aliceblue;
 -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-/*-fx-font-size: 10pt;*/
-    -fx-font-weight: bold;
+-fx-font-size: 12pt;
+-fx-font-weight: bold;
 }
 
 .button:hover {
@@ -36,4 +37,3 @@
     -fx-background-radius: 5;
 }
 
-/*.root { -fx-font-size: 10px; }*/

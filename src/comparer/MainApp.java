@@ -7,10 +7,8 @@ import comparer.controller.MainController;
 import comparer.controller.SettingsController;
 import comparer.model.FileComparer;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -31,29 +29,6 @@ public class MainApp extends Application {
 
     private MainController mainController;
 
-    private ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
-    {
-//        System.out.println("Height: " + oldValue + " Width: " + newValue);
-//        String text = mainController.firstDirSelectBtn.getText();
-//        Double size = 0.3 * (double)newValue;
-//        getTextSise(mainController.firstDirSelectBtn);
-        mainController.firstDirSelectBtn.setStyle("-fx-font-size:"+getTextSise(mainController.firstDirSelectBtn)+";");
-
-    };
-
-    private double getTextSise(Labeled control){
-        double sizeByHeight = 0.3 * control.getHeight();
-        double sizeByWidth = control.getWidth()/control.getText().length();
-        double limitByLength = 5 * control.getText().length();
-//        System.out.println("sizeByHeight: " + sizeByHeight + "  sizeByWidth: " + sizeByWidth + "  limiyByLingth: " + limitByLength);
-
-//        return sizeByWidth < sizeByHeight ? sizeByWidth : sizeByHeight;
-        return sizeByWidth ;
-    }
-
-
-
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -65,8 +40,8 @@ public class MainApp extends Application {
         this.primaryStage.setTitle("Directory compares");
         this.primaryStage.getIcons().add(new Image(MainApp.class.getResourceAsStream( "/comparer/resources/images/appImage.png" )));
         initRootLayout(new Locale("ru","RU"));
-        primaryStage.widthProperty().addListener(this.stageSizeListener);
-        primaryStage.heightProperty().addListener(this.stageSizeListener);
+        primaryStage.widthProperty().addListener(mainController.stageSizeListener);
+        primaryStage.heightProperty().addListener(mainController.stageSizeListener);
     }
 
     /**
