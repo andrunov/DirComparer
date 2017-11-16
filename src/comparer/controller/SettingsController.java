@@ -6,8 +6,10 @@ import comparer.model.Filter;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -40,6 +42,22 @@ public class SettingsController {
     /*button for cancel changes and exit*/
     @FXML
     private Button cancelBtn;
+
+    /*button for info for filter field*/
+    @FXML
+    private Button questionFilter;
+
+    /*button for info for min length field*/
+    @FXML
+    private Button questionMinLength;
+
+    /*label for for filter field*/
+    @FXML
+    private Label filterLbl;
+
+    /*label for for min length field*/
+    @FXML
+    private Label minLengthLbl;
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -120,6 +138,20 @@ public class SettingsController {
         }
         return true;
     }
+
+    /*listener for observe change width and height of main window
+    and change font size of buttons and labels */
+    public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
+    {
+//        this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(this.filterTextField)+";");
+//        this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(this.minLengthWordField)+";");
+        this.saveBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.saveBtn)+";");
+        this.cancelBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.cancelBtn)+";");
+        this.questionFilter.setStyle("-fx-font-size:"+Formatter.getTextSize(this.questionFilter)+";");
+        this.questionMinLength.setStyle("-fx-font-size:"+Formatter.getTextSize(this.questionMinLength)+";");
+        this.filterLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.filterLbl)+";");
+        this.minLengthLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.minLengthLbl)+";");
+    };
 
 
 }

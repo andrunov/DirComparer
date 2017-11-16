@@ -94,6 +94,9 @@ public class MainApp extends Application {
             controller.setComparer(comparer);
             controller.setResourceBundle(resourceBundle);
 
+            dialogStage.widthProperty().addListener(controller.stageSizeListener);
+            dialogStage.heightProperty().addListener(controller.stageSizeListener);
+
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.showAndWait();
 

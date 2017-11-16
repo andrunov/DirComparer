@@ -1,5 +1,7 @@
 package comparer.util;
 
+import javafx.scene.control.Labeled;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +89,14 @@ public class Formatter {
     /*transform full filePath to filename only*/
     public static String getShortFilePath(String filePath){
         return filePath.substring(0,3) + "..." + filePath.substring(filePath.lastIndexOf('\\'));
+    }
+
+    /*adjust control's text size according control's height and width*/
+    public static double getTextSize(Labeled control){
+        double defaultSize = control.getFont().getSize(); //default size
+        double sizeByHeight = 0.42 * control.getHeight();
+        double limitByWidth = (control.getText().length()*sizeByHeight)/control.getWidth();
+        return limitByWidth < 2 ? sizeByHeight : defaultSize ;
     }
 
     // TODO: 13.08.2017  remove
