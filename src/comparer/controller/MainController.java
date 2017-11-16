@@ -306,10 +306,6 @@ public class MainController implements Initializable {
     and change font size of buttons and labels */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-//        System.out.println("Height: " + oldValue + " Width: " + newValue);
-//        String text = mainController.firstDirSelectBtn.getText();
-//        Double size = 0.3 * (double)newValue;
-//        getTextSise(mainController.firstDirSelectBtn);
         this.firstDirLbl.setStyle("-fx-font-size:"+getTextSise(this.firstDirLbl)+";");
         this.secondDirLbl.setStyle("-fx-font-size:"+getTextSise(this.secondDirLbl)+";");
         this.infoLbl.setStyle("-fx-font-size:"+getTextSise(this.infoLbl)+";");
@@ -326,15 +322,12 @@ public class MainController implements Initializable {
 
     };
 
+    /*adjust control's text size according control's height and width*/
     private double getTextSise(Labeled control){
-        double result = 12; //default size
-        double sizeByHeight = 0.33333333 * control.getHeight();
-        double sizeByWidth = control.getWidth()/control.getText().length();
-
-        double limitByLength = 5 * control.getText().length();
-//        System.out.println("sizeByHeight: " + sizeByHeight + "  sizeByWidth: " + sizeByWidth + "  limiyByLingth: " + limitByLength);
-
-//        return sizeByWidth < sizeByHeight ? sizeByWidth : sizeByHeight;
-        return sizeByWidth > sizeByHeight ? sizeByHeight : sizeByWidth ;
+        double defaultSize = control.getFont().getSize(); //default size
+        double sizeByHeight = 0.42 * control.getHeight();
+        double limitByWidth = (control.getText().length()*sizeByHeight)/control.getWidth();
+        System.out.println(limitByWidth);
+        return limitByWidth > 3 ? sizeByHeight : defaultSize ;
     }
 }
