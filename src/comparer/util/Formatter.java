@@ -1,6 +1,7 @@
 package comparer.util;
 
 import javafx.scene.control.Labeled;
+import javafx.scene.control.TextInputControl;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -98,6 +99,16 @@ public class Formatter {
         double limitByWidth = (control.getText().length()*sizeByHeight)/control.getWidth();
         return limitByWidth < 2 ? sizeByHeight : defaultSize ;
     }
+
+    /*adjust control's text size according control's height and width*/
+    public static double getTextSize(TextInputControl control){
+        double defaultSize = control.getFont().getSize(); //default size
+        double sizeByHeight = 0.42 * control.getHeight();
+        double limitByWidth = (control.getText().length()*sizeByHeight)/control.getWidth();
+        return limitByWidth < 2 ? sizeByHeight : defaultSize ;
+    }
+
+
 
     // TODO: 13.08.2017  remove
     public static void main(String[] args) {

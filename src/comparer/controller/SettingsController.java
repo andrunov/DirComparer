@@ -143,8 +143,8 @@ public class SettingsController {
     and change font size of buttons and labels */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-//        this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(this.filterTextField)+";");
-//        this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(this.minLengthWordField)+";");
+        this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(this.filterTextField)+";");
+        this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(this.minLengthWordField)+";");
         this.saveBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.saveBtn)+";");
         this.cancelBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.cancelBtn)+";");
         this.questionFilter.setStyle("-fx-font-size:"+Formatter.getTextSize(this.questionFilter)+";");
