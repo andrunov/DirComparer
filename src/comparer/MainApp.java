@@ -27,8 +27,10 @@ public class MainApp extends Application {
     /*root layout element*/
     private AnchorPane rootLayout;
 
+    /*link to main controller*/
     private MainController mainController;
 
+    /*main method*/
     public static void main(String[] args) {
         launch(args);
     }
@@ -73,14 +75,13 @@ public class MainApp extends Application {
     /*open settings window*/
     public void showSettingsEditDialog(ResourceBundle resourceBundle, FileComparer comparer) {
         try {
-            // Загружаем fxml-файл и создаём новую сцену
-            // для всплывающего диалогового окна.
+            // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(resourceBundle);
             loader.setLocation(MainApp.class.getResource("view/SettingsView.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
-            // Создаём диалоговое окно Stage.
+            // Create dialog window Stage.
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Settings");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -88,7 +89,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Передаём адресата в контроллер.
+            // create and adjust controller
             SettingsController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setComparer(comparer);
@@ -97,7 +98,7 @@ public class MainApp extends Application {
             dialogStage.widthProperty().addListener(controller.stageSizeListener);
             dialogStage.heightProperty().addListener(controller.stageSizeListener);
 
-            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            // open dialog stage and wait till user close it
             dialogStage.showAndWait();
 
         } catch (IOException e) {
