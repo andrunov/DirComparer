@@ -108,25 +108,4 @@ public class Formatter {
         return limitByWidth < 2 ? sizeByHeight : defaultSize ;
     }
 
-
-
-    // TODO: 13.08.2017  remove
-    public static void main(String[] args) {
-//        String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
-//        String filename = "008. Голубые гитары - О чём плачут гитары (1971)гитары.mp3";
-//        List<String> list = splitString(filename,3);
-//        System.out.println(list);
-//        String filterExtensions = "mp3 vma frt";
-//        System.out.println(filterExtensions.matches("[a-zA-Z0-9\\s]+"));
-
-//        System.out.println(stringIsEmpty(""));
-//        System.out.println(stringIsEmpty(" "));
-//        System.out.println(stringIsEmpty("    "));
-//        System.out.println(stringIsEmpty(null));
-//          String filename = "Как,мне найти:- что еще -надо? -(А.Добронравов; - А.Пугачева!В.Добрынин&А.Кузьмин).mp3";
-//        System.out.println(splitStringInRows(filename,19));
-        String fileName = "D:\\MUSIC\\Retro\\COMPILATIONS\\Сборник01\\ххх";
-        System.out.println(getShortFilePath(fileName));
-
-    }
 }

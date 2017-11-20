@@ -246,7 +246,6 @@ public class FileComparer
         return result;
     }
 
-    // TODO: 13.08.2017 remove comments
     /*find files with similar names according 1-st given parameter (file name)
     * and quantity of similar words (2-st parameter)*/
     private List<FileInfo> findSimilarities(FileInfo startFileInfo,int lowerLimit, int upperLimit){
@@ -260,26 +259,19 @@ public class FileComparer
             /*third compare condition*/
             else if (startFileInfo.getSize()==endFileInfo.getSize()) continue;
             int counter = 0;
-//            System.out.println();
             for (String startWord : startWords){
                 for (String endWord: endFileInfo.getWords()){
                         int difference = startWord.compareTo(endWord);
-//                    System.out.printf("первое слово: %s второе слово: %s diff: %d\n",startWord,endWord,difference);
                     if (difference == 0){
                         counter++;
-//                        System.out.printf("счетчик: %d\n",counter);
                     /*words in lists were sort, so if endWord > startWord that means there cant be equals words left*/
                     }else if(difference<0){
-//                        System.out.println("break");
                         break;
                     }
                 }
             }
-//            System.out.printf("счетчик: %d ниж гр.: %d верх гр.: %d\n",counter,lowerLimit,upperLimit);
             if ((counter >= lowerLimit)&(counter <= upperLimit)){
                  result.add(FileInfo.copy(endFileInfo));
-//                System.out.println("add");
-
             }
         }
         return result;
