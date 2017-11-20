@@ -238,11 +238,7 @@ public class MainController implements Initializable {
     private String getDirInfo(File directory){
         String result = "";
         if (directory != null) {
-            if(directory.getParent() == null){
-                result = ": " + directory.getAbsolutePath();
-            }else {
-                result = ": " + directory.getName();
-            }
+            result = ": " + directory.getPath();
         }
         return result;
     }
@@ -252,7 +248,7 @@ public class MainController implements Initializable {
         String result = "";
         File file = new File(filePath);
         if (file.exists()){
-            result = ": " + file.getParentFile().getName() + "\\" + file.getName();
+            result = ": " + file.getParentFile().getPath() + "\\" + file.getName();
         }
         return result;
     }
