@@ -154,16 +154,10 @@ public class FileComparer
     public boolean compare(){
         boolean result = startPreparations();
         if (result) {
-            try {
-                result = startPreparations();
-                result = compareDirectories();
-                if (result) {
-                    result = finishPreparations();
-                    new Writer(this,"UTF8").write();
-                }
-            } catch (Exception e) {
-                Message.errorAlert(this.resourceBundle, e.getMessage());
-            }
+            compareDirectories();
+            finishPreparations();
+            Writer writer = new Writer(this,"UTF8");
+            result = writer.write();
         }
         return result;
     }
@@ -187,7 +181,7 @@ public class FileComparer
     }
 
     /*comparing files in directories*/
-    private boolean compareDirectories(){
+    private void compareDirectories(){
         /*if directory is single comparing of equals files and names not to do*/
         if (!this.startDirectoryName.equals(this.endDirectoryName)){
             this.fullEquality = getFullEqualities();
@@ -197,7 +191,6 @@ public class FileComparer
         this.nameSimilarityHigh = getSimilarities(HIGH_SIMILARITY_LOWER_LIMIT, HIGH_SIMILARITY_UPPER_LIMIT);
         this.nameSimilarityLow = getSimilarities(LOW_SIMILARITY_LOWER_LIMIT, LOW_SIMILARITY_UPPER_LIMIT);
         this.noSimilarities = getNoSimilarities();
-        return true;
     }
 
     /*fill list fith files that no have similarities*/
@@ -212,7 +205,7 @@ public class FileComparer
     }
 
     /*preparations before print result int file*/
-    private boolean finishPreparations(){
+    private void finishPreparations(){
         deleteDuplications(this.sizeEquality);
         deleteDuplications(this.nameSimilarityHigh);
         deleteDuplications(this.nameSimilarityLow);
@@ -225,7 +218,6 @@ public class FileComparer
         Collections.sort(this.nameSimilarityHigh);
         Collections.sort(this.nameSimilarityLow);
         Collections.sort(this.noSimilarities);
-        return true;
     }
 
     /*second comparing

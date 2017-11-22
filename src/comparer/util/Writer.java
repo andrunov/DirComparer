@@ -28,7 +28,8 @@ public class Writer {
     }
 
     /*write logic*/
-    public void write(){
+    public boolean write(){
+        boolean result = false;
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
@@ -67,9 +68,11 @@ public class Writer {
             printTitle(writer,resourceBundle.getString("6thLevelEquality"));
             printFileList(writer,this.comparer.getNoSimilarity());
             writer.close();
+            result = true;
         } catch (IOException e) {
             Message.errorAlert(resourceBundle,e.getMessage());
         }
+        return result;
     }
 
 

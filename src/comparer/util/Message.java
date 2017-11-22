@@ -32,7 +32,7 @@ public class Message {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("ErrorTitle"));
         alert.setHeaderText(resourceBundle.getString("ErrorAlertHeaderTex"));
-        alert.setContentText(resourceBundle.getString(message));
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
