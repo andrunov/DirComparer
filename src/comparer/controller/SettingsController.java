@@ -123,7 +123,7 @@ public class SettingsController {
     private boolean isInputValid() {
         String filterExtensions = this.filterTextField.getText();
         String minLength = this.minLengthWordField.getText();
-        if (!filterExtensions.matches("[a-zA-Z0-9\\s]+")){
+        if ((!filterExtensions.matches("[a-zA-Z0-9\\s]+"))&&(!filterExtensions.isEmpty())){
             Message.errorAlert(this.resourceBundle,"FilterExtensionException");
             return false;
         }
