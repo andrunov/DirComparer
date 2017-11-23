@@ -11,11 +11,11 @@ Inner directories not participate in analysis.
 There is possibility to adjust file type filter in settings partition. If no file type show all types will participate 
 in comparing. There is too possibility to adjust minimum word's length. Shorter words (for example pretexts) contained 
 in file's name will not participate in comparing.
+When window size is changing performs auto scaling of controls. 
 
 Author made application for own tasks - compose music compilations.
 
-In case of incorrect works of application it's recommend to update current java version through UpdateJava.jnlp 
-or from java.com
+In case of incorrect works of application it's recommend to update current java version from java.com
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -32,8 +32,8 @@ or from java.com
 Имеется возможность выставить фильтр по типу файлов в разделе "настройки". Если тип файла не указывать, 
 в сравнении будут участвовать все файлы. Так же в разделе "настройки" есть возможность указать минимальную длину слова.
 Слова с меньшим количеством букв (например предлоги), содержащиеся в названии файла, в сравнении участвовать не будут.
+При изменении размера окна производится автомасштабирование элементов управления.
 
 Автор делал приложение для своих задач - составления музыкальных сборников.
 
-В случае некорректной работы приложения рекомендуется обновить текущую версию java с помощью UpdateJava.jnlp
-или с сайта java.com
+В случае некорректной работы приложения рекомендуется обновить текущую версию java с сайта java.com
