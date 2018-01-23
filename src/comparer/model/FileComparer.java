@@ -2,6 +2,7 @@ package comparer.model;
 
 import comparer.util.AppPreferences;
 import comparer.util.Message;
+import comparer.util.Sorter;
 import comparer.util.Writer;
 
 import java.io.File;
@@ -212,12 +213,12 @@ public class FileComparer
         removeEmpties(this.sizeEquality);
         removeEmpties(this.nameSimilarityHigh);
         removeEmpties(this.nameSimilarityLow);
-        Collections.sort(this.fullEquality);
-        Collections.sort(this.nameEquality);
-        Collections.sort(this.sizeEquality);
-        Collections.sort(this.nameSimilarityHigh);
-        Collections.sort(this.nameSimilarityLow);
-        Collections.sort(this.noSimilarities);
+        Sorter.sort(this.fullEquality);
+        Sorter.sort(this.nameEquality);
+        Sorter.sort(this.sizeEquality);
+        Sorter.sort(this.nameSimilarityHigh);
+        Sorter.sort(this.nameSimilarityLow);
+        Sorter.sort(this.noSimilarities);
     }
 
     /*second comparing
@@ -356,8 +357,13 @@ public class FileComparer
                 filePaths = directory.list(this.filter);
             }
             for (String filePath: filePaths){
-                File file = new File(path + "/" + filePath);
-                result.add(new FileInfo(filePath,file.length()));
+                String absoluteFilePath = path + "\\" + filePath;
+                File file = new File(absoluteFilePath);
+                if (file.isFile()) {
+                    result.add(new FileInfo(absoluteFilePath, filePath, file.length()));
+                } else if (file.isDirectory()){
+                    result.addAll(fillDirectory(absoluteFilePath));
+                }
             }
         }
         return result;

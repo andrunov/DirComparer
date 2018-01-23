@@ -33,15 +33,15 @@ public class Filter implements FilenameFilter
     /*accept only files with fitting extensions*/
     @Override
     public boolean accept(File dir, String name){
-         String path = name.toLowerCase();
-         for (String extension : extensions)
-         {
-             if ((path.endsWith(extension) && (path.charAt(path.length()
-                     - extension.length() - 1)) == '.'))
-             {
-                 return true;
-             }
-         }
+        if (new File(dir.getAbsolutePath()+ "\\" + name).isDirectory()) return true;
+
+        String path = name.toLowerCase();
+        for (String extension : extensions) {
+            if ((path.endsWith(extension) && (path.charAt(path.length()
+                    - extension.length() - 1)) == '.')) {
+                return true;
+            }
+        }
 
         return false;
     }
