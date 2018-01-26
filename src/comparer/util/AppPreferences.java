@@ -27,7 +27,7 @@ public class AppPreferences {
         }
     }
 
-    /*get files extensions for Filter*/
+    /*get files extensions for FileFilter*/
     public static String[] getFilterExtensions() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         String extensions = prefs.get("filterExtensions", null);
@@ -38,7 +38,7 @@ public class AppPreferences {
         }
     }
 
-    /*set files extensions for Filter*/
+    /*set files extensions for FileFilter*/
     public static void setFilterExtensions(String[] extensions) {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         prefs.put("filterExtensions", Formatter.getArrayAsString(extensions));

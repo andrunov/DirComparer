@@ -2,8 +2,8 @@ package comparer.controller;
 
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
-import comparer.model.Filter;
 import comparer.util.AppPreferences;
+import comparer.util.FileFilter;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
@@ -67,7 +67,7 @@ public class SettingsController {
     /*set comparer and associate text fields with its data*/
     public void setComparer(FileComparer comparer) {
         this.comparer = comparer;
-        Filter filter = comparer.getFilter();
+        FileFilter filter = comparer.getFilter();
         if (filter != null) {
             this.filterTextField.setText(Formatter.getArrayAsString(filter.getExtensions()));
         }
@@ -97,8 +97,11 @@ public class SettingsController {
     @FXML
     private void save() {
         if (isInputValid()) {
-            String[] extensions = this.filterTextField.getText().split(" ");
-            Filter filter = new Filter(extensions);
+            String[] extensions = new String[0];
+            if (!Formatter.stringIsEmpty(this.filterTextField.getText())){
+                extensions = this.filterTextField.getText().split(" ");
+            }
+            FileFilter filter = new FileFilter(extensions);
             AppPreferences.setFilterExtensions(extensions);
             this.comparer.setFilter(filter);
             FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));

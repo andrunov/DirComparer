@@ -1,9 +1,6 @@
 package comparer.model;
 
-import comparer.util.AppPreferences;
-import comparer.util.Message;
-import comparer.util.Sorter;
-import comparer.util.Writer;
+import comparer.util.*;
 
 import java.io.File;
 import java.util.*;
@@ -66,14 +63,12 @@ public class FileComparer
     private List<FileInfo> noSimilarities = new ArrayList<>();
 
     /*filter of file types*/
-    private Filter filter;
+    private FileFilter filter;
 
     /*constructor. if extensions undefined filter no use*/
     public FileComparer() {
         String[] extensions = AppPreferences.getFilterExtensions();
-        if (extensions.length!=0) {
-            this.filter = new Filter(extensions);
-        }
+        this.filter = new FileFilter(extensions);
     }
 
     /*getters and setters*/
@@ -111,11 +106,11 @@ public class FileComparer
         return reportName;
     }
 
-    public Filter getFilter() {
+    public FileFilter getFilter() {
         return filter;
     }
 
-    public void setFilter(Filter filter) {
+    public void setFilter(FileFilter filter) {
         this.filter = filter;
     }
 
@@ -350,19 +345,18 @@ public class FileComparer
         List<FileInfo> result = new ArrayList<>();
         File directory = new File(path);
         if (directory.isDirectory()){
-            String[] filePaths;
-            if (this.filter == null){
-                filePaths = directory.list();
-            }else {
-                filePaths = directory.list(this.filter);
-            }
+            String[] filePaths = directory.list();;
             for (String filePath: filePaths){
                 String absoluteFilePath = path + "\\" + filePath;
-                File file = new File(absoluteFilePath);
-                if (file.isFile()) {
-                    result.add(new FileInfo(absoluteFilePath, filePath, file.length()));
-                } else if (file.isDirectory()){
-                    result.addAll(fillDirectory(absoluteFilePath));
+                if (this.filter.accept(absoluteFilePath)) {
+
+                    File file = new File(absoluteFilePath);
+                    if (file.isFile()) {
+                        result.add(new FileInfo(absoluteFilePath, filePath, file.length()));
+                    } else if (file.isDirectory()) {
+                        result.addAll(fillDirectory(absoluteFilePath));
+                    }
+
                 }
             }
         }

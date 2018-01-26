@@ -1,22 +1,21 @@
-package comparer.model;
+package comparer.util;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
 /**
- * class for adjust file filter
+ * Class for accept file according recieved String[] filter of file extensions
  */
-public class Filter implements FilenameFilter
-{
+public class FileFilter {
+
     /*file extensions*/
     private String[] extensions;
 
     /*default constructor*/
-    public Filter() {
+    public FileFilter() {
     }
 
     /*constructor*/
-    public Filter(String[] extensions) {
+    public FileFilter(String[] extensions) {
         this.extensions = extensions;
     }
 
@@ -30,20 +29,20 @@ public class Filter implements FilenameFilter
         this.extensions = extensions;
     }
 
-    /*accept only files with fitting extensions*/
-    @Override
-    public boolean accept(File dir, String name){
-        if (new File(dir.getAbsolutePath()+ "\\" + name).isDirectory()) return true;
+    /*accepts all files according String[] extensions
+    * accepts folders*/
+    public boolean accept(String absoluteFilePath){
 
-        String path = name.toLowerCase();
+        if ((this.extensions==null)||(this.extensions.length == 0)) return true;
+
+        String path = absoluteFilePath.toLowerCase();
         for (String extension : extensions) {
             if ((path.endsWith(extension) && (path.charAt(path.length()
                     - extension.length() - 1)) == '.')) {
                 return true;
-            }
+            }else if (new File(absoluteFilePath).isDirectory()) return true;
         }
 
         return false;
     }
-
 }
