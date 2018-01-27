@@ -20,6 +20,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*static getter for minLength*/
     static {
         minLength = AppPreferences.getMinStringLength();
+        showAbsolutePath = AppPreferences.getShowAbsolutePath();
     }
 
     /*copy FileInfo excluding List<FileInfo> similarFiles*/

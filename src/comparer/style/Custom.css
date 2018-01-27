@@ -37,3 +37,17 @@
     -fx-background-radius: 5;
 }
 
+.radio-button {
+    -fx-font-size: 10pt;
+}
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: navy;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+}
+.radio-button .dot {
+    -fx-background-radius: 15px;
+}

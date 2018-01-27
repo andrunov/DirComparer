@@ -49,7 +49,7 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         int minLength = 0;
         try {
-            minLength = Integer.parseInt(prefs.get("minStringLength", null));
+            minLength = Integer.parseInt(prefs.get("minStringLength", "1"));
         }catch (NumberFormatException e){
             e.printStackTrace();
         }
@@ -63,5 +63,16 @@ public class AppPreferences {
     public static void setMinStringLength(String minStringLength) {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         prefs.put("minStringLength", minStringLength);
+    }
+
+    /*set mode of files paths in report*/
+    public static void setShowAbsolutePath(boolean showAbsolutePath) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("showAbsolutePath", String.valueOf(showAbsolutePath));
+    }
+
+    public static boolean getShowAbsolutePath(){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Boolean.parseBoolean(prefs.get("showAbsolutePath","FALSE"));
     }
 }

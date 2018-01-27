@@ -93,6 +93,7 @@ public class MainApp extends Application {
             SettingsController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setComparer(comparer);
+            controller.setFieldsValues();
             controller.setResourceBundle(resourceBundle);
 
             dialogStage.widthProperty().addListener(controller.stageSizeListener);

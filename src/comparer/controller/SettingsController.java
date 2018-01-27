@@ -10,6 +10,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -51,6 +52,14 @@ public class SettingsController {
     @FXML
     private Button questionMinLength;
 
+    /*radio button for set absolute path in report*/
+    @FXML
+    private RadioButton absolutePathRadBtn;
+
+    /*radio button for set relative path in report*/
+    @FXML
+    private RadioButton relativePathRadBtn;
+
     /*label for for filter field*/
     @FXML
     private Label filterLbl;
@@ -59,21 +68,24 @@ public class SettingsController {
     @FXML
     private Label minLengthLbl;
 
-
-
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
 
-    /*set comparer and associate text fields with its data*/
+    /*set comparer*/
     public void setComparer(FileComparer comparer) {
         this.comparer = comparer;
+    }
+
+    /*set values of class fields*/
+    public void setFieldsValues(){
         FileFilter fileFilter = comparer.getFilter();
         if (fileFilter != null) {
             this.filterTextField.setText(Formatter.getArrayAsString(fileFilter.getExtensions()));
         }
         this.minLengthWordField.setText(String.valueOf(FileInfo.getMinLength()));
+        this.absolutePathRadBtn.setSelected(AppPreferences.getShowAbsolutePath());
     }
 
 
@@ -107,7 +119,9 @@ public class SettingsController {
             AppPreferences.setFilterExtensions(extensions);
             this.comparer.setFilter(filter);
             FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));
+            FileInfo.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setMinStringLength(this.minLengthWordField.getText());
+            AppPreferences.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             dialogStage.close();
         }
     }
