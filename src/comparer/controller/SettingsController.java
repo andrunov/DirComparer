@@ -59,6 +59,8 @@ public class SettingsController {
     @FXML
     private Label minLengthLbl;
 
+
+
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
@@ -67,9 +69,9 @@ public class SettingsController {
     /*set comparer and associate text fields with its data*/
     public void setComparer(FileComparer comparer) {
         this.comparer = comparer;
-        FileFilter filter = comparer.getFilter();
-        if (filter != null) {
-            this.filterTextField.setText(Formatter.getArrayAsString(filter.getExtensions()));
+        FileFilter fileFilter = comparer.getFilter();
+        if (fileFilter != null) {
+            this.filterTextField.setText(Formatter.getArrayAsString(fileFilter.getExtensions()));
         }
         this.minLengthWordField.setText(String.valueOf(FileInfo.getMinLength()));
     }

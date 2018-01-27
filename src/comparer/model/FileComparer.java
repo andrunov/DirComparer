@@ -171,8 +171,8 @@ public class FileComparer
         }else if (this.startDirectory==null){
             this.startDirectoryName = this.endDirectoryName;
         }
-        this.startDirectory = fillDirectory(this.startDirectoryName);
-        this.endDirectory = fillDirectory(this.endDirectoryName);
+        this.startDirectory = fillDirectory(this.startDirectoryName, this.startDirectoryName);
+        this.endDirectory = fillDirectory(this.endDirectoryName, this.endDirectoryName);
         return true;
     }
 
@@ -341,20 +341,20 @@ public class FileComparer
     }
 
     /*fill map with filenames and their split names by the words */
-    private List<FileInfo> fillDirectory(String path){
+    private List<FileInfo> fillDirectory(String directoryPath, String baseDirectoryPath){
         List<FileInfo> result = new ArrayList<>();
-        File directory = new File(path);
+        File directory = new File(directoryPath);
         if (directory.isDirectory()){
             String[] filePaths = directory.list();;
             for (String filePath: filePaths){
-                String absoluteFilePath = path + "\\" + filePath;
+                String absoluteFilePath = directoryPath + "\\" + filePath;
                 if (this.filter.accept(absoluteFilePath)) {
 
                     File file = new File(absoluteFilePath);
                     if (file.isFile()) {
-                        result.add(new FileInfo(absoluteFilePath, filePath, file.length()));
+                        result.add(new FileInfo(absoluteFilePath, baseDirectoryPath,filePath, file.length()));
                     } else if (file.isDirectory()) {
-                        result.addAll(fillDirectory(absoluteFilePath));
+                        result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
                     }
 
                 }

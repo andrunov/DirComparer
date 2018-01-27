@@ -12,9 +12,6 @@ import java.util.ResourceBundle;
  */
 public class Writer {
 
-    /*writer to write file into files*/
-    private PrintWriter writer;
-
     /*link to fileComparer*/
     private FileComparer comparer;
 
@@ -70,7 +67,7 @@ public class Writer {
             writer.close();
             result = true;
         } catch (IOException e) {
-            Message.errorAlert(resourceBundle,e.getMessage());
+            Message.errorAlert(resourceBundle,e);
         }
         return result;
     }

@@ -11,20 +11,23 @@ import java.util.List;
  */
 public class Sorter {
 
-    public static void sort(List<FileInfo> fileInfoList){
-        Collections.sort(fileInfoList);
-        for (FileInfo fileInfo : fileInfoList){
-            Collections.sort(fileInfo.getSimilarFiles(), new Comparator<FileInfo>() {
-                @Override
-                public int compare(FileInfo o1, FileInfo o2) {
-                    int result = o1.getAbsolutePath().compareTo(o2.getAbsolutePath());
-                    if (result==0){
-                        result = (o1.getSize() < o2.getSize())? -1:(o1.getSize() > o2.getSize())? 1:0;
-                    }
-                    return result;
-                }
-            });
+    /*comparator use only for sort List<FileInfo>, not for compare FileInfo objects */
+    private static Comparator<FileInfo> fileInfoComparator;
 
+    static {
+        fileInfoComparator = new Comparator<FileInfo>() {
+            @Override
+            public int compare(FileInfo o1, FileInfo o2) {
+                return o1.getAbsolutePath().compareTo(o2.getAbsolutePath());
+            }
+        };
+    }
+
+    /*sort List<FileInfo>*/
+    public static void sort(List<FileInfo> fileInfoList){
+        Collections.sort(fileInfoList,fileInfoComparator);
+        for (FileInfo fileInfo : fileInfoList){
+            Collections.sort(fileInfo.getSimilarFiles(),fileInfoComparator);
         }
     }
 }

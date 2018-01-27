@@ -28,6 +28,15 @@ public class Message {
     }
 
     /*show error message*/
+    public static void errorAlert(ResourceBundle resourceBundle, Throwable throwable){
+        if (throwable.getMessage()!=null) {
+            errorAlert(resourceBundle,throwable.getMessage());
+        }else {
+            errorAlert(resourceBundle,throwable.toString());
+        }
+    }
+
+    /*show error message*/
     public static void errorAlert(ResourceBundle resourceBundle, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("ErrorTitle"));

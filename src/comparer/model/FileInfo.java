@@ -14,6 +14,9 @@ public class FileInfo implements Comparable<FileInfo>
     /*words shorted than 3 letters not participate in compare*/
     private static int minLength;
 
+    /*show absolute path in reports or not*/
+    private static boolean showAbsolutePath;
+
     /*static getter for minLength*/
     static {
         minLength = AppPreferences.getMinStringLength();
@@ -23,6 +26,7 @@ public class FileInfo implements Comparable<FileInfo>
     public static FileInfo copy(FileInfo fileInfo){
         FileInfo newFileInfo = new FileInfo();
         newFileInfo.setAbsolutePath(fileInfo.getAbsolutePath());
+        newFileInfo.setBaseFolderPath(fileInfo.getBaseFolderPath());
         newFileInfo.setName(fileInfo.getName());
         newFileInfo.setSize(fileInfo.getSize());
         newFileInfo.setWords(fileInfo.getWords());
@@ -48,6 +52,9 @@ public class FileInfo implements Comparable<FileInfo>
     /*absolute path to file*/
     private String absolutePath;
 
+    /*base folder from to show file path*/
+    private String baseFolderPath;
+
     /*name of file*/
     private String name;
 
@@ -68,8 +75,9 @@ public class FileInfo implements Comparable<FileInfo>
     }
 
     /*constructor*/
-    public FileInfo(String absolutePath, String name, long size) {
+    public FileInfo(String absolutePath, String baseFolderPath, String name, long size) {
         this.absolutePath = absolutePath;
+        this.baseFolderPath = baseFolderPath;
         this.name = name;
         this.size = size;
         this.words = Formatter.splitString(name, minLength);
@@ -129,6 +137,14 @@ public class FileInfo implements Comparable<FileInfo>
         this.accepted = accepted;
     }
 
+    public String getBaseFolderPath() {
+        return baseFolderPath;
+    }
+
+    public void setBaseFolderPath(String baseFolderPath) {
+        this.baseFolderPath = baseFolderPath;
+    }
+
     public static int getMinLength() {
         return minLength;
     }
@@ -137,18 +153,26 @@ public class FileInfo implements Comparable<FileInfo>
         FileInfo.minLength = minLength;
     }
 
+    public static boolean isShowAbsolutePath() {
+        return showAbsolutePath;
+    }
+
+    public static void setShowAbsolutePath(boolean showAbsolutePath) {
+        FileInfo.showAbsolutePath = showAbsolutePath;
+    }
+
     /*to string method*/
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(" ---------------------------------------------------------------------------------------------------------");
         String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
-        sb.append(String.format("\r\n%-2s%-87.87s%10.10s%3s%5s","|",this.absolutePath,sizeFormatted, "mb","|"));
+        sb.append(String.format("\r\n%-2s%-87.87s%10.10s%3s%5s","|",this.showPath(),sizeFormatted, "mb","|"));
         if (!this.similarFiles.isEmpty()) {
             sb.append(String.format("\r\n%-5s%102s", "|", "|"));
             for (FileInfo fileInfo : similarFiles) {
                 sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize()*1.0/1048576);
-                sb.append(String.format("\r\n%-5s%-87.87s%10.10s%3s%2s","|",fileInfo.getAbsolutePath(),sizeFormatted,"mb","|"));
+                sb.append(String.format("\r\n%-5s%-87.87s%10.10s%3s%2s","|",fileInfo.showPath(),sizeFormatted,"mb","|"));
             }
         }
         sb.append("\r\n ---------------------------------------------------------------------------------------------------------");
@@ -185,6 +209,15 @@ public class FileInfo implements Comparable<FileInfo>
         int result = getName().hashCode();
         result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
         return result;
+    }
+
+    /*show file path according static boolean showAbsolutePath*/
+    private String showPath(){
+        if (showAbsolutePath) return this.getAbsolutePath();
+        else {
+            return this.getAbsolutePath().substring(this.getBaseFolderPath().length()+1);
+        }
+
     }
 
 }

@@ -166,7 +166,7 @@ public class MainController implements Initializable {
             }
         }
         catch (Exception e){
-            Message.errorAlert(this.resourceBundle,e.getMessage());
+            Message.errorAlert(this.resourceBundle,e);
         }
     }
 
@@ -265,7 +265,7 @@ public class MainController implements Initializable {
             assert this.desktop != null;
             this.desktop.open(new File(this.comparer.getReportName()));
         } catch (Exception e) {
-            Message.errorAlert(this.resourceBundle,e.getMessage());
+            Message.errorAlert(this.resourceBundle,e);
         }
     }
 
