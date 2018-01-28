@@ -158,19 +158,18 @@ public class SettingsController {
         return true;
     }
 
-    /*listener for observe change width and height of main window
-    and change font size of buttons and labels */
+    /*listener for observe change height of settings window */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-        this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(this.filterTextField)+";");
-        this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(this.minLengthWordField)+";");
-        this.saveBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.saveBtn)+";");
-        this.cancelBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.cancelBtn)+";");
-        this.questionFilter.setStyle("-fx-font-size:"+Formatter.getTextSize(this.questionFilter)+";");
-        this.questionMinLength.setStyle("-fx-font-size:"+Formatter.getTextSize(this.questionMinLength)+";");
-        this.filterLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.filterLbl)+";");
-        this.minLengthLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.minLengthLbl)+";");
+        double height = this.dialogStage.getHeight();
+        this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(height)+";");
+        this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.saveBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.cancelBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.questionFilter.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.questionMinLength.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.filterLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.minLengthLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
     };
-
 
 }

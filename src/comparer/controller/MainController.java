@@ -128,7 +128,7 @@ public class MainController implements Initializable {
     /*choose second directory*/
     @FXML
     private void choseSecondDirectory(){
-          /*not null reportName means that
+        /*not null reportName means that
         some compares happens before.
         reset comparer in such case*/
         if (this.comparer.getReportName()!= null){
@@ -303,25 +303,23 @@ public class MainController implements Initializable {
         this.mainApp.getPrimaryStage().close();
     }
 
-    /*listener for observe change width and height of main window
-    and change font size of buttons and labels */
+    /*listener for observe change height of main window */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-        this.firstDirLbl.setStyle("-fx-font-size:"+ Formatter.getTextSize(this.firstDirLbl)+";");
-        this.secondDirLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.secondDirLbl)+";");
-        this.infoLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.infoLbl)+";");
-        this.resultLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(this.resultLbl)+";");
-        this.firstDirSelectBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.firstDirSelectBtn)+";");
-        this.secondDirSelectBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.secondDirSelectBtn)+";");
-        this.changeLocalButton.setStyle("-fx-font-size:"+Formatter.getTextSize(this.changeLocalButton)+";");
-        this.executeButton.setStyle("-fx-font-size:"+Formatter.getTextSize(this.executeButton)+";");
-        this.openResultBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.openResultBtn)+";");
-        this.clearBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.clearBtn)+";");
-        this.settingsBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.settingsBtn)+";");
-        this.aboutBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.aboutBtn)+";");
-        this.exitBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(this.exitBtn)+";");
-
+        double height = this.mainApp.getPrimaryStage().getHeight();
+        this.firstDirLbl.setStyle("-fx-font-size:"+ Formatter.getTextSize(height)+";");
+        this.secondDirLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.infoLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.resultLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.firstDirSelectBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.secondDirSelectBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.changeLocalButton.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.executeButton.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.openResultBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.clearBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.settingsBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.aboutBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.exitBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
     };
-
 
 }

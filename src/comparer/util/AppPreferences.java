@@ -75,4 +75,24 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Boolean.parseBoolean(prefs.get("showAbsolutePath","FALSE"));
     }
+
+    public static void setMainWindowWidth(Double width){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("mainWindowWidth", String.valueOf(width));
+    }
+
+    public static double getMainWindowWidth(){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Double.parseDouble(prefs.get("mainWindowWidth", "600.00"));
+    }
+
+    public static void setMainWindowHeight(Double height){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("mainWindowHeight", String.valueOf(height));
+    }
+
+    public static double getMainWindowHeight(){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Double.parseDouble(prefs.get("mainWindowHeight", "200.00"));
+    }
 }

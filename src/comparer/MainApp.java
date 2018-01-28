@@ -6,6 +6,7 @@ package comparer;
 import comparer.controller.MainController;
 import comparer.controller.SettingsController;
 import comparer.model.FileComparer;
+import comparer.util.AppPreferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -42,8 +43,17 @@ public class MainApp extends Application {
         this.primaryStage.setTitle("Directory compares");
         this.primaryStage.getIcons().add(new Image(MainApp.class.getResourceAsStream( "/comparer/resources/images/appImage.png" )));
         initRootLayout(new Locale("ru","RU"));
-        primaryStage.widthProperty().addListener(mainController.stageSizeListener);
-        primaryStage.heightProperty().addListener(mainController.stageSizeListener);
+
+        this.primaryStage.heightProperty().addListener(mainController.stageSizeListener);
+        this.primaryStage.setWidth(AppPreferences.getMainWindowWidth());
+        this.primaryStage.setHeight(AppPreferences.getMainWindowHeight());
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        AppPreferences.setMainWindowHeight(this.getPrimaryStage().getHeight());
+        AppPreferences.setMainWindowWidth(this.getPrimaryStage().getWidth());
     }
 
     /**
@@ -96,7 +106,6 @@ public class MainApp extends Application {
             controller.setFieldsValues();
             controller.setResourceBundle(resourceBundle);
 
-            dialogStage.widthProperty().addListener(controller.stageSizeListener);
             dialogStage.heightProperty().addListener(controller.stageSizeListener);
 
             // open dialog stage and wait till user close it
