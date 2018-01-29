@@ -52,6 +52,10 @@ public class SettingsController {
     @FXML
     private Button questionMinLength;
 
+    /*button for info for radiobuttons absolutePathRadBtn and relativePathRadBtn*/
+    @FXML
+    private Button questionPath;
+
     /*radio button for set absolute path in report*/
     @FXML
     private RadioButton absolutePathRadBtn;
@@ -67,6 +71,10 @@ public class SettingsController {
     /*label for for min length field*/
     @FXML
     private Label minLengthLbl;
+
+    /*label for for radiobuttons absolutePathRadBtn and relativePathRadBtn*/
+    @FXML
+    private Label pathLbl;
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -138,6 +146,12 @@ public class SettingsController {
         Message.info(this.resourceBundle,"MinLengthInfo");
     }
 
+    /*show info about absolute and relative path*/
+    @FXML
+    private void showPathInfo(){
+        Message.info(this.resourceBundle,"PathInfo");
+    }
+
     /*check that user input correct data*/
     private boolean isInputValid() {
         String filterExtensions = this.filterTextField.getText();
@@ -170,8 +184,10 @@ public class SettingsController {
         this.questionMinLength.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.filterLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.minLengthLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.pathLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.absolutePathRadBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.relativePathRadBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.questionPath.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
     };
 
 }
