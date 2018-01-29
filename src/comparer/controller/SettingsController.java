@@ -170,6 +170,8 @@ public class SettingsController {
         this.questionMinLength.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.filterLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.minLengthLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.absolutePathRadBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        this.relativePathRadBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
     };
 
 }
