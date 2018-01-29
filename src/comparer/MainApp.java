@@ -107,6 +107,9 @@ public class MainApp extends Application {
             controller.setResourceBundle(resourceBundle);
 
             dialogStage.heightProperty().addListener(controller.stageSizeListener);
+            dialogStage.setWidth(AppPreferences.getSettingsWindowWidth());
+            dialogStage.setHeight(AppPreferences.getSettingsWindowHeight());
+
 
             // open dialog stage and wait till user close it
             dialogStage.showAndWait();

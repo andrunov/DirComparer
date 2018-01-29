@@ -95,4 +95,24 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Double.parseDouble(prefs.get("mainWindowHeight", "200.00"));
     }
+
+    public static void setSettingsWindowHeight(double height) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("settingsWindowHeight", String.valueOf(height));
+    }
+
+    public static void setSettingsWindowWidth(double width) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("settingsWindowWidth", String.valueOf(width));
+    }
+
+    public static double getSettingsWindowWidth() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Double.parseDouble(prefs.get("settingsWindowWidth", "600.00"));
+    }
+
+    public static double getSettingsWindowHeight() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Double.parseDouble(prefs.get("settingsWindowHeight", "160.00"));
+    }
 }

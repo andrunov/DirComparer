@@ -110,6 +110,8 @@ public class SettingsController {
      */
     @FXML
     private void cancel() {
+        AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
+        AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
         dialogStage.close();
     }
 
@@ -130,6 +132,8 @@ public class SettingsController {
             FileInfo.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setMinStringLength(this.minLengthWordField.getText());
             AppPreferences.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
+            AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
+            AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             dialogStage.close();
         }
     }
