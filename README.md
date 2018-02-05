@@ -7,7 +7,7 @@ Very comfortable for analysis directories with big files quantities. If each dir
 it's recommends for your comfortable split one directory by subfolders with small files quantities and make comparing 
 step by step, else report will have very big volume and be difficult for reading.
 If select only one directory analysis will perform inside only this directory.
-Inner directories not participate in analysis.
+Inner directories participate in analysis.
 There is possibility to adjust file type filter in settings partition. If no file type show all types will participate 
 in comparing. There is too possibility to adjust minimum word's length. Shorter words (for example pretexts) contained 
 in file's name will not participate in comparing.
@@ -28,7 +28,7 @@ In case of incorrect works of application it's recommend to update current java 
 для удобства рекомендуется разбить одну из папок на подпапки и делать сравнение поэтапно,
 иначе отчет будет иметь очень большой объем и будет неудобен для чтения.
 Если указать только одну папку, анализ содержимого будет идти внутри нее.
-Вложенные папки при анализе не учитываются.
+При анализе учитываются вложенные папки.
 Имеется возможность выставить фильтр по типу файлов в разделе "настройки". Если тип файла не указывать, 
 в сравнении будут участвовать все файлы. Так же в разделе "настройки" есть возможность указать минимальную длину слова.
 Слова с меньшим количеством букв (например предлоги), содержащиеся в названии файла, в сравнении участвовать не будут.
