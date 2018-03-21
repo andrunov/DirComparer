@@ -179,7 +179,7 @@ public class SettingsController {
     /*listener for observe change height of settings window */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-        double height = this.dialogStage.getHeight();
+        double height = this.dialogStage.getHeight()*1.25;
         this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(height)+";");
         this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
         this.saveBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");

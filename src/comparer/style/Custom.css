@@ -2,9 +2,6 @@
 -fx-background-color: rgba(148, 182, 222, 0.67);
 }
 
-.hbox {
-    -fx-background-color: rgba(57, 75, 107, 0.8);
-}
 
 .label {
     -fx-font-size: 10pt;
