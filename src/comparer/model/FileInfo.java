@@ -199,8 +199,7 @@ public class FileInfo implements Comparable<FileInfo>
 
         FileInfo fileInfo = (FileInfo) o;
 
-        if (getSize() != fileInfo.getSize()) return false;
-        return getName().equals(fileInfo.getName());
+        return getSize() == fileInfo.getSize() && getName().equals(fileInfo.getName());
 
     }
 

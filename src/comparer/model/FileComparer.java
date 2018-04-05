@@ -161,7 +161,7 @@ public class FileComparer
     /*preparations before compare directories
     * check directories and fill collections*/
     private boolean startPreparations() {
-        if ((this.startDirectoryName==null)&(this.endDirectoryName==null)){
+        if ((this.startDirectoryName==null)&&(this.endDirectoryName==null)){
             Message.warningAlert(this.resourceBundle,"SelectDirAlertContentTex");
             return false;
             /*condition for single directory comparing*/
@@ -178,18 +178,19 @@ public class FileComparer
 
     /*comparing files in directories*/
     private void compareDirectories(){
-        /*if directory is single comparing of equals files and names not to do*/
         if (!this.startDirectoryName.equals(this.endDirectoryName)){
-            this.fullEquality = getFullEqualities();
-            this.nameEquality = getNamesEqualities();
+            this.fullEquality = getFullEqualitiesInDifferentDirectories();
+        }else {
+            this.fullEquality = getFullEqualitiesInSingleDirectory();
         }
+        this.nameEquality = getNamesEqualities();
         this.sizeEquality = getSizeEqualities();
         this.nameSimilarityHigh = getSimilarities(HIGH_SIMILARITY_LOWER_LIMIT, HIGH_SIMILARITY_UPPER_LIMIT);
         this.nameSimilarityLow = getSimilarities(LOW_SIMILARITY_LOWER_LIMIT, LOW_SIMILARITY_UPPER_LIMIT);
         this.noSimilarities = getNoSimilarities();
     }
 
-    /*fill list fith files that no have similarities*/
+    /*fill list with files that no have similarities*/
     private List<FileInfo> getNoSimilarities() {
         ArrayList<FileInfo> result = new ArrayList<>();
         for (FileInfo fileInfo : this.startDirectory){
@@ -202,6 +203,12 @@ public class FileComparer
 
     /*preparations before print result int file*/
     private void finishPreparations(){
+        if (this.startDirectoryName.equals(this.endDirectoryName)){
+            deleteEqualityDuplications(this.fullEquality);
+            deleteEqualityDuplications(this.nameEquality);
+            removeEmpties(this.fullEquality);
+            removeEmpties(this.nameEquality);
+        }
         deleteDuplications(this.sizeEquality);
         deleteDuplications(this.nameSimilarityHigh);
         deleteDuplications(this.nameSimilarityLow);
@@ -265,7 +272,7 @@ public class FileComparer
         return result;
     }
 
-    /*delete duplications in reports*/
+    /*delete duplications of similar fileInfo in reports*/
     private void deleteDuplications(List<FileInfo> list)
     {
         for (FileInfo fileInfo : list){
@@ -278,6 +285,31 @@ public class FileComparer
             }
         }
     }
+
+    /*delete duplications of equal fileInfo in reports*/
+    private void deleteEqualityDuplications(List<FileInfo> list) {
+        for (FileInfo firstLoopFI : list) {
+            String primaryFileInfoPath = firstLoopFI.getAbsolutePath();
+            ArrayList<String> similarFIPaths = new ArrayList<String>();
+            for (FileInfo similarFI : firstLoopFI.getSimilarFiles()) {
+                similarFIPaths.add(similarFI.getAbsolutePath());
+                for (FileInfo secondLoopFI : list) {
+                    if (secondLoopFI==firstLoopFI) continue;
+                    if (similarFIPaths.contains(secondLoopFI.getAbsolutePath())){
+                        int index=0;
+                        for (FileInfo potentialDuplicationFI : secondLoopFI.getSimilarFiles()){
+                            if (potentialDuplicationFI.getAbsolutePath().equals(primaryFileInfoPath)){
+                                secondLoopFI.getSimilarFiles().remove(index);
+                                break;
+                            }
+                         index++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     /*delete elements which has empty similarFilenames fields*/
     private List<FileInfo> removeEmpties(List<FileInfo> list)
@@ -294,14 +326,33 @@ public class FileComparer
 
 
 
-    /*first iteration of compare. Find files with 100% matching of names and size*/
-    private List<FileInfo> getFullEqualities(){
+    /*first iteration of compare. Find files with 100% matching of names and size
+    * in different directories (including subdirectories)**/
+    private List<FileInfo> getFullEqualitiesInDifferentDirectories(){
         List<FileInfo> result = new ArrayList<>();
         for (FileInfo fileInfo : startDirectory){
             if (endDirectory.contains(fileInfo)){
                 FileInfo copy = FileInfo.copy(fileInfo,fileInfo);
                 result.add(copy);
                 fileInfo.setAccepted(true);
+            }
+        }
+        return result;
+    }
+
+    /*first iteration of compare. Find files with 100% matching of names and size
+    in single directory (including subdirectories)*/
+    private List<FileInfo> getFullEqualitiesInSingleDirectory(){
+        List<FileInfo> result = new ArrayList<>();
+        for (FileInfo startFileInfo : startDirectory){
+            for (FileInfo endFileInfo : endDirectory){
+                if (startFileInfo.equals(endFileInfo)){
+                    if (!Objects.equals(startFileInfo.getAbsolutePath(), endFileInfo.getAbsolutePath())){
+                        FileInfo copy = FileInfo.copy(startFileInfo,endFileInfo);
+                        result.add(copy);
+                        startFileInfo.setAccepted(true);
+                    }
+                }
             }
         }
         return result;
@@ -324,7 +375,7 @@ public class FileComparer
         return result;
     }
 
-    /*third iteration of compare. Find files with 100% matching of sizes*/
+       /*third iteration of compare. Find files with 100% matching of sizes*/
     private List<FileInfo> getSizeEqualities() {
         List<FileInfo> result = new ArrayList<>();
         for (FileInfo fileInfo : startDirectory){

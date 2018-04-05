@@ -35,18 +35,18 @@ public class Writer {
             {
                 printHeadTwoDirectory(writer);
                 printSchemeTwoDirectory(writer);
-
-                /*1-st level - 100 equality*/
-                printTitle(writer,resourceBundle.getString("1stLevelEquality"));
-                printFileList(writer,this.comparer.getFullEquality());
-
-                /*2 level - 100% names equality*/
-                printTitle(writer,resourceBundle.getString("2ndLevelEquality"));
-                printFileList(writer,this.comparer.getNameEquality());
             }else {
                 printHeadSingleDirectory(writer);
                 printSchemeSingleDirectory(writer);
             }
+
+                /*1-st level - 100 equality*/
+            printTitle(writer,resourceBundle.getString("1stLevelEquality"));
+            printFileList(writer,this.comparer.getFullEquality());
+
+                /*2 level - 100% names equality*/
+            printTitle(writer,resourceBundle.getString("2ndLevelEquality"));
+            printFileList(writer,this.comparer.getNameEquality());
 
             /*3 level - 100% sizes equality*/
             printTitle(writer,resourceBundle.getString("3thLevelEquality"));
