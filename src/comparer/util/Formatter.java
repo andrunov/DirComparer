@@ -25,7 +25,7 @@ public class Formatter {
         List<String> list = new ArrayList<>();
         for (String word : arr){
             if (word.length()>=wordLength){
-                list.add(word.toLowerCase());
+                list.add(word.toLowerCase().replace('ё','е'));
             }
         }
         Collections.sort(list);
