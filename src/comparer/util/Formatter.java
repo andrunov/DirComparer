@@ -41,16 +41,14 @@ public class Formatter {
     /*removes duplications of elements in List<String>*/
     private static List<String> removeDuplications(List<String> list){
         Iterator<String> iterator = list.iterator();
+        String last = null;
         while (iterator.hasNext()){
-            String first = iterator.next();
-            while (iterator.hasNext()){
-                String second = iterator.next();
-                if (first.equals(second)){
-                    iterator.remove();
-                }else {
-                    break;
-                }
-            }
+           String current = iterator.next();
+           if (current.equals(last)){
+               iterator.remove();
+           }else {
+               last = current;
+           }
         }
         return list;
     }
