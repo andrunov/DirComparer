@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class FileInfo implements Comparable<FileInfo>
 {
-    /*words shorted than 3 letters not participate in compare*/
+    /*words shorted than minLength letters not participate in compare*/
     private static int minLength;
 
     /*show absolute path in reports or not*/
