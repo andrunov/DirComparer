@@ -243,37 +243,51 @@ public class FileComparer
                 else if (startFileInfo.getName().equals(endFileInfo.getName())) continue;
             /*third compare condition*/
                 else if (startFileInfo.getSize()==endFileInfo.getSize()) continue;
-                int counter = 0;
+                int foundWords = 0;
                 for (String startWord : startFileInfo.getWords()){
                     for (String endWord: endFileInfo.getWords()){
                         int difference = startWord.compareTo(endWord);
                         if (difference == 0){
-                            counter++;
+                            foundWords++;
                     /*words in lists were sort, so if endWord > startWord that means there cant be equals words left*/
                         }else if(difference<0){
                             break;
                         }
                     }
                 }
-                if (counter > 0) {
-                    if (startFileInfo.getWords().size() == counter){
-                        addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
-                    }else {
-                        addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
-                    }
-                }
+                insertSimilarity(startFileInfo, endFileInfo, foundWords);
             }
-
         }
+    }
+
+    private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int foundWords){
+        if (foundWords == 0) return;
+        int startLength = startFileInfo.getWords().size();
+        int endLength = endFileInfo.getWords().size();
+
+        if ((startLength == endLength) && (startLength == foundWords)){
+            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+        }else if (startLength == foundWords) {
+            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+        }else if (((startLength - foundWords) == 1) && startLength >= 2) {
+            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+        }else if (startLength <= 2) {
+            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+        }
+        else {
+//            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+        }
+
     }
 
 
     /*insert found similar pair into list<fileInfo>*/
-    private void addSimilarity(List<FileInfo> list, FileInfo fileInfo, FileInfo similarFileInfo){
+    private void addSimilarity (List<FileInfo> list, FileInfo fileInfo, FileInfo similarFileInfo){
         int index = list.indexOf(fileInfo);
         if (index != -1){
-            if (!list.get(index).getSimilarFiles().contains(similarFileInfo)) {
-                list.get(index).getSimilarFiles().add(FileInfo.copy(similarFileInfo));
+            List<FileInfo> similarFiles = list.get(index).getSimilarFiles();
+            if (!similarFiles.contains(similarFileInfo)) {
+                similarFiles.add(FileInfo.copy(similarFileInfo));
             }
         }else {
             List<FileInfo> result = new ArrayList<>();
