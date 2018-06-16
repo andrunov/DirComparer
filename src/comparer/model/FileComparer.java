@@ -37,8 +37,14 @@ public class FileComparer
     /*list for files matching by sizes*/
     private List<FileInfo> sizeEquality = new ArrayList<>();
 
+    /*list for files similar by names with highest similarity */
+    private List<FileInfo> nameSimilarityHighest = new ArrayList<>();
+
     /*list for files similar by names with high similarity */
     private List<FileInfo> nameSimilarityHigh = new ArrayList<>();
+
+    /*list for files similar by names with middle similarity */
+    private List<FileInfo> nameSimilarityMiddle = new ArrayList<>();
 
     /*list for files similar by names with low similarity */
     private List<FileInfo> nameSimilarityLow = new ArrayList<>();
@@ -137,6 +143,18 @@ public class FileComparer
         return singleDirCompare;
     }
 
+    public List<FileInfo> getNameSimilarityMiddle() {
+        return nameSimilarityMiddle;
+    }
+
+    public List<FileInfo> getNoSimilarities() {
+        return noSimilarities;
+    }
+
+    public List<FileInfo> getNameSimilarityHighest() {
+        return nameSimilarityHighest;
+    }
+
     /*this method contains main logic of comparing*/
     public boolean compare(){
         boolean result = startPreparations();
@@ -203,22 +221,26 @@ public class FileComparer
 
     /*preparations before print result int file*/
     private void finishPreparations(){
-        if (this.startDirectoryName.equals(this.endDirectoryName)){
-            deleteEqualityDuplications(this.fullEquality);
-            deleteEqualityDuplications(this.nameEquality);
-            removeEmpties(this.fullEquality);
-            removeEmpties(this.nameEquality);
-        }
+        deleteEqualityDuplications(this.fullEquality);
+        deleteEqualityDuplications(this.nameEquality);
         deleteDuplications(this.sizeEquality);
+        deleteDuplications(this.nameSimilarityHighest);
         deleteDuplications(this.nameSimilarityHigh);
+        deleteDuplications(this.nameSimilarityMiddle);
         deleteDuplications(this.nameSimilarityLow);
+        removeEmpties(this.fullEquality);
+        removeEmpties(this.nameEquality);
         removeEmpties(this.sizeEquality);
+        removeEmpties(this.nameSimilarityHighest);
         removeEmpties(this.nameSimilarityHigh);
+        removeEmpties(this.nameSimilarityMiddle);
         removeEmpties(this.nameSimilarityLow);
         Sorter.sort(this.fullEquality);
         Sorter.sort(this.nameEquality);
         Sorter.sort(this.sizeEquality);
+        Sorter.sort(this.nameSimilarityHighest);
         Sorter.sort(this.nameSimilarityHigh);
+        Sorter.sort(this.nameSimilarityMiddle);
         Sorter.sort(this.nameSimilarityLow);
         Sorter.sort(this.noSimilarities);
     }
@@ -267,16 +289,14 @@ public class FileComparer
         int endLength = endFileInfo.getWords().size();
 
         if ((startLength == endLength) && (startLength == foundWords)){
-            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+            addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
         }else if (startLength == foundWords) {
-            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
-        }else if (((startLength - foundWords) == 1) && startLength >= 2) {
-            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
-        }else if (startLength <= 2) {
-            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+        }else if ((startLength - foundWords) == 1) {
+            addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
         }
         else {
-//            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
         }
         startFileInfo.setAccepted(true);
 

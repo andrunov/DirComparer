@@ -52,18 +52,26 @@ public class Writer {
             printTitle(writer,resourceBundle.getString("3thLevelEquality"));
             printFileList(writer,this.comparer.getSizeEquality());
 
-            /*4 level - equality of 3 words and more*/
+             /*4 level - very high similarity of names*/
             printTitle(writer,resourceBundle.getString("4thLevelEquality"));
+            printFileList(writer,this.comparer.getNameSimilarityHighest());
+
+            /*4 level - high similarity of names*/
+            printTitle(writer,resourceBundle.getString("5thLevelEquality"));
             printFileList(writer,this.comparer.getNameSimilarityHigh());
 
-            /*5 level - equality from 1 to 2 words*/
-            printTitle(writer,resourceBundle.getString("5thLevelEquality"));
+            /*5 level - middle similarity of names*/
+            printTitle(writer,resourceBundle.getString("6thLevelEquality"));
+            printFileList(writer,this.comparer.getNameSimilarityMiddle());
+
+             /*5 level - middle similarity of names*/
+            printTitle(writer,resourceBundle.getString("7thLevelEquality"));
             printFileList(writer,this.comparer.getNameSimilarityLow());
 
             /*6 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
             if (!this.comparer.isSingleDirCompare()) {
-                printTitle(writer, resourceBundle.getString("6thLevelEquality"));
+                printTitle(writer, resourceBundle.getString("8thLevelEquality"));
                 printFileList(writer, this.comparer.getNoSimilarity());
             }
             writer.close();
