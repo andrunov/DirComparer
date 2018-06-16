@@ -110,12 +110,6 @@ public class MainController implements Initializable {
     /*choose first directory*/
     @FXML
     private void choseFirstDirectory(){
-        /*not null reportName means that
-        some compares happens before.
-        reset comparer in such case*/
-        if (this.comparer.getReportName()!= null){
-            clear();
-        }
         File directory = chooseDirectory();
         if (directory != null) {
             this.firstDirectory = directory;
@@ -128,12 +122,6 @@ public class MainController implements Initializable {
     /*choose second directory*/
     @FXML
     private void choseSecondDirectory(){
-        /*not null reportName means that
-        some compares happens before.
-        reset comparer in such case*/
-        if (this.comparer.getReportName()!= null){
-            clear();
-        }
         File directory = chooseDirectory();
         if (directory != null) {
             this.secondDirectory = directory;
@@ -166,7 +154,7 @@ public class MainController implements Initializable {
             }
         }
         catch (Exception e){
-            Message.errorAlert(this.resourceBundle,e);
+            Message.errorAlert(this.resourceBundle,"Error in MainController.executeComparing()", e);
         }
     }
 
@@ -265,7 +253,7 @@ public class MainController implements Initializable {
             assert this.desktop != null;
             this.desktop.open(new File(this.comparer.getReportName()));
         } catch (Exception e) {
-            Message.errorAlert(this.resourceBundle,e);
+            Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
         }
     }
 
@@ -278,7 +266,7 @@ public class MainController implements Initializable {
     /*clear fields to default*/
     @FXML
     private void clear(){
-        this.comparer.cleanFields();
+        this.comparer.clean();
         this.firstDirectory = null;
         this.secondDirectory = null;
         updateTextInfoLbl();

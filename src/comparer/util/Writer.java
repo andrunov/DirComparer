@@ -31,13 +31,13 @@ public class Writer {
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
             /*condition for single directory comparing*/
-            if (!this.comparer.getStartDirectoryName().equals(this.comparer.getEndDirectoryName()))
+            if (this.comparer.isSingleDirCompare())
             {
-                printHeadTwoDirectory(writer);
-                printSchemeTwoDirectory(writer);
-            }else {
                 printHeadSingleDirectory(writer);
                 printSchemeSingleDirectory(writer);
+            }else {
+                printHeadTwoDirectory(writer);
+                printSchemeTwoDirectory(writer);
             }
 
                 /*1-st level - 100 equality*/
@@ -62,12 +62,14 @@ public class Writer {
 
             /*6 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
-            printTitle(writer,resourceBundle.getString("6thLevelEquality"));
-            printFileList(writer,this.comparer.getNoSimilarity());
+            if (!this.comparer.isSingleDirCompare()) {
+                printTitle(writer, resourceBundle.getString("6thLevelEquality"));
+                printFileList(writer, this.comparer.getNoSimilarity());
+            }
             writer.close();
             result = true;
         } catch (IOException e) {
-            Message.errorAlert(resourceBundle,e);
+            Message.errorAlert(resourceBundle,"Error in Writer.write()", e);
         }
         return result;
     }
