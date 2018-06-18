@@ -40,11 +40,11 @@ public class Writer {
                 printSchemeTwoDirectory(writer);
             }
 
-                /*1-st level - 100 equality*/
+            /*1-st level - 100 equality*/
             printTitle(writer,resourceBundle.getString("1stLevelEquality"));
             printFileList(writer,this.comparer.getFullEquality());
 
-                /*2 level - 100% names equality*/
+            /*2 level - 100% names equality*/
             printTitle(writer,resourceBundle.getString("2ndLevelEquality"));
             printFileList(writer,this.comparer.getNameEquality());
 
@@ -52,23 +52,23 @@ public class Writer {
             printTitle(writer,resourceBundle.getString("3thLevelEquality"));
             printFileList(writer,this.comparer.getSizeEquality());
 
-             /*4 level - very high similarity of names*/
+            /*4 level - very high similarity of names*/
             printTitle(writer,resourceBundle.getString("4thLevelEquality"));
             printFileList(writer,this.comparer.getNameSimilarityHighest());
 
-            /*4 level - high similarity of names*/
+            /*5 level - high similarity of names*/
             printTitle(writer,resourceBundle.getString("5thLevelEquality"));
             printFileList(writer,this.comparer.getNameSimilarityHigh());
 
-            /*5 level - middle similarity of names*/
+            /*6 level - middle similarity of names*/
             printTitle(writer,resourceBundle.getString("6thLevelEquality"));
             printFileList(writer,this.comparer.getNameSimilarityMiddle());
 
-             /*5 level - middle similarity of names*/
+            /*7 level - middle similarity of names*/
             printTitle(writer,resourceBundle.getString("7thLevelEquality"));
             printFileList(writer,this.comparer.getNameSimilarityLow());
 
-            /*6 level - no equalities
+            /*8 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
             if (!this.comparer.isSingleDirCompare()) {
                 printTitle(writer, resourceBundle.getString("8thLevelEquality"));
