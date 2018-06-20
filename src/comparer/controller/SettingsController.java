@@ -73,6 +73,14 @@ public class SettingsController {
     @FXML
     private Label pathLbl;
 
+    /*label for for checkbox showSimilarityMiddle*/
+    @FXML
+    private Label showMiddleLbl;
+
+    /*label for for checkbox showSimilarityLow*/
+    @FXML
+    private Label showLowLbl;
+
     /*checkbox for show middle similarity boolean*/
     @FXML
     private CheckBox showSimilarityMiddle;
@@ -186,19 +194,25 @@ public class SettingsController {
     /*listener for observe change height of settings window */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-        double height = this.dialogStage.getHeight()*1.25;
-        this.filterTextField.setStyle("-fx-font-size:"+ Formatter.getTextSize(height)+";");
-        this.minLengthWordField.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.saveBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.cancelBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.questionFilter.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.questionMinLength.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.filterLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.minLengthLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.pathLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.absolutePathRadBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.relativePathRadBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.questionPath.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        double newHeight = this.dialogStage.getHeight() * 0.9;
+        double newWidth = Formatter.getTextSize(newHeight);
+        String newSize = "-fx-font-size:" +  String.valueOf(newWidth) + ";";
+        this.filterTextField.setStyle(newSize);
+        this.minLengthWordField.setStyle(newSize);
+        this.saveBtn.setStyle(newSize);
+        this.cancelBtn.setStyle(newSize);
+        this.questionFilter.setStyle(newSize);
+        this.questionMinLength.setStyle(newSize);
+        this.filterLbl.setStyle(newSize);
+        this.minLengthLbl.setStyle(newSize);
+        this.pathLbl.setStyle(newSize);
+        this.absolutePathRadBtn.setStyle(newSize);
+        this.relativePathRadBtn.setStyle(newSize);
+        this.questionPath.setStyle(newSize);
+        this.showSimilarityMiddle.setStyle(newSize);
+        this.showSimilarityLow.setStyle(newSize);
+        this.showMiddleLbl.setStyle(newSize);
+        this.showLowLbl.setStyle(newSize);
     };
 
 }

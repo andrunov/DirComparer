@@ -295,20 +295,22 @@ public class MainController implements Initializable {
     /*listener for observe change height of main window */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-        double height = this.mainApp.getPrimaryStage().getHeight();
-        this.firstDirLbl.setStyle("-fx-font-size:"+ Formatter.getTextSize(height)+";");
-        this.secondDirLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.infoLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.resultLbl.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.firstDirSelectBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.secondDirSelectBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.changeLocalButton.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.executeButton.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.openResultBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.clearBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.settingsBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.aboutBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
-        this.exitBtn.setStyle("-fx-font-size:"+Formatter.getTextSize(height)+";");
+        double newHeight = this.mainApp.getPrimaryStage().getHeight();
+        double newWidth = Formatter.getTextSize(newHeight);
+        String newSize = "-fx-font-size:" +  String.valueOf(newWidth) + ";";
+        this.firstDirLbl.setStyle(newSize);
+        this.secondDirLbl.setStyle(newSize);
+        this.infoLbl.setStyle(newSize);
+        this.resultLbl.setStyle(newSize);
+        this.firstDirSelectBtn.setStyle(newSize);
+        this.secondDirSelectBtn.setStyle(newSize);
+        this.changeLocalButton.setStyle(newSize);
+        this.executeButton.setStyle(newSize);
+        this.openResultBtn.setStyle(newSize);
+        this.clearBtn.setStyle(newSize);
+        this.settingsBtn.setStyle(newSize);
+        this.aboutBtn.setStyle(newSize);
+        this.exitBtn.setStyle(newSize);
     };
 
 }
