@@ -107,6 +107,8 @@ public class SettingsController {
         }
         this.minLengthWordField.setText(String.valueOf(FileInfo.getMinLength()));
         this.absolutePathRadBtn.setSelected(AppPreferences.getShowAbsolutePath());
+        this.showSimilarityMiddle.setSelected(this.comparer.isShowSimilarityMiddle());
+        this.showSimilarityLow.setSelected(this.comparer.isShowSimilarityLow());
     }
 
 
@@ -149,6 +151,8 @@ public class SettingsController {
             AppPreferences.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
+            AppPreferences.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
+            AppPreferences.setShowSimilarityLow(this.showSimilarityLow.isSelected());
             dialogStage.close();
         }
     }

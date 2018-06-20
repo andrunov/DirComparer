@@ -115,4 +115,24 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Double.parseDouble(prefs.get("settingsWindowHeight", "160.00"));
     }
+
+    public static void setShowSimilarityMiddle(boolean toShow){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("showSimilarityMiddle", String.valueOf(toShow));
+    }
+
+    public static void setShowSimilarityLow(boolean toShow){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("showSimilarityLow", String.valueOf(toShow));
+    }
+
+    public static boolean getShowSimilarityMiddle() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Boolean.parseBoolean(prefs.get("showSimilarityMiddle", "FALSE"));
+    }
+
+    public static boolean getShowSimilarityLow() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Boolean.parseBoolean(prefs.get("showSimilarityLow", "FALSE"));
+    }
 }

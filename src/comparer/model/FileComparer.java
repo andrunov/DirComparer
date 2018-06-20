@@ -68,6 +68,8 @@ public class FileComparer
     public FileComparer() {
         String[] extensions = AppPreferences.getFilterExtensions();
         this.filter = new FileFilter(extensions);
+        this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
+        this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
     }
 
     /*getters and setters*/
