@@ -8,10 +8,7 @@ import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
@@ -76,6 +73,10 @@ public class SettingsController {
     @FXML
     private Label pathLbl;
 
+    /*checkbox for show full equality boolean*/
+    @FXML
+    private CheckBox showSimilarityMiddle;
+
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
@@ -128,6 +129,7 @@ public class SettingsController {
             FileFilter filter = new FileFilter(extensions);
             AppPreferences.setFilterExtensions(extensions);
             this.comparer.setFilter(filter);
+            this.comparer.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
             FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));
             FileInfo.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setMinStringLength(this.minLengthWordField.getText());

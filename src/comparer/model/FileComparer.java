@@ -58,6 +58,12 @@ public class FileComparer
     /*indicate that compares files in single directory*/
     private boolean singleDirCompare;
 
+    /*show middle similarity if true*/
+    private boolean showSimilarityMiddle;
+
+    /*show low similarity if true*/
+    private boolean showSimilarityLow;
+
     /*constructor. if extensions undefined filter no use*/
     public FileComparer() {
         String[] extensions = AppPreferences.getFilterExtensions();
@@ -155,6 +161,22 @@ public class FileComparer
         return nameSimilarityHighest;
     }
 
+    public boolean isShowSimilarityMiddle() {
+        return showSimilarityMiddle;
+    }
+
+    public void setShowSimilarityMiddle(boolean showSimilarityMiddle) {
+        this.showSimilarityMiddle = showSimilarityMiddle;
+    }
+
+    public boolean isShowSimilarityLow() {
+        return showSimilarityLow;
+    }
+
+    public void setShowSimilarityLow(boolean showSimilarityLow) {
+        this.showSimilarityLow = showSimilarityLow;
+    }
+
     /*this method contains main logic of comparing*/
     public boolean compare(){
         boolean result = startPreparations();
@@ -164,7 +186,7 @@ public class FileComparer
             Writer writer = new Writer(this,"UTF8");
             result = writer.write();
         }
-        cleanCollections();
+        clean();
         return result;
     }
 
@@ -194,7 +216,9 @@ public class FileComparer
         return true;
     }
 
-    /*comparing files in directories*/
+    /*comparing files in directories
+    * comparing for full equality is mandatory
+    * in other case rest comparings will not works properly*/
     private void compareDirectories(){
         for (FileInfo startFileInfo : startDirectory)
         {
@@ -292,7 +316,7 @@ public class FileComparer
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
         }else if (startLength == foundWords) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
-        }else if ((startLength - foundWords) == 1) {
+        }else if (this.showSimilarityMiddle && ((startLength - foundWords) == 1)) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
         }
         else {
@@ -315,7 +339,6 @@ public class FileComparer
             result.add(FileInfo.copy(similarFileInfo));
             list.add(FileInfo.copy(fileInfo, result));
         }
- //       fileInfo.setAccepted(true);
     }
 
     /*delete duplications of similar fileInfo in reports*/
@@ -393,16 +416,10 @@ public class FileComparer
         return result;
     }
 
-
-    /*clear fields*/
-    private void cleanFields(){
+    /*clear fields and collections*/
+    public void clean() {
         this.startDirectoryName = null;
         this.endDirectoryName = null;
-        this.reportName = null;
-    }
-
-    /*clear fields and collections*/
-    private void cleanCollections(){
         this.startDirectory.clear();
         this.endDirectory.clear();
         this.fullEquality.clear();
@@ -411,11 +428,5 @@ public class FileComparer
         this.nameSimilarityHigh.clear();
         this.nameSimilarityLow.clear();
         this.noSimilarities.clear();
-    }
-
-    /*clear fields and collections*/
-    public void clean() {
-        cleanFields();
-        cleanCollections();
     }
 }

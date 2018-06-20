@@ -140,7 +140,7 @@ public class MainController implements Initializable {
                 this.comparer.setEndDirectoryName(this.secondDirectory.getAbsolutePath());
             }
         }else {
-             /*if selected single directory save it as firstDirectory*/
+             //*if selected single directory save it as firstDirectory*//*
             if (this.secondDirectory != null) {
                 this.comparer.setStartDirectoryName(this.secondDirectory.getAbsolutePath());
             }
@@ -267,6 +267,7 @@ public class MainController implements Initializable {
     @FXML
     private void clear(){
         this.comparer.clean();
+        this.comparer.setReportName(null);
         this.firstDirectory = null;
         this.secondDirectory = null;
         updateTextInfoLbl();

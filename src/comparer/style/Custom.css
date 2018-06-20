@@ -48,3 +48,11 @@
 .radio-button .dot {
     -fx-background-radius: 15px;
 }
+
+.check-box {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #134f0a;
+    -fx-opacity: 0.9;
+    -fx-font-weight: bold;
+}
