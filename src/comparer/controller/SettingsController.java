@@ -73,9 +73,13 @@ public class SettingsController {
     @FXML
     private Label pathLbl;
 
-    /*checkbox for show full equality boolean*/
+    /*checkbox for show middle similarity boolean*/
     @FXML
     private CheckBox showSimilarityMiddle;
+
+    /*checkbox for show low similarity boolean*/
+    @FXML
+    private CheckBox showSimilarityLow;
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -130,6 +134,7 @@ public class SettingsController {
             AppPreferences.setFilterExtensions(extensions);
             this.comparer.setFilter(filter);
             this.comparer.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
+            this.comparer.setShowSimilarityLow(this.showSimilarityLow.isSelected());
             FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));
             FileInfo.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setMinStringLength(this.minLengthWordField.getText());

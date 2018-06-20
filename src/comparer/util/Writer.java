@@ -61,12 +61,16 @@ public class Writer {
             printFileList(writer,this.comparer.getNameSimilarityHigh());
 
             /*6 level - middle similarity of names*/
-            printTitle(writer,resourceBundle.getString("6thLevelEquality"));
-            printFileList(writer,this.comparer.getNameSimilarityMiddle());
+            if (this.comparer.isShowSimilarityMiddle()) {
+                printTitle(writer, resourceBundle.getString("6thLevelEquality"));
+                printFileList(writer, this.comparer.getNameSimilarityMiddle());
+            }
 
             /*7 level - middle similarity of names*/
-            printTitle(writer,resourceBundle.getString("7thLevelEquality"));
-            printFileList(writer,this.comparer.getNameSimilarityLow());
+            if (this.comparer.isShowSimilarityLow()) {
+                printTitle(writer, resourceBundle.getString("7thLevelEquality"));
+                printFileList(writer, this.comparer.getNameSimilarityLow());
+            }
 
             /*8 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */

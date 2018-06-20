@@ -319,7 +319,7 @@ public class FileComparer
         }else if (this.showSimilarityMiddle && ((startLength - foundWords) == 1)) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
         }
-        else {
+        else if (this.showSimilarityLow){
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
         }
         startFileInfo.setAccepted(true);
