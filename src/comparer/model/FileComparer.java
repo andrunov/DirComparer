@@ -427,7 +427,9 @@ public class FileComparer
         this.fullEquality.clear();
         this.nameEquality.clear();
         this.sizeEquality.clear();
+        this.nameSimilarityHighest.clear();
         this.nameSimilarityHigh.clear();
+        this.nameSimilarityMiddle.clear();
         this.nameSimilarityLow.clear();
         this.noSimilarities.clear();
     }
