@@ -9,9 +9,9 @@ import java.util.prefs.Preferences;
 public class AppPreferences {
 
     /*get last selected directory*/
-    public static File getDirectory() {
+    public static File getDirectory(String key) {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        String filePath = prefs.get("directory", null);
+        String filePath = prefs.get(key, null);
         if (filePath != null) {
             return new File(filePath);
         } else {
@@ -20,10 +20,10 @@ public class AppPreferences {
     }
 
     /*set last selected directory*/
-    public static void setDirectory(File file) {
+    public static void setDirectory(File file, String key) {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         if (file != null) {
-            prefs.put("directory", file.getPath());
+            prefs.put(key, file.getPath());
         }
     }
 

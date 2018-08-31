@@ -110,10 +110,11 @@ public class MainController implements Initializable {
     /*choose first directory*/
     @FXML
     private void choseFirstDirectory(){
-        File directory = chooseDirectory();
+        File initialDirectory = this.firstDirectory == null ? null : this.firstDirectory.getParentFile();
+        File directory = chooseDirectory(initialDirectory, "firstDirectory");
         if (directory != null) {
             this.firstDirectory = directory;
-            AppPreferences.setDirectory(directory.getParentFile());
+            AppPreferences.setDirectory(directory.getParentFile(), "firstDirectory");
             setTextDirLabel(this.firstDirLbl, "FirstDirectory", getDirInfo(directory));
             updateTextInfoLbl();
         }
@@ -122,10 +123,11 @@ public class MainController implements Initializable {
     /*choose second directory*/
     @FXML
     private void choseSecondDirectory(){
-        File directory = chooseDirectory();
+        File initialDirectory = this.secondDirectory == null ? null : this.secondDirectory.getParentFile();
+        File directory = chooseDirectory(initialDirectory, "secondDirectory");
         if (directory != null) {
             this.secondDirectory = directory;
-            AppPreferences.setDirectory(directory.getParentFile());
+            AppPreferences.setDirectory(directory.getParentFile(), "secondDirectory");
             setTextDirLabel(this.secondDirLbl, "SecondDirectory", "" + getDirInfo(directory));
             updateTextInfoLbl();
         }
@@ -159,11 +161,13 @@ public class MainController implements Initializable {
     }
 
     /*open dialog to choose directory*/
-    private File chooseDirectory() {
+    private File chooseDirectory(File initialDirectory, String directoryKey) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        File initialDirectory = AppPreferences.getDirectory();
+        if (initialDirectory == null) {
+            initialDirectory = AppPreferences.getDirectory(directoryKey);
+        }
         if ((initialDirectory != null)&&(initialDirectory.exists())) {
-            directoryChooser.setInitialDirectory(AppPreferences.getDirectory());
+            directoryChooser.setInitialDirectory(initialDirectory);
         }
         return directoryChooser.showDialog(null);
     }
