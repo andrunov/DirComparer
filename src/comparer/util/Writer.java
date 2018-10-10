@@ -1,6 +1,7 @@
 package comparer.util;
 
 import comparer.model.FileComparer;
+import comparer.model.FileInfo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -66,7 +67,7 @@ public class Writer {
                 printFileList(writer, this.comparer.getNameSimilarityMiddle());
             }
 
-            /*7 level - middle similarity of names*/
+            /*7 level - low similarity of names*/
             if (this.comparer.isShowSimilarityLow()) {
                 printTitle(writer, resourceBundle.getString("7thLevelEquality"));
                 printFileList(writer, this.comparer.getNameSimilarityLow());
@@ -76,8 +77,9 @@ public class Writer {
             * in this point in this.startDirectory is only filesInfo that no has similarities */
             if (!this.comparer.isSingleDirCompare()) {
                 printTitle(writer, resourceBundle.getString("8thLevelEquality"));
-                printFileList(writer, this.comparer.getNoSimilarity());
+                printNoSimilarList(writer, this.comparer.getNoSimilarity());
             }
+
             writer.close();
             result = true;
         } catch (IOException e) {
@@ -225,4 +227,22 @@ public class Writer {
             writer.println(fileName.toString());
         }
     }
+
+    /*print list of files that not have similariries*/
+    private void printNoSimilarList(PrintWriter writer, List<FileInfo> fileNameList){
+        printFound(writer,fileNameList.size());
+        int counter = 0;
+        for (FileInfo fileName : fileNameList)
+        {
+            if (counter == 0) {
+                writer.println(" --------------------------------------------------------------------------------------------------------");
+            } else {
+                writer.println("|---------------------------------------------------------------------------------------------------------|");
+            }
+            writer.println(fileName.printWithoutSimilarities());
+            counter++;
+        }
+        writer.println(" ---------------------------------------------------------------------------------------------------------");
+    }
+
 }

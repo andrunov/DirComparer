@@ -180,6 +180,12 @@ public class FileInfo implements Comparable<FileInfo>
         return sb.toString();
     }
 
+    /*to string without similarities*/
+    public String printWithoutSimilarities() {
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
+        return String.format("%-2s%-87.87s%10.10s%3s%5s","|",this.showPath(),sizeFormatted, "mb","|");
+    }
+
     /*compare to method*/
     @Override
     public int compareTo(FileInfo other)

@@ -181,10 +181,10 @@ public class FileComparer
 
     /*this method contains main logic of comparing*/
     public boolean compare(){
-        boolean result = startPreparations();
+        boolean result = fillFilenames();
         if (result) {
             compareDirectories();
-            finishPreparations();
+            outputPreparations();
             Writer writer = new Writer(this,"UTF8");
             result = writer.write();
         }
@@ -194,7 +194,7 @@ public class FileComparer
 
     /*preparations before compare directories
     * check directories and fill collections*/
-    private boolean startPreparations() {
+    private boolean fillFilenames() {
         if ((this.startDirectoryName==null)&&(this.endDirectoryName==null)){
             Message.warningAlert(this.resourceBundle,"SelectDirAlertContentTex");
             return false;
@@ -246,7 +246,7 @@ public class FileComparer
     }
 
     /*preparations before print result int file*/
-    private void finishPreparations(){
+    private void outputPreparations(){
         deleteEqualityDuplications(this.fullEquality);
         deleteEqualityDuplications(this.nameEquality);
         deleteDuplications(this.sizeEquality);
@@ -316,15 +316,18 @@ public class FileComparer
 
         if ((startLength == endLength) && (startLength == foundWords)){
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
         }else if (startLength == foundWords) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
         }else if (this.showSimilarityMiddle && ((startLength - foundWords) == 1)) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
         }
         else if (this.showSimilarityLow){
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
         }
-        startFileInfo.setAccepted(true);
 
     }
 
