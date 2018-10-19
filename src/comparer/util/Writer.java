@@ -5,6 +5,7 @@ import comparer.model.FileInfo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -76,7 +77,7 @@ public class Writer {
             /*8 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
             if (!this.comparer.isSingleDirCompare()) {
-                printTitle(writer, resourceBundle.getString("8thLevelEquality"));
+                printTitle(writer, getNotFoundDescription());
                 printNoSimilarList(writer, this.comparer.getNoSimilarity());
             }
 
@@ -208,6 +209,18 @@ public class Writer {
         writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
     }
 
+    /*print title*/
+    private void printTitle(PrintWriter writer,List<String> titles){
+        writer.println();
+        writer.println();
+        writer.print("***********************************************************************************************************");
+        for (String title : titles) {
+            writer.printf("\r\n%-5s%-100.100s%2s", "*", title, "*");
+        }
+        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
+        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+    }
+
     /*print result of files were found*/
     private void printFound(PrintWriter writer, int quantity){
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
@@ -243,6 +256,29 @@ public class Writer {
             counter++;
         }
         writer.println(" ---------------------------------------------------------------------------------------------------------");
+    }
+
+    private List<String> getNotFoundDescription() {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+        List<String> result = new ArrayList<>();
+        result.add(resourceBundle.getString("8thLevelEquality"));
+
+        if (!this.comparer.isShowSimilarityMiddle() || !this.comparer.isShowSimilarityLow()) {
+            result.add(resourceBundle.getString("MayExistSimilarFiles") + " " + resourceBundle.getString("SwitchOnForMoreInformation") );
+        }
+
+        if (!this.comparer.isShowSimilarityMiddle() && !this.comparer.isShowSimilarityLow()) {
+            result.add(resourceBundle.getString("SwitchOnLowSimilarity") +
+                                                     " " + resourceBundle.getString("And") +
+                                                     " " + resourceBundle.getString("SwitchOnMiddleSimilarity") +
+                                                     " " + resourceBundle.getString("InSettingsMenu"));
+            //result.add(resourceBundle.getString("InSettingsMenu"));
+        } else if (!this.comparer.isShowSimilarityLow()) {
+            result.add(resourceBundle.getString("SwitchOnLowSimilarity") + " " + resourceBundle.getString("InSettingsMenu"));
+        } else if (!this.comparer.isShowSimilarityMiddle()){
+            result.add(resourceBundle.getString("SwitchOnMiddleSimilarity") + " " + resourceBundle.getString("InSettingsMenu"));
+        }
+        return result;
     }
 
 }
