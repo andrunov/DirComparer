@@ -233,9 +233,10 @@ public class FileComparer
                 } else if (checkSizeEquality(startFileInfo, endFileInfo)) {
                     addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
                 } else {
-                    int similarWords = findSimilarWords(startFileInfo, endFileInfo);
-                    if (similarWords > 0) {
-                        insertSimilarity(startFileInfo, endFileInfo, similarWords);
+                    int songSimilarWords = findSimilarWords(startFileInfo.getSongWords(), endFileInfo.getSongWords());
+                    int singerSimilarWords = findSimilarWords(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
+                    if (songSimilarWords > 0) {
+                        insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
                     }
                 }
             }
@@ -272,10 +273,27 @@ public class FileComparer
     }
 
     /*find quantity of similar words in two FileInfo*/
-    private int findSimilarWords(FileInfo startFileInfo, FileInfo endFileInfo){
+    private int findSongSimilarWords(FileInfo startFileInfo, FileInfo endFileInfo){
         int result = 0;
-        for (String startWord : startFileInfo.getWords()){
-            for (String endWord: endFileInfo.getWords()){
+        for (String startWord : startFileInfo.getSongWords()){
+            for (String endWord: endFileInfo.getSongWords()){
+                int difference = startWord.compareTo(endWord);
+                if (difference == 0){
+                    result++;
+                    /*words in lists were sort, so if endWord > startWord that means there cant be equals words left*/
+                }else if(difference<0){
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /*find quantity of similar words in two List<String>*/
+    private int findSimilarWords(List<String> startWords, List<String> endWords){
+        int result = 0;
+        for (String startWord : startWords){
+            for (String endWord: endWords){
                 int difference = startWord.compareTo(endWord);
                 if (difference == 0){
                     result++;
@@ -310,21 +328,20 @@ public class FileComparer
     }
 
     /*insert two similar FileInfo in suitable directory depending of quantity found words*/
-    private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int foundWords){
-        int startLength = startFileInfo.getWords().size();
-        int endLength = endFileInfo.getWords().size();
+    private void insertSimilarity(FileInfo startFileInfo, FileInfo endFileInfo, int foundWords, int singerSimilarWords){
+        int startLength = startFileInfo.getSongWords().size();
+        int endLength = endFileInfo.getSongWords().size();
 
-        if ((startLength == endLength) && (startLength == foundWords)){
+        if ((startLength == endLength) && (startLength == foundWords)  && (singerSimilarWords > 0)) {
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
-        }else if (startLength == foundWords) {
+        } else if ((startLength == foundWords) && (singerSimilarWords > 0)) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
-        }else if (this.showSimilarityMiddle && ((startLength - foundWords) == 1)) {
+        } else if (this.showSimilarityMiddle && ((startLength - foundWords) == 1)) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
-        }
-        else if (this.showSimilarityLow){
+        } else if (this.showSimilarityLow){
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
         }

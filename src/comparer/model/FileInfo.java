@@ -30,7 +30,7 @@ public class FileInfo implements Comparable<FileInfo>
         newFileInfo.setBaseFolderPath(fileInfo.getBaseFolderPath());
         newFileInfo.setName(fileInfo.getName());
         newFileInfo.setSize(fileInfo.getSize());
-        newFileInfo.setWords(fileInfo.getWords());
+        newFileInfo.setSongWords(fileInfo.getSongWords());
         return newFileInfo;
     }
 
@@ -50,6 +50,36 @@ public class FileInfo implements Comparable<FileInfo>
         return newFileInfo;
     }
 
+    /*cuts file extension*/
+    private static String cutExtension(String fileName){
+        int dotPosition = fileName.lastIndexOf('.');
+        return fileName.substring(0,dotPosition);
+    }
+
+    /*cuts song name*/
+    private static String getSongName(String fileName){
+        String result = null;
+        int dashPosition = fileName.indexOf('-');
+        if (dashPosition == -1) {
+            result = fileName;
+        } else {
+            result = fileName.substring(dashPosition);
+        }
+        return result;
+    }
+
+    /*cuts song name*/
+    private static String getSingerName(String fileName){
+        String result = null;
+        int dashPosition = fileName.indexOf('-');
+        if (dashPosition == -1) {
+            result = "";
+        } else {
+            result = fileName.substring(0,dashPosition);
+        }
+        return result;
+    }
+
     /*absolute path to file*/
     private String absolutePath;
 
@@ -62,8 +92,11 @@ public class FileInfo implements Comparable<FileInfo>
     /*size of file*/
     private long size;
 
-    /*split in words filename */
-    private List<String> words;
+    /*split in words song name */
+    private List<String> songWords;
+
+    /*split in words song name */
+    private List<String> singerWords;
 
     /*list of files with similar names*/
     private List<FileInfo> similarFiles = new ArrayList<>();
@@ -81,7 +114,9 @@ public class FileInfo implements Comparable<FileInfo>
         this.baseFolderPath = baseFolderPath;
         this.name = name;
         this.size = size;
-        this.words = Formatter.splitString(name, minLength);
+        name = cutExtension(name);
+        this.songWords = Formatter.splitString(getSongName(name), minLength);
+        this.singerWords = Formatter.splitString(getSingerName(name), minLength);
         this.accepted = false;
     }
 
@@ -118,12 +153,12 @@ public class FileInfo implements Comparable<FileInfo>
         this.size = size;
     }
 
-    public List<String> getWords() {
-        return words;
+    public List<String> getSongWords() {
+        return songWords;
     }
 
-    public void setWords(List<String> words) {
-        this.words = words;
+    public void setSongWords(List<String> songWords) {
+        this.songWords = songWords;
     }
 
     public void setSimilarFiles(List<FileInfo> similarFiles) {
@@ -192,7 +227,7 @@ public class FileInfo implements Comparable<FileInfo>
     {
         int result = this.name.compareTo(other.name);
         if (result==0){
-            result = (this.size < other.size)? -1:(this.size > other.size)? 1:0;
+            result = Long.compare(this.size, other.size);
         }
         return result;
     }
@@ -226,4 +261,11 @@ public class FileInfo implements Comparable<FileInfo>
 
     }
 
+    public List<String> getSingerWords() {
+        return singerWords;
+    }
+
+    public void setSingerWords(List<String> singerWords) {
+        this.singerWords = singerWords;
+    }
 }

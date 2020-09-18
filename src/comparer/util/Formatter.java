@@ -20,8 +20,7 @@ public class Formatter {
     /*split 1-st par strong into words according length of word (2-nd parameter)
    * and sort that list*/
     public static List<String> splitString(String sentence, int wordLength){
-        sentence = cutExtension(sentence);
-        String[] arr = sentence.split("([0-9])|([\\s])|(\\.)|(,)|(\\()|(\\))|(-)|(_)|(\\?)|(\\!)|(:)|(;)|(&)");
+        String[] arr = sentence.split("([0-9])|([\\s])|(\\.)|(,)|(\\()|(\\))|(-)|(_)|(\\?)|(!)|(:)|(;)|(&)");
         List<String> list = new ArrayList<>();
         for (String word : arr){
             if (word.length()>=wordLength){
@@ -32,11 +31,7 @@ public class Formatter {
         return removeDuplications(list);
     }
 
-    /*cuts file extension*/
-    private static String cutExtension(String fileName){
-        int dotPosition = fileName.lastIndexOf('.');
-        return fileName.substring(0,dotPosition);
-    }
+
 
     /*removes duplications of elements in List<String>*/
     private static List<String> removeDuplications(List<String> list){
