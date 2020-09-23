@@ -95,7 +95,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*split in words song name */
     private List<String> songWords;
 
-    /*split in words song name */
+    /*split in words singer name */
     private List<String> singerWords;
 
     /*list of files with similar names*/
@@ -159,6 +159,14 @@ public class FileInfo implements Comparable<FileInfo>
 
     public void setSongWords(List<String> songWords) {
         this.songWords = songWords;
+    }
+
+    public List<String> getSingerWords() {
+        return singerWords;
+    }
+
+    public void setSingerWords(List<String> singerWords) {
+        this.singerWords = singerWords;
     }
 
     public void setSimilarFiles(List<FileInfo> similarFiles) {
@@ -261,11 +269,5 @@ public class FileInfo implements Comparable<FileInfo>
 
     }
 
-    public List<String> getSingerWords() {
-        return singerWords;
-    }
 
-    public void setSingerWords(List<String> singerWords) {
-        this.singerWords = singerWords;
-    }
 }
