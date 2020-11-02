@@ -10,6 +10,8 @@ import java.util.*;
  */
 public class FileComparer
 {
+    private static final int SIMILARITY_COEFF = 65;
+
     /*first directory path*/
     private String startDirectoryName;
 
@@ -222,8 +224,7 @@ public class FileComparer
     * comparing for full equality is mandatory
     * in other case rest comparings will not works properly*/
     private void compareDirectories(){
-        for (FileInfo startFileInfo : startDirectory)
-        {
+        for (FileInfo startFileInfo : startDirectory) {
             for (FileInfo endFileInfo : endDirectory) {
                 if (startFileInfo == endFileInfo) continue;
                 if (startFileInfo.equals(endFileInfo)) {
@@ -233,10 +234,16 @@ public class FileComparer
                 } else if (checkSizeEquality(startFileInfo, endFileInfo)) {
                     addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
                 } else {
-                    int songSimilarWords = findSimilarWords(startFileInfo.getSongWords(), endFileInfo.getSongWords());
-                    int singerSimilarWords = findSimilarWords(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
-                    if (songSimilarWords > 0) {
-                        insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
+                    int songSimilarWords = findEqualWords(startFileInfo.getSongWords(), endFileInfo.getSongWords());
+                    if (startFileInfo.getSingerWords().size() == 0 || endFileInfo.getSingerWords().size() == 0) {
+                        if (songSimilarWords > 0) {
+                            insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
+                        }
+                    } else {
+                        int singerSimilarWords = findEqualWords(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
+                        if (songSimilarWords > 0) {
+                            insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
+                        }
                     }
                 }
             }
@@ -272,25 +279,8 @@ public class FileComparer
         Sorter.sort(this.noSimilarities);
     }
 
-    /*find quantity of similar words in two FileInfo*/
-    private int findSongSimilarWords(FileInfo startFileInfo, FileInfo endFileInfo){
-        int result = 0;
-        for (String startWord : startFileInfo.getSongWords()){
-            for (String endWord: endFileInfo.getSongWords()){
-                int difference = startWord.compareTo(endWord);
-                if (difference == 0){
-                    result++;
-                    /*words in lists were sort, so if endWord > startWord that means there cant be equals words left*/
-                }else if(difference<0){
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    /*find quantity of similar words in two List<String>*/
-    private int findSimilarWords(List<String> startWords, List<String> endWords){
+    /*find quantity of equal words in two List<String>*/
+    private int findEqualWords(List<String> startWords, List<String> endWords){
         int result = 0;
         for (String startWord : startWords){
             for (String endWord: endWords){
@@ -303,6 +293,57 @@ public class FileComparer
                 }
             }
         }
+        return result;
+    }
+
+    /*find quantity of similar words in two List<String>, return 100 means equality */
+    private int findSimilarWords(List<String> startWords, List<String> endWords){
+        int result = 0;
+
+        for (String startWord : startWords){
+            for (String endWord: endWords){
+                int difference = this.compareWords(startWord, endWord);
+                if (difference >= SIMILARITY_COEFF){
+                    result++;
+                    break;
+                }
+            }
+        }
+        int length = Math.max(startWords.size(), endWords.size());
+        result = result * 100 / length;
+        System.out.println(startWords + " " + endWords + " " + result);
+        System.out.println();
+        return result;
+    }
+
+    /*find quantity of similar words in two List<String>, return 100 means equality */
+    private int compareWords(String startWord, String endWord){
+        int result = 0;
+        int startPosition = 0;
+        int endPosition = 0;
+        int diffPosition = 0;
+        int lastDiffPosition = 0;
+        int diffChangeCount = 0;
+        for (char startChar : startWord.toCharArray()){
+            startPosition++;
+            endPosition = 0;
+            for (char endChar : endWord.toCharArray()) {
+                endPosition++;
+                if (startChar == endChar) {
+                    diffPosition = startPosition - endPosition;
+                    if (diffPosition != lastDiffPosition) {
+                        diffChangeCount++;
+                        if (diffChangeCount >= 3) return 0;
+                        lastDiffPosition = diffPosition;
+                    }
+                    result = result + 1;
+                    break;
+                }
+            }
+        }
+        int length = Math.max(startWord.length(), endWord.length());
+        result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
+        System.out.println(startWord + " " + endWord + " " + result);
         return result;
     }
 
@@ -328,19 +369,58 @@ public class FileComparer
     }
 
     /*insert two similar FileInfo in suitable directory depending of quantity found words*/
-    private void insertSimilarity(FileInfo startFileInfo, FileInfo endFileInfo, int foundWords, int singerSimilarWords){
+    private void insertSimilarity(FileInfo startFileInfo, FileInfo endFileInfo, int songSimilarWords, int singerSimilarWords){
         int startLength = startFileInfo.getSongWords().size();
         int endLength = endFileInfo.getSongWords().size();
 
-        if ((startLength == endLength) && (startLength == foundWords)  && (singerSimilarWords > 0)) {
+        if ((startLength == endLength) && (startLength == songSimilarWords)  && (singerSimilarWords > 0)) {
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
-        } else if ((startLength == foundWords) && (singerSimilarWords > 0)) {
+
+        } else if ((startLength == songSimilarWords) && (singerSimilarWords > 0)) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
-        } else if (this.showSimilarityMiddle && ((startLength - foundWords) == 1)) {
+
+        } else if ((startLength == songSimilarWords) && (singerSimilarWords == 0)) {
+            int singerWordsSimilarity = this.findSimilarWords(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
+
+            if (singerWordsSimilarity > 50) {
+                addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+
+            } else if (this.showSimilarityMiddle){
+                addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            }
+
+        } else if (this.showSimilarityMiddle && ((startLength - songSimilarWords) == 1)) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
+
+        } else if (this.showSimilarityLow){
+            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+        }
+
+    }
+
+    /*insert two similar FileInfo in suitable directory depending of quantity found words*/
+    private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int songSimilarWords){
+        int startLength = startFileInfo.getSongWords().size();
+        int endLength = endFileInfo.getSongWords().size();
+
+        if ((startLength == endLength) && (startLength == songSimilarWords)){
+            addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if (startLength == songSimilarWords) {
+            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if (this.showSimilarityMiddle && ((startLength - songSimilarWords) == 1)) {
+            addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
         } else if (this.showSimilarityLow){
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
@@ -452,5 +532,15 @@ public class FileComparer
         this.nameSimilarityMiddle.clear();
         this.nameSimilarityLow.clear();
         this.noSimilarities.clear();
+    }
+
+    public static void main(String[] args) {
+        FileComparer comparer = new FileComparer();
+        int diff = comparer.compareWords("Style", "Styloo");
+        System.out.println("diff \"Styloo\" and \"Stale\": " + diff);
+        diff = comparer.compareWords("Staluoo", "Styloo");
+        System.out.println("diff \"Staloo\" and \"Styloo\": " + diff);
+
+
     }
 }
