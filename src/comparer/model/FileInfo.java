@@ -59,7 +59,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*cuts song name*/
     private static String getSongName(String fileName){
         String result = null;
-        int dashPosition = fileName.indexOf('-');
+        int dashPosition = getDashPosition(fileName);
         if (dashPosition == -1) {
             result = fileName;
         } else {
@@ -71,11 +71,19 @@ public class FileInfo implements Comparable<FileInfo>
     /*cuts song name*/
     private static String getSingerName(String fileName){
         String result = null;
-        int dashPosition = fileName.indexOf('-');
+        int dashPosition = getDashPosition(fileName);
         if (dashPosition == -1) {
             result = "";
         } else {
             result = fileName.substring(0,dashPosition);
+        }
+        return result;
+    }
+
+    private static int getDashPosition(String fileName) {
+        int result = fileName.indexOf(" - ");
+        if (result == -1) {
+            result = fileName.indexOf('-');
         }
         return result;
     }

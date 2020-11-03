@@ -10,7 +10,10 @@ import java.util.*;
  */
 public class FileComparer
 {
-    private static final int SIMILARITY_COEFF = 65;
+    /*
+    * percent of equal letters in two words that allow
+    * considering that words as similar*/
+    private static final int WORD_SIMILARITY_COEFF = 65;
 
     /*first directory path*/
     private String startDirectoryName;
@@ -297,37 +300,50 @@ public class FileComparer
     }
 
     /*find quantity of similar words in two List<String>, return 100 means equality */
-    private int findSimilarWords(List<String> startWords, List<String> endWords){
+
+    /*
+     * find quantity of similar words in two phrases,
+     * return 100 means phrases equality (phrases contains equal words,
+     * however the order of words may be different)
+     * return 0 means that phrases are definitely different
+     * return value in range from 1 nj 99 means that phrases are similar in that degree */
+    private int comparePhrases(List<String> phrase1, List<String> phrase2){
         int result = 0;
 
-        for (String startWord : startWords){
-            for (String endWord: endWords){
+        for (String startWord : phrase1){
+            for (String endWord: phrase2){
                 int difference = this.compareWords(startWord, endWord);
-                if (difference >= SIMILARITY_COEFF){
+                if (difference >= WORD_SIMILARITY_COEFF){
                     result++;
                     break;
                 }
             }
         }
-        int length = Math.max(startWords.size(), endWords.size());
+        int length = Math.max(phrase1.size(), phrase2.size());
         result = result * 100 / length;
-        System.out.println(startWords + " " + endWords + " " + result);
+        //TODO remove
+        System.out.println(phrase1 + " " + phrase2 + " " + result);
         System.out.println();
         return result;
     }
 
-    /*find quantity of similar words in two List<String>, return 100 means equality */
-    private int compareWords(String startWord, String endWord){
+
+    /*
+    * find quantity of similar letters in two words,
+    * return 100 means words equality
+    * return 0 means that words are definitely different
+    * return value in range from 1 nj 99 means that words are similar in that degree */
+    private int compareWords(String word1, String word2){
         int result = 0;
         int startPosition = 0;
         int endPosition = 0;
         int diffPosition = 0;
         int lastDiffPosition = 0;
         int diffChangeCount = 0;
-        for (char startChar : startWord.toCharArray()){
+        for (char startChar : word1.toCharArray()){
             startPosition++;
             endPosition = 0;
-            for (char endChar : endWord.toCharArray()) {
+            for (char endChar : word2.toCharArray()) {
                 endPosition++;
                 if (startChar == endChar) {
                     diffPosition = startPosition - endPosition;
@@ -341,9 +357,10 @@ public class FileComparer
                 }
             }
         }
-        int length = Math.max(startWord.length(), endWord.length());
+        int length = Math.max(word1.length(), word2.length());
         result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
-        System.out.println(startWord + " " + endWord + " " + result);
+        //TODO remove
+        System.out.println(word1 + " " + word2 + " " + result);
         return result;
     }
 
@@ -382,7 +399,7 @@ public class FileComparer
             startFileInfo.setAccepted(true);
 
         } else if ((startLength == songSimilarWords) && (singerSimilarWords == 0)) {
-            int singerWordsSimilarity = this.findSimilarWords(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
+            int singerWordsSimilarity = this.comparePhrases(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
 
             if (singerWordsSimilarity > 50) {
                 addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
