@@ -80,10 +80,46 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
+    /*
+    * gets position of delimeter singer name fron song name
+    * in file name*/
     private static int getDashPosition(String fileName) {
         int result = fileName.indexOf(" - ");
         if (result == -1) {
+            result = fileName.indexOf(" -");
+        }
+        if (result == -1) {
+            result = fileName.indexOf("- ");
+        }
+        if (result == -1) {
+            result = fileName.indexOf("_-_");
+        }
+        if (result == -1) {
+            result = fileName.indexOf("_");
+        }
+        if (result == -1) {
             result = fileName.indexOf('-');
+        }
+        return result;
+    }
+
+    /*
+    * split phrase into list of words*/
+    private static List<String> getSplitString(String phrase) {
+        List<String> result = null;
+        if (phrase.isEmpty()) {
+            result = new ArrayList<>();
+        } else {
+            result = Formatter.splitStringHard(phrase, minLength);
+            if (result.size() == 0) {
+                result = Formatter.splitStringLight(phrase, minLength);
+            }
+            if (result.size() == 0) {
+                result = Formatter.splitStringLight(phrase, 1);
+            }
+            if (result.size() == 0) {
+                result.add(phrase);
+            }
         }
         return result;
     }
@@ -123,8 +159,8 @@ public class FileInfo implements Comparable<FileInfo>
         this.name = name;
         this.size = size;
         name = cutExtension(name);
-        this.songWords = Formatter.splitString(getSongName(name), minLength);
-        this.singerWords = Formatter.splitString(getSingerName(name), minLength);
+        this.songWords = getSplitString(getSongName(name));
+        this.singerWords = getSplitString(getSingerName(name));
         this.accepted = false;
     }
 

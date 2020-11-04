@@ -17,9 +17,9 @@ public class Formatter {
         return myFormatter.format(value);
     }
 
-    /*split 1-st par strong into words according length of word (2-nd parameter)
+    /*split 1-st par string into words according length of word (2-nd parameter)
    * and sort that list*/
-    public static List<String> splitString(String sentence, int wordLength){
+    public static List<String> splitStringHard(String sentence, int wordLength){
         String[] arr = sentence.split("([0-9])|([\\s])|(\\.)|(,)|(\\()|(\\))|(-)|(_)|(\\?)|(!)|(:)|(;)|(&)");
         List<String> list = new ArrayList<>();
         for (String word : arr){
@@ -31,7 +31,19 @@ public class Formatter {
         return removeDuplications(list);
     }
 
-
+    /*split 1-st par string into words according length of word (2-nd parameter)
+     * and sort that list*/
+    public static List<String> splitStringLight(String sentence, int wordLength){
+        String[] arr = sentence.split("([\\s])|(\\()|(\\))|(\\?)|(!)|(:)|(;)|(&)");
+        List<String> list = new ArrayList<>();
+        for (String word : arr){
+            if (word.length()>=wordLength){
+                list.add(word.toLowerCase().replace('ё','е'));
+            }
+        }
+        Collections.sort(list);
+        return removeDuplications(list);
+    }
 
     /*removes duplications of elements in List<String>*/
     private static List<String> removeDuplications(List<String> list){
