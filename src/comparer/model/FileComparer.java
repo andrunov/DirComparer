@@ -11,9 +11,14 @@ import java.util.*;
 public class FileComparer
 {
     /*
-    * percent of equal letters in two words that allow
-    * considering that words as similar*/
+    * minimal percent of equal letters in two words
+    * that allow considering that words are similar*/
     private static final int WORD_SIMILARITY_COEFF = 65;
+
+    /*
+     * percent of equal letters in two words
+     * that allow considering that words are equals*/
+    private static final int WORD_EQUALITY_COEFF = 100;
 
     /*first directory path*/
     private String startDirectoryName;
@@ -329,7 +334,11 @@ public class FileComparer
                     counter++;
                 } else {
                     int difference = this.compareWords(startWord, endWord);
-                    if ((difference >= WORD_SIMILARITY_COEFF)) {
+                    if ((difference == WORD_EQUALITY_COEFF)) {
+                        maxFound = difference;
+                        indexForMaxFound = counter;
+                        break;
+                    } else if ((difference >= WORD_SIMILARITY_COEFF)) {
                         if (difference > maxFound) {
                             maxFound = difference;
                             indexForMaxFound = counter;
