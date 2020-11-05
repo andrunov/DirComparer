@@ -13,7 +13,7 @@ public class FileComparer
     /*
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
-    private static final int WORD_SIMILARITY_COEFF = 65;
+    private static final int WORD_SIMILARITY_COEFF = 50;
 
     /*
      * percent of equal letters in two words
@@ -329,23 +329,24 @@ public class FileComparer
             int counter = 0;
             int maxFound = 0;
             int indexForMaxFound = 0;
+
             for (String endWord: longPhrase){
-                if (foundIndexes[counter] == 100) {
-                    counter++;
-                } else {
+                if (foundIndexes[counter] < 100) {
                     int difference = this.compareWords(startWord, endWord);
+
                     if ((difference == WORD_EQUALITY_COEFF)) {
                         maxFound = difference;
                         indexForMaxFound = counter;
                         break;
+
                     } else if ((difference >= WORD_SIMILARITY_COEFF)) {
                         if (difference > maxFound) {
                             maxFound = difference;
                             indexForMaxFound = counter;
                         }
                     }
-                    counter++;
                 }
+                counter++;
             }
             if (maxFound > foundIndexes[indexForMaxFound]) {
                 foundIndexes[indexForMaxFound] = maxFound;
@@ -426,8 +427,11 @@ public class FileComparer
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityLow){
+        } else if (this.showSimilarityLow && (songSimilarityDegree <30) && (songSimilarityDegree > 0)) {
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if (songSimilarityDegree > 0) {
             startFileInfo.setAccepted(true);
         }
     }

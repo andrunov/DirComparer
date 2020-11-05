@@ -84,22 +84,33 @@ public class FileInfo implements Comparable<FileInfo>
     * gets position of delimeter singer name fron song name
     * in file name*/
     private static int getDashPosition(String fileName) {
+
         int result = fileName.indexOf(" - ");
         if (result == -1) {
+
             result = fileName.indexOf(" -");
+            if (result == -1) {
+
+                result = fileName.indexOf("- ");
+                if (result == -1) {
+
+                    result = fileName.indexOf("_-_");
+                    if (result == -1) {
+
+                        result = fileName.indexOf("_");
+                        if (result == -1) {
+
+                            result = fileName.indexOf('-');
+                            if (result == -1) {
+
+                                result = fileName.indexOf(8211);
+                            }
+                        }
+                    }
+                }
+            }
         }
-        if (result == -1) {
-            result = fileName.indexOf("- ");
-        }
-        if (result == -1) {
-            result = fileName.indexOf("_-_");
-        }
-        if (result == -1) {
-            result = fileName.indexOf("_");
-        }
-        if (result == -1) {
-            result = fileName.indexOf('-');
-        }
+
         return result;
     }
 
