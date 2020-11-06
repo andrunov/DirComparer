@@ -104,6 +104,10 @@ public class FileInfo implements Comparable<FileInfo>
                             if (result == -1) {
 
                                 result = fileName.indexOf(8211);
+                                if (result == -1) {
+
+                                    result = fileName.indexOf(8212);
+                                }
                             }
                         }
                     }
