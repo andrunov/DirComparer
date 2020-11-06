@@ -30,7 +30,7 @@ public class AppPreferences {
     /*get files extensions for FileFilter*/
     public static String[] getFilterExtensions() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        String extensions = prefs.get("filterExtensions", null);
+        String extensions = prefs.get("filterExtensions", "mp3 wma wmw mp4 avi mkv");
         if (!Formatter.stringIsEmpty(extensions)) {
             return extensions.split(" ");
         } else {
@@ -49,7 +49,7 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         int minLength = 0;
         try {
-            minLength = Integer.parseInt(prefs.get("minStringLength", "1"));
+            minLength = Integer.parseInt(prefs.get("minStringLength", "2"));
         }catch (NumberFormatException e){
             e.printStackTrace();
         }
