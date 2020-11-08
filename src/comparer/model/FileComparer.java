@@ -100,7 +100,7 @@ public class FileComparer
     }
 
     public void setReportName(String startDirectoryName) {
-        this.reportName = startDirectoryName + "\\report.txt";
+        this.reportName = startDirectoryName + "\\report.html";
     }
 
     public String getReportName() {
@@ -185,8 +185,8 @@ public class FileComparer
         if (result) {
             compareDirectories();
             outputPreparations();
-            Writer writer = new Writer(this,"UTF8");
-            result = writer.write();
+            HtmlWriter writer = new HtmlWriter(this,"UTF8");
+            result = writer.writeHtmlReport();
         }
         clean();
         return result;
