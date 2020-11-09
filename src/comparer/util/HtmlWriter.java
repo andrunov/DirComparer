@@ -22,12 +22,22 @@ public class HtmlWriter {
     private static String beginHtml;
     private static String singleDirectory;
     private static String twoDirectory;
+    private static String beginTableFound;
+    private static String beginTableNotFound;
+    private static String tableHeader;
+    private static String tableRowLeft;
+    private static String tableRowRight;
     private static String endHtml;
 
     static {
         beginHtml = readTemplate("beginTemplate.html");
         singleDirectory = readTemplate("singleDirectoryTemplate.html");
         twoDirectory = readTemplate("twoDirectoryTemplate.html");
+        beginTableFound = readTemplate("beginTableFoundTemplate.html");
+        beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
+        tableHeader = readTemplate("tableHeader.html");
+        tableRowLeft = readTemplate("tableRowLeft.html");
+        tableRowRight = readTemplate("tableRowRight.html");
         endHtml = readTemplate("endTemplate.html");
     }
 
@@ -71,50 +81,44 @@ public class HtmlWriter {
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
             writer.println(beginHtml);
-            if (this.comparer.isSingleDirCompare()) {
-                this.printHtmlHeadSingleDirectory(writer);
-            } else {
-                this.printHtmlHeadTwoDirectory(writer);
-            }
+            this.printHtmlTitle(writer);
 
             /*1-st level - 100 equality*/
-            printTitle(writer,resourceBundle.getString("1stLevelEquality"));
-            printFileList(writer,this.comparer.getFullEquality());
+            this.printHtmlTable(writer, this.comparer.getFullEquality(), resourceBundle.getString("1stLevelEquality"));
 
             /*2 level - 100% names equality*/
-            printTitle(writer,resourceBundle.getString("2ndLevelEquality"));
-            printFileList(writer,this.comparer.getNameEquality());
+            this.printHtmlTable(writer, this.comparer.getNameEquality(), resourceBundle.getString("2ndLevelEquality"));
 
             /*3 level - 100% sizes equality*/
-            printTitle(writer,resourceBundle.getString("3thLevelEquality"));
-            printFileList(writer,this.comparer.getSizeEquality());
+            this.printHtmlTable(writer, this.comparer.getSizeEquality(), resourceBundle.getString("3thLevelEquality"));
 
             /*4 level - very high similarity of names*/
-            printTitle(writer,resourceBundle.getString("4thLevelEquality"));
-            printFileList(writer,this.comparer.getNameSimilarityHighest());
+            this.printHtmlTable(writer, this.comparer.getNameSimilarityHighest(), resourceBundle.getString("4thLevelEquality"));
 
             /*5 level - high similarity of names*/
-            printTitle(writer,resourceBundle.getString("5thLevelEquality"));
-            printFileList(writer,this.comparer.getNameSimilarityHigh());
+            this.printHtmlTable(writer, this.comparer.getNameSimilarityHigh(), resourceBundle.getString("5thLevelEquality"));
 
             /*6 level - middle similarity of names*/
             if (this.comparer.isShowSimilarityMiddle()) {
-                printTitle(writer, resourceBundle.getString("6thLevelEquality"));
-                printFileList(writer, this.comparer.getNameSimilarityMiddle());
+                this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle(), resourceBundle.getString("6thLevelEquality"));
             }
 
             /*7 level - low similarity of names*/
             if (this.comparer.isShowSimilarityLow()) {
-                printTitle(writer, resourceBundle.getString("7thLevelEquality"));
-                printFileList(writer, this.comparer.getNameSimilarityLow());
+                this.printHtmlTable(writer, this.comparer.getNameSimilarityLow(), resourceBundle.getString("7thLevelEquality"));
             }
+
 
             /*8 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
+            /*
             if (!this.comparer.isSingleDirCompare()) {
                 printTitle(writer, getNotFoundDescription());
                 printNoSimilarList(writer, this.comparer.getNoSimilarity());
             }
+
+             */
+
 
             writer.printf(endHtml);
 
@@ -127,40 +131,149 @@ public class HtmlWriter {
     }
 
     /*
-    * gets short name of directory or file*/
-    private String getDirectoryShortName(String filePath) {
+     * extract name of directory from file path*/
+    private String getDirectoryName(String filePath) {
+        int lastSlashFilePosition = filePath.lastIndexOf('\\') + 1;
+        int lastSlashDirPosition = filePath.lastIndexOf('\\', lastSlashFilePosition);
+        return filePath.substring(0, lastSlashDirPosition);
+    }
+
+    /*
+    * extract short name of file or directory from file path*/
+    private String getShortName(String filePath) {
         int lastSlashPosition = filePath.lastIndexOf('\\') + 1;
         return filePath.substring(lastSlashPosition);
     }
 
-    /*head for two directory case*/
-    private void printHtmlHeadSingleDirectory(PrintWriter writer) {
+    /* HTML title for single directory case*/
+    private void printHtmlTitleSingle(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(singleDirectory, //format string
                         resourceBundle.getString("Analyzed"),   //...parameters
                         this.comparer.getStartDirectory().size(),
                         resourceBundle.getString("Files"),
                         resourceBundle.getString("InDirectory"),
-                        this.getDirectoryShortName(this.comparer.getStartDirectoryName()),
+                        this.getShortName(this.comparer.getStartDirectoryName()),
                         this.comparer.getStartDirectoryName());
     }
 
-    /*head for two directory case*/
-    private void printHtmlHeadTwoDirectory(PrintWriter writer) {
+    /* HTML title for two directory case*/
+    private void printHtmlTitleTwo(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(twoDirectory,  //format string
                         resourceBundle.getString("Analyzed"),   //...parameters
                         this.comparer.getStartDirectory().size(),
                         resourceBundle.getString("Files"),
                         resourceBundle.getString("InDirectory"),
-                        this.getDirectoryShortName(this.comparer.getStartDirectoryName()),
+                        this.getShortName(this.comparer.getStartDirectoryName()),
                         this.comparer.getStartDirectoryName(),
                         resourceBundle.getString("And"),
                         this.comparer.getEndDirectory().size(),
                         resourceBundle.getString("Files"),
                         resourceBundle.getString("InDirectory"),
-                        this.getDirectoryShortName(this.comparer.getEndDirectoryName()),
+                        this.getShortName(this.comparer.getEndDirectoryName()),
                         this.comparer.getEndDirectoryName());
+    }
+
+    /*
+    * HTML title for report*/
+    private void printHtmlTitle(PrintWriter writer) {
+
+        if (this.comparer.isSingleDirCompare()) {
+            this.printHtmlTitleSingle(writer);
+        } else {
+            this.printHtmlTitleTwo(writer);
+        }
+    }
+
+    /*
+    * HTML table for report*/
+    private void printHtmlTable(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
+        this.printHtmlTableBegin(writer, fileInfoList, title);
+        this.printHtmlTableHeader(writer);
+        for (FileInfo fileInfo : fileInfoList) {
+            this.printHtmlTableRow(writer, fileInfo);
+        }
+        this.printHtmlTableEnd(writer);
+    }
+
+    /*
+     * HTML table title for report*/
+    private void printHtmlTableBegin(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+        if (fileInfoList.size() > 0) {
+            writer.printf(beginTableFound, //format string
+                                title,   //...parameters
+                                resourceBundle.getString("Found"),
+                                fileInfoList.size(),
+                                resourceBundle.getString("Files"));
+        } else {
+            writer.printf(beginTableNotFound, //format string
+                                title,   //...parameters
+                                resourceBundle.getString("NotFound"));
+        }
+    }
+
+    /*
+     * HTML table header title for report*/
+    private void printHtmlTableHeader(PrintWriter writer) {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+            writer.printf(tableHeader, //format string
+                    resourceBundle.getString("Folder"),   //...parameters
+                    resourceBundle.getString("FileName"),
+                    resourceBundle.getString("FileSizeB"),
+                    resourceBundle.getString("Folder"),
+                    resourceBundle.getString("FileName"),
+                    resourceBundle.getString("FileSizeB"));
+    }
+
+    /*
+     * HTML table row for report*/
+    private void printHtmlTableRow(PrintWriter writer, FileInfo fileInfo) {
+        writer.println("<tr>");
+        this.printHtmlTableRowLeft(writer, fileInfo);
+    }
+
+    /*
+     * HTML table left part of row for report*/
+    private void printHtmlTableRowLeft(PrintWriter writer, FileInfo fileInfo) {
+        int similars = fileInfo.getSimilarFiles().size();
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
+        sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
+        String path = fileInfo.getAbsolutePath();
+        writer.printf(tableRowLeft, //format string
+                similars,   //...parameters
+                this.getDirectoryName(path),
+                this.getShortName(this.getDirectoryName(path)),
+                similars,
+                fileInfo.getName(),
+                path,
+                similars,
+                sizeFormatted);
+        for (FileInfo similar : fileInfo.getSimilarFiles()) {
+            this.printHtmlTableRowRight(writer, similar);
+        }
+    }
+
+    /*
+     * HTML table right part of row for report*/
+    private void printHtmlTableRowRight(PrintWriter writer, FileInfo fileInfo) {
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
+        sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
+        String path = fileInfo.getAbsolutePath();
+        writer.printf(tableRowRight, //format string
+                this.getDirectoryName(path),
+                this.getShortName(this.getDirectoryName(path)),
+                fileInfo.getName(),
+                path,
+                sizeFormatted);
+        writer.println("</tr>");
+    }
+
+    /*
+     * HTML table end title for report*/
+    private void printHtmlTableEnd(PrintWriter writer) {
+
     }
 
     /*print title*/
@@ -254,7 +367,7 @@ public class HtmlWriter {
         //string = singleDirectory.replace("$dirName", "some Name");
 
         //System.out.printf(singleDirectory, "225", "some URL", "some name");
-        System.out.println(writer.getDirectoryShortName("D:\\MUSIC\\Retro\\COMPILATIONS\\Hronology_USSR"));
+        System.out.println(writer.getShortName(writer.getDirectoryName("D:\\MUSIC\\Retro\\COMPILATIONS\\Hronology_USSR\\1992-1999\\22 Поющие Гитары - Вот Это Погода (1996).MP3")));
     }
 
 }
