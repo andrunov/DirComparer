@@ -190,9 +190,11 @@ public class HtmlWriter {
     * HTML table for report*/
     private void printHtmlTable(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
         this.printHtmlTableBegin(writer, fileInfoList, title);
-        this.printHtmlTableHeader(writer);
-        for (FileInfo fileInfo : fileInfoList) {
-            this.printHtmlTableRow(writer, fileInfo);
+        if (fileInfoList.size() > 0) {
+            this.printHtmlTableHeader(writer);
+            for (FileInfo fileInfo : fileInfoList) {
+                this.printHtmlTableRowLeft(writer, fileInfo);
+            }
         }
         this.printHtmlTableEnd(writer);
     }
@@ -228,26 +230,21 @@ public class HtmlWriter {
     }
 
     /*
-     * HTML table row for report*/
-    private void printHtmlTableRow(PrintWriter writer, FileInfo fileInfo) {
-        writer.println("<tr>");
-        this.printHtmlTableRowLeft(writer, fileInfo);
-    }
-
-    /*
      * HTML table left part of row for report*/
     private void printHtmlTableRowLeft(PrintWriter writer, FileInfo fileInfo) {
         int similars = fileInfo.getSimilarFiles().size();
         String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
         sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
         String path = fileInfo.getAbsolutePath();
+        writer.println("<tr>");
         writer.printf(tableRowLeft, //format string
                 similars,   //...parameters
                 this.getDirectoryName(path),
                 this.getShortName(this.getDirectoryName(path)),
                 similars,
-                fileInfo.getName(),
                 path,
+                similars,
+                fileInfo.getName(),
                 similars,
                 sizeFormatted);
         for (FileInfo similar : fileInfo.getSimilarFiles()) {
@@ -264,8 +261,8 @@ public class HtmlWriter {
         writer.printf(tableRowRight, //format string
                 this.getDirectoryName(path),
                 this.getShortName(this.getDirectoryName(path)),
-                fileInfo.getName(),
                 path,
+                fileInfo.getName(),
                 sizeFormatted);
         writer.println("</tr>");
     }
