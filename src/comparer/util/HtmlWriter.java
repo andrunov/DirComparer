@@ -25,8 +25,10 @@ public class HtmlWriter {
     private static String beginTableFound;
     private static String beginTableNotFound;
     private static String tableHeader;
+    private static String tableHeaderNotFound;
     private static String tableRowLeft;
     private static String tableRowRight;
+    private static String tableRowNotFound;
     private static String endHtml;
 
     static {
@@ -35,9 +37,11 @@ public class HtmlWriter {
         twoDirectory = readTemplate("twoDirectoryTemplate.html");
         beginTableFound = readTemplate("beginTableFoundTemplate.html");
         beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
-        tableHeader = readTemplate("tableHeader.html");
-        tableRowLeft = readTemplate("tableRowLeft.html");
-        tableRowRight = readTemplate("tableRowRight.html");
+        tableHeader = readTemplate("tableHeaderTemplate.html");
+        tableHeaderNotFound = readTemplate("tableHeaderNotFoundTemplate.html");
+        tableRowLeft = readTemplate("tableRowLeftTemplate.html");
+        tableRowRight = readTemplate("tableRowRightTemplate.html");
+        tableRowNotFound = readTemplate("tableRowNotFoundTemplate.html");
         endHtml = readTemplate("endTemplate.html");
     }
 
@@ -108,17 +112,11 @@ public class HtmlWriter {
                 this.printHtmlTable(writer, this.comparer.getNameSimilarityLow(), resourceBundle.getString("7thLevelEquality"));
             }
 
-
             /*8 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
-            /*
             if (!this.comparer.isSingleDirCompare()) {
-                printTitle(writer, getNotFoundDescription());
-                printNoSimilarList(writer, this.comparer.getNoSimilarity());
+                this.printHtmlTableNotFound(writer, this.comparer.getNoSimilarity(), resourceBundle.getString("8thLevelEquality"));
             }
-
-             */
-
 
             writer.printf(endHtml);
 
@@ -200,6 +198,46 @@ public class HtmlWriter {
     }
 
     /*
+     * HTML table for report*/
+    private void printHtmlTableNotFound(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
+        this.printHtmlTableBegin(writer, fileInfoList, title);
+        if (fileInfoList.size() > 0) {
+            this.printHtmlTableHeaderNotFound(writer);
+            for (FileInfo fileInfo : fileInfoList) {
+                this.printHtmlTableRowNotFound(writer, fileInfo);
+            }
+        }
+        this.printHtmlTableEnd(writer);
+    }
+
+    /*
+     * HTML table row not found for report*/
+    private void printHtmlTableRowNotFound(PrintWriter writer, FileInfo fileInfo) {
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
+        sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
+        String path = fileInfo.getAbsolutePath();
+        writer.println("<tr>");
+        writer.printf(tableRowNotFound, //format string
+                this.getDirectoryName(path), //...parameters
+                this.getShortName(this.getDirectoryName(path)),
+                path,
+                fileInfo.getName(),
+                sizeFormatted);
+        writer.println("</tr>");
+    }
+
+
+    /*
+     * HTML table header not found title for report*/
+    private void printHtmlTableHeaderNotFound(PrintWriter writer) {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+        writer.printf(tableHeaderNotFound, //format string
+                resourceBundle.getString("Folder"),   //...parameters
+                resourceBundle.getString("FileName"),
+                resourceBundle.getString("FileSizeB"));
+    }
+
+    /*
      * HTML table title for report*/
     private void printHtmlTableBegin(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
@@ -273,100 +311,6 @@ public class HtmlWriter {
         writer.println("</table>");
         writer.println("</div>");
         writer.println("<br>");
-    }
-
-    /*print title*/
-    private void printTitle(PrintWriter writer,String title){
-        writer.println();
-        writer.println();
-        writer.println("***********************************************************************************************************");
-        writer.printf("%-5s%-100.100s%2s","*",title,"*");
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-    }
-
-    /*print title*/
-    private void printTitle(PrintWriter writer,List<String> titles){
-        writer.println();
-        writer.println();
-        writer.print("***********************************************************************************************************");
-        for (String title : titles) {
-            writer.printf("\r\n%-5s%-100.100s%2s", "*", title, "*");
-        }
-        writer.printf("\r\n%-2s%-100.100s%5s","*","","*");
-        writer.println("\r\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-    }
-
-    /*print result of files were found*/
-    private void printFound(PrintWriter writer, int quantity){
-        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        if (quantity==0){
-            writer.printf("%-5s%-100.100s%2s","*",resourceBundle.getString("NotFound"),"*");
-        }else {
-            writer.printf("%-5s%-8s%-1s%4d%-1s%-86.86s%2s", "*", resourceBundle.getString("Found"), " ",quantity, " ", resourceBundle.getString("Files"), "*");
-        }
-        writer.println("\r\n***********************************************************************************************************");
-    }
-
-    /*print list*/
-    private void printFileList(PrintWriter writer, List<? extends Comparable> fileNameList){
-        printFound(writer,fileNameList.size());
-        for (Comparable fileName : fileNameList)
-        {
-            writer.println(fileName.toString());
-        }
-    }
-
-    /*print list of files that not have similariries*/
-    private void printNoSimilarList(PrintWriter writer, List<FileInfo> fileNameList){
-        printFound(writer,fileNameList.size());
-        int counter = 0;
-        for (FileInfo fileName : fileNameList)
-        {
-            if (counter == 0) {
-                writer.println(" --------------------------------------------------------------------------------------------------------");
-            } else {
-                writer.println("|---------------------------------------------------------------------------------------------------------|");
-            }
-            writer.println(fileName.printWithoutSimilarities());
-            counter++;
-        }
-        writer.println(" ---------------------------------------------------------------------------------------------------------");
-    }
-
-    private List<String> getNotFoundDescription() {
-        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        List<String> result = new ArrayList<>();
-        result.add(resourceBundle.getString("8thLevelEquality"));
-
-        if (!this.comparer.isShowSimilarityMiddle() || !this.comparer.isShowSimilarityLow()) {
-            result.add(resourceBundle.getString("MayExistSimilarFiles") + " " + resourceBundle.getString("SwitchOnForMoreInformation") );
-        }
-
-        if (!this.comparer.isShowSimilarityMiddle() && !this.comparer.isShowSimilarityLow()) {
-            result.add(resourceBundle.getString("SwitchOnLowSimilarity") +
-                                                     " " + resourceBundle.getString("And") +
-                                                     " " + resourceBundle.getString("SwitchOnMiddleSimilarity") +
-                                                     " " + resourceBundle.getString("InSettingsMenu"));
-            //result.add(resourceBundle.getString("InSettingsMenu"));
-        } else if (!this.comparer.isShowSimilarityLow()) {
-            result.add(resourceBundle.getString("SwitchOnLowSimilarity") + " " + resourceBundle.getString("InSettingsMenu"));
-        } else if (!this.comparer.isShowSimilarityMiddle()){
-            result.add(resourceBundle.getString("SwitchOnMiddleSimilarity") + " " + resourceBundle.getString("InSettingsMenu"));
-        }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        //System.out.println(beginHtml);
-        HtmlWriter writer = new HtmlWriter(null, "UTF-8");
-        //writer.printHtmlHeadSingleDirectory(null);
-        //String string = singleDirectory.replace("$dirSize", "224");
-        //string = singleDirectory.replace("$dirURL", "some URL");
-        //string = singleDirectory.replace("$dirName", "some Name");
-
-        //System.out.printf(singleDirectory, "225", "some URL", "some name");
-        System.out.println(writer.getShortName(writer.getDirectoryName("D:\\MUSIC\\Retro\\COMPILATIONS\\Hronology_USSR\\1992-1999\\22 Поющие Гитары - Вот Это Погода (1996).MP3")));
     }
 
 }

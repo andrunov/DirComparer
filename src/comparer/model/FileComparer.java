@@ -155,10 +155,6 @@ public class FileComparer
         return nameSimilarityMiddle;
     }
 
-    public List<FileInfo> getNoSimilarities() {
-        return noSimilarities;
-    }
-
     public List<FileInfo> getNameSimilarityHighest() {
         return nameSimilarityHighest;
     }
