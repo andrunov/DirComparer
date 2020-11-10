@@ -270,7 +270,9 @@ public class HtmlWriter {
     /*
      * HTML table end title for report*/
     private void printHtmlTableEnd(PrintWriter writer) {
-
+        writer.println("</table>");
+        writer.println("</div>");
+        writer.println("<br>");
     }
 
     /*print title*/
