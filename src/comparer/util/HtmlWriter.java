@@ -3,21 +3,16 @@ package comparer.util;
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Class for output strings info
+ * Class for output html report
  */
 public class HtmlWriter {
 
-    private static final String BASE_PATH = "src/comparer/resources/html/";
+    private static final String BASE_PATH = "html/";
 
     private static String beginHtml;
     private static String singleDirectory;
@@ -46,23 +41,27 @@ public class HtmlWriter {
     }
 
     private static String readTemplate(String pathVal) {
-        Path path = Paths.get(BASE_PATH + pathVal);
-        List<String> lines = new ArrayList<>();
 
-        try {
-            lines.addAll(Files.readAllLines(path));
-        } catch (IOException e) {
-            e.printStackTrace();
+        String result = null;
+        InputStream inputStream = HtmlWriter.class.getClassLoader().getResourceAsStream(BASE_PATH + pathVal);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+
+        if (inputStream != null) {
+
+            try {
+                while ((length = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, length);
+                }
+                result = outputStream.toString("UTF-8");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        StringBuilder sb = new StringBuilder();
-
-        for (String line : lines) {
-            sb.append(line);
-            sb.append("\n");
-        }
-
-        return sb.toString();
+        return result;
     }
 
     /*link to fileComparer*/
