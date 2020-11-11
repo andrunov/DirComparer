@@ -177,6 +177,9 @@ public class FileComparer
 
     /*this method contains main logic of comparing*/
     public boolean compare(){
+
+    //    long startTime = System.currentTimeMillis();
+
         boolean result = fillFilenames();
         if (result) {
             compareDirectories();
@@ -185,6 +188,10 @@ public class FileComparer
             result = writer.writeHtmlReport();
         }
         clean();
+
+    //    long finishTime = System.currentTimeMillis();
+    //    System.out.println("Performance: " + (finishTime - startTime) + " ms");
+
         return result;
     }
 

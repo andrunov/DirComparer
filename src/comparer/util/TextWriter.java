@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 /**
  * Class for output strings info
  */
-public class Writer {
+public class TextWriter {
 
     /*link to fileComparer*/
     private FileComparer comparer;
@@ -21,7 +21,7 @@ public class Writer {
     private String encoding;
 
     /*constructor*/
-    public Writer(FileComparer comparer, String encoding) {
+    public TextWriter(FileComparer comparer, String encoding) {
         this.comparer = comparer;
         this.encoding = encoding;
     }
