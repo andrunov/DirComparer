@@ -35,7 +35,7 @@ public class HtmlWriter {
         beginHtml = readTemplate("beginTemplate.html");
         singleDirectory = readTemplate("singleDirectoryTemplate.html");
         twoDirectory = readTemplate("twoDirectoryTemplate.html");
-        beginTableFound = readTemplate("beginTableFoundTemplate.html");
+        beginTableFound = readTemplate("beginTableTemplate.html");
         beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
         tableHeader = readTemplate("tableHeaderTemplate.html");
         tableHeaderNotFound = readTemplate("tableHeaderNotFoundTemplate.html");
@@ -278,6 +278,7 @@ public class HtmlWriter {
         writer.printf(tableRowLeft, //format string
                 similars,   //...parameters
                 this.getDirectoryName(path),
+                similars,
                 this.getShortName(this.getDirectoryName(path)),
                 similars,
                 path,
