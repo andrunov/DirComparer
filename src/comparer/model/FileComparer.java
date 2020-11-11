@@ -110,7 +110,7 @@ public class FileComparer
     }
 
     public void setReportName(String startDirectoryName) {
-        this.reportName = startDirectoryName + "\\report.txt";
+        this.reportName = startDirectoryName + "\\report.html";
     }
 
     public String getReportName() {
@@ -165,10 +165,6 @@ public class FileComparer
         return nameSimilarityMiddle;
     }
 
-    public List<FileInfo> getNoSimilarities() {
-        return noSimilarities;
-    }
-
     public List<FileInfo> getNameSimilarityHighest() {
         return nameSimilarityHighest;
     }
@@ -191,14 +187,21 @@ public class FileComparer
 
     /*this method contains main logic of comparing*/
     public boolean compare(){
+
+    //    long startTime = System.currentTimeMillis();
+
         boolean result = fillFilenames();
         if (result) {
             compareDirectories();
             outputPreparations();
-            Writer writer = new Writer(this,"UTF8");
-            result = writer.write();
+            HtmlWriter writer = new HtmlWriter(this,"UTF8");
+            result = writer.writeHtmlReport();
         }
         clean();
+
+    //    long finishTime = System.currentTimeMillis();
+    //    System.out.println("Performance: " + (finishTime - startTime) + " ms");
+
         return result;
     }
 
