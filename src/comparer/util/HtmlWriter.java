@@ -87,10 +87,10 @@ public class HtmlWriter {
             this.printHtmlTitle(writer);
 
             /*1-st level - 100 equality*/
-            this.printHtmlTable(writer, this.comparer.getFullEquality(), resourceBundle.getString("1stLevelEquality"));
+            //this.printHtmlTable(writer, this.comparer.getFullEquality(), resourceBundle.getString("1stLevelEquality"));
 
             /*2 level - 100% names equality*/
-            this.printHtmlTable(writer, this.comparer.getNameEquality(), resourceBundle.getString("2ndLevelEquality"));
+            //this.printHtmlTable(writer, this.comparer.getNameEquality(), resourceBundle.getString("2ndLevelEquality"));
 
             /*3 level - 100% sizes equality*/
             this.printHtmlTable(writer, this.comparer.getSizeEquality(), resourceBundle.getString("3thLevelEquality"));
@@ -100,6 +100,9 @@ public class HtmlWriter {
 
             /*5 level - high similarity of names*/
             this.printHtmlTable(writer, this.comparer.getNameSimilarityHigh(), resourceBundle.getString("5thLevelEquality"));
+
+            /*9 level - high similarity of names*/
+            this.printHtmlTable(writer, this.comparer.getPartNameSimilarityHigh(), resourceBundle.getString("9thLevelEquality"));
 
             /*6 level - middle similarity of names*/
             if (this.comparer.isShowSimilarityMiddle()) {
