@@ -199,7 +199,7 @@ public class FileComparer
     /*this method contains main logic of comparing*/
     public boolean compare(){
 
-        long startTime = System.currentTimeMillis();
+    //    long startTime = System.currentTimeMillis();
 
         boolean result = fillFilenames();
         if (result) {
@@ -210,8 +210,8 @@ public class FileComparer
         }
         clean();
 
-        long finishTime = System.currentTimeMillis();
-        System.out.println("Performance: " + (finishTime - startTime) + " ms");
+    //    long finishTime = System.currentTimeMillis();
+    //    System.out.println("Performance: " + (finishTime - startTime) + " ms");
 
         return result;
     }
@@ -248,14 +248,8 @@ public class FileComparer
     private void compareDirectories(){
         for (FileInfo startFileInfo : startDirectory) {
             for (FileInfo endFileInfo : endDirectory) {
-                if (startFileInfo == endFileInfo) continue;
-                /*
-                if (startFileInfo.equals(endFileInfo)) {
-                    addEqualities(this.fullEquality, startFileInfo, endFileInfo);
-                } else if (checkNameEquality(startFileInfo, endFileInfo)) {
-                    addEqualities(this.nameEquality, startFileInfo, endFileInfo);
 
-                 */
+                if (startFileInfo == endFileInfo) continue;
 
                 if (checkSizeEquality(startFileInfo, endFileInfo)) {
                     addEqualities(this.sizeEquality, startFileInfo, endFileInfo);

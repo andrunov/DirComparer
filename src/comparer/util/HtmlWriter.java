@@ -86,12 +86,6 @@ public class HtmlWriter {
             writer.println(beginHtml);
             this.printHtmlTitle(writer);
 
-            /*1-st level - 100 equality*/
-            //this.printHtmlTable(writer, this.comparer.getFullEquality(), resourceBundle.getString("1stLevelEquality"));
-
-            /*2 level - 100% names equality*/
-            //this.printHtmlTable(writer, this.comparer.getNameEquality(), resourceBundle.getString("2ndLevelEquality"));
-
             /*3 level - 100% sizes equality*/
             this.printHtmlTable(writer, this.comparer.getSizeEquality(), resourceBundle.getString("3thLevelEquality"));
 
