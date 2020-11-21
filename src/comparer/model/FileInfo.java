@@ -325,7 +325,6 @@ public class FileInfo implements Comparable<FileInfo>
         else {
             return this.getAbsolutePath().substring(this.getBaseFolderPath().length()+1);
         }
-
     }
 
 
