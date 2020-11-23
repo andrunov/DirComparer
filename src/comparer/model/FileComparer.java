@@ -404,7 +404,7 @@ public class FileComparer
         int diffChangeCount = 0;
         int[] foundIndexes = new int[longWord.length()];
         for (int i = 0; i < shortWord.length(); i++){
-            for (int j = 0; j < longWord.length(); j++){
+            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
                 if (foundIndexes[j] == 1) continue;
                 if (shortWord.charAt(i) == longWord.charAt(j)) {
                     foundIndexes[j] = 1;
