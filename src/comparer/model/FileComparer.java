@@ -453,7 +453,7 @@ public class FileComparer
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if ((songSimilarityDegree >= 60) && (songSimilarityDegree < 90) && (singerSimilarityDegree > 40)) {
+        } else if ((songSimilarityDegree >= 60) && (songSimilarityDegree < 80) && (singerSimilarityDegree > 40)) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
@@ -475,8 +475,13 @@ public class FileComparer
     private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int similarityDegree){
 
         if (similarityDegree == 100) {
+
             if (startFileInfo.getSingerWords().size() == 0 && endFileInfo.getSingerWords().size() == 0) {
                 addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+
+            } else {
+                addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
             }
 
@@ -488,7 +493,7 @@ public class FileComparer
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (similarityDegree >= 30) {
+        } else if (this.showSimilarityMiddle && similarityDegree >= 30) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
