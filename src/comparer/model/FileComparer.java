@@ -523,7 +523,7 @@ public class FileComparer
     {
         for (FileInfo fileInfo : list){
             for (FileInfo similar : fileInfo.getSimilarFiles()){
-                if (list.contains(similar)) {
+                if ((similar != fileInfo) && list.contains(similar)) {
                     int index = list.indexOf(similar);
                     FileInfo duplicate = list.get(index);
                     duplicate.getSimilarFiles().remove(fileInfo);

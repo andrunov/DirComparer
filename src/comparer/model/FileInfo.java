@@ -5,6 +5,7 @@ import comparer.util.Formatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class for hold info about file
@@ -299,24 +300,17 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
-    /*equals method*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FileInfo)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         FileInfo fileInfo = (FileInfo) o;
-
-        return getSize() == fileInfo.getSize() && getName().equals(fileInfo.getName());
-
+        return absolutePath.equals(fileInfo.absolutePath);
     }
 
-    /*hash code method*/
     @Override
     public int hashCode() {
-        int result = getName().hashCode();
-        result = 31 * result + (int) (getSize() ^ (getSize() >>> 32));
-        return result;
+        return Objects.hash(absolutePath);
     }
 
     /*show file path according static boolean showAbsolutePath*/
