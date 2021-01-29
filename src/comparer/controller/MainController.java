@@ -156,8 +156,8 @@ public class MainController implements Initializable {
             }
         }
         catch (Exception e){
-            Message.errorAlert(this.resourceBundle,"Error in MainController.executeComparing()", e);
-            e.printStackTrace();
+            Message.errorAlert(this.resourceBundle,"Error: ", e);
+          //  e.printStackTrace();
         }
     }
 
