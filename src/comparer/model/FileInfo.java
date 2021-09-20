@@ -6,6 +6,8 @@ import comparer.util.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class for hold info about file
@@ -82,37 +84,52 @@ public class FileInfo implements Comparable<FileInfo>
     }
 
     /*
-    * gets position of delimeter singer name fron song name
-    * in file name*/
+     * gets position of delimeter singer name from song name
+     * in file name*/
     private static int getDashPosition(String fileName) {
+        return  getDashPosition(fileName, 0);
+    }
 
-        int result = fileName.indexOf(" - ");
+    /*
+    * gets position of delimeter in file name from "from" position*/
+    private static int getDashPosition(String fileName, int from) {
+
+        int result = fileName.indexOf(" - ", from);
+
         if (result == -1) {
 
-            result = fileName.indexOf(" -");
+            result = fileName.indexOf(" -", from);
             if (result == -1) {
 
-                result = fileName.indexOf("- ");
+                result = fileName.indexOf("- ", from);
                 if (result == -1) {
 
-                    result = fileName.indexOf("_-_");
+                    result = fileName.indexOf("_-_", from);
                     if (result == -1) {
 
-                        result = fileName.indexOf("_");
+                        result = fileName.indexOf("_", from);
                         if (result == -1) {
 
-                            result = fileName.indexOf('-');
+                            result = fileName.indexOf('-', from);
                             if (result == -1) {
 
-                                result = fileName.indexOf(8211);
+                                result = fileName.indexOf(8211, from);
                                 if (result == -1) {
 
-                                    result = fileName.indexOf(8212);
+                                    result = fileName.indexOf(8212, from);
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+
+        //try to split filename more successfully by recursion
+        if (result != -1) {
+            if (!isName(fileName.substring(0, result)) || !isName(fileName.substring(result))){
+
+                    result = getDashPosition(fileName, result + 1);
             }
         }
 
@@ -321,5 +338,10 @@ public class FileInfo implements Comparable<FileInfo>
         }
     }
 
+    private static boolean isName(String string) {
+        Pattern p = Pattern.compile("[а-яА-Яa-zA-Z]");
+        Matcher m = p.matcher(string);
+        return m.find();
+    }
 
 }
