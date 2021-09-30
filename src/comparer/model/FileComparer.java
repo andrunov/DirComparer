@@ -20,6 +20,56 @@ public class FileComparer
      * that allow considering that words are equals*/
     private static final int WORD_EQUALITY_COEFF = 100;
 
+    private static Map<String, WordInfo> tempDictionary;
+
+    private static Map<Integer, WordInfo> dictionary;
+
+    static {
+        tempDictionary = new HashMap<>();
+        dictionary = new HashMap<>();
+    }
+
+    private static void updateDictionaries() {
+
+        int counter = 0;
+        int sumQuantity = 0;
+
+        for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
+            dictionary.put(counter++, entry.getValue());
+            sumQuantity = sumQuantity + entry.getValue().getQuantity();
+        }
+
+        tempDictionary.clear();
+
+        double averageQuantity = (double) sumQuantity/counter;
+
+        for (Map.Entry<Integer, WordInfo> entry : dictionary.entrySet()) {
+            WordInfo wordInfo = entry.getValue();
+            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
+        }
+
+
+
+    }
+
+    public static List<WordInfo> putWordsIntoDictionary(List<String> list) {
+        List<WordInfo> result = new ArrayList<>();
+        for (String string : list) {
+            Map<String, WordInfo> dictionary = FileComparer.getTempDictionary();
+            WordInfo wordInfo = null;
+            if (dictionary.containsKey(string)) {
+                wordInfo = dictionary.get(string);
+                wordInfo.setQuantity(wordInfo.getQuantity() + 1);
+            } else {
+                wordInfo = new WordInfo(string);
+                dictionary.put(string, wordInfo);
+            }
+            result.add(wordInfo);
+        }
+
+        return result;
+    }
+
     /*first directory path*/
     private String startDirectoryName;
 
@@ -83,6 +133,10 @@ public class FileComparer
         this.filter = new FileFilter(extensions);
         this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
         this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
+    }
+
+    public static Map<String, WordInfo> getTempDictionary() {
+        return tempDictionary;
     }
 
     /*getters and setters*/
@@ -199,7 +253,11 @@ public class FileComparer
     /*this method contains main logic of comparing*/
     public boolean compare(){
 
-    //    long startTime = System.currentTimeMillis();
+        // memory and performance test
+        System.gc();
+        long startTime = System.currentTimeMillis();
+        Runtime runtime = Runtime.getRuntime();
+        long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024);
 
         boolean result = fillFilenames();
         if (result) {
@@ -210,8 +268,10 @@ public class FileComparer
         }
         clean();
 
-    //    long finishTime = System.currentTimeMillis();
-    //    System.out.println("Performance: " + (finishTime - startTime) + " ms");
+        long finishTime = System.currentTimeMillis();
+        long memoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024);
+        System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " kb");
+        System.out.println("Performance: " + (finishTime - startTime) + " ms");
 
         return result;
     }
@@ -239,6 +299,7 @@ public class FileComparer
             this.endDirectory = fillDirectory(this.endDirectoryName, this.endDirectoryName);
             this.singleDirCompare = false;
         }
+        updateDictionaries();
         return true;
     }
 
@@ -251,8 +312,8 @@ public class FileComparer
 
                 if (startFileInfo == endFileInfo) continue;
 
-                if (checkSizeEquality(startFileInfo, endFileInfo)) {
-                    if (checkNameEquality(startFileInfo, endFileInfo)) {
+                if (startFileInfo.getSize() == endFileInfo.getSize()) {
+                    if (startFileInfo.nameIsEquals(endFileInfo)) {
                         addEqualities(this.fullEquality, startFileInfo, endFileInfo);
                     } else {
                         addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
@@ -300,6 +361,7 @@ public class FileComparer
         Sorter.sort(this.nameSimilarityMiddle);
         Sorter.sort(this.nameSimilarityLow);
         Sorter.sort(this.noSimilarities);
+        dictionary.clear();
     }
 
     /*find quantity of equal words in two List<String>*/
@@ -423,17 +485,6 @@ public class FileComparer
         return result;
     }
 
-
-    /*second iteration of compare. Find files with 100% matching of names*/
-    private boolean checkNameEquality(FileInfo startFileInfo, FileInfo endFileInfo){
-        return startFileInfo.getName().equals(endFileInfo.getName());
-    }
-
-
-    /*third iteration of compare. Find files with 100% matching of sizes*/
-    private boolean checkSizeEquality(FileInfo startFileInfo, FileInfo endFileInfo){
-        return  startFileInfo.getSize() == endFileInfo.getSize();
-    }
 
     /*insert two similar FileInfo in directory send as 1st parameter*/
     private void addEqualities(List<FileInfo> list, FileInfo startFileInfo, FileInfo endFileInfo){

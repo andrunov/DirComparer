@@ -5,6 +5,7 @@ import comparer.util.Formatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -157,6 +158,17 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
+    /**
+     *
+     * @param string
+     * @return true if string param contains at least 1 letter
+     */
+    private static boolean isName(String string) {
+        Pattern p = Pattern.compile("[а-яА-Яa-zA-Z]");
+        Matcher m = p.matcher(string);
+        return m.find();
+    }
+
     /*absolute path to file*/
     private String absolutePath;
 
@@ -172,8 +184,12 @@ public class FileInfo implements Comparable<FileInfo>
     /*split in words song name */
     private List<String> songWords;
 
+    private List<WordInfo> dSongWords;
+
     /*split in words singer name */
     private List<String> singerWords;
+
+    private List<WordInfo> dSingerWords;
 
     /*list of files with similar names*/
     private List<FileInfo> similarFiles = new ArrayList<>();
@@ -194,6 +210,8 @@ public class FileInfo implements Comparable<FileInfo>
         name = cutExtension(name);
         this.songWords = getSplitString(getSongName(name));
         this.singerWords = getSplitString(getSingerName(name));
+        this.dSongWords = FileComparer.putWordsIntoDictionary(this.songWords);
+        this.dSingerWords = FileComparer.putWordsIntoDictionary(this.singerWords);
         this.accepted = false;
     }
 
@@ -338,10 +356,31 @@ public class FileInfo implements Comparable<FileInfo>
         }
     }
 
-    private static boolean isName(String string) {
-        Pattern p = Pattern.compile("[а-яА-Яa-zA-Z]");
-        Matcher m = p.matcher(string);
-        return m.find();
+
+
+    public List<WordInfo> getdSongWords() {
+        return dSongWords;
     }
+
+    public List<WordInfo> getdSingerWords() {
+        return dSingerWords;
+    }
+
+    public boolean nameIsEquals(FileInfo other) {
+        if (this.dSingerWords.size() != other.getdSingerWords().size()) return false;
+        if (this.dSongWords.size() != other.getSongWords().size()) return false;
+        for (int i = 0; i < this.dSingerWords.size(); i++) {
+            int ID = this.dSingerWords.get(i).getID();
+            int otherID = other.dSingerWords.get(i).getID();
+            if (ID != otherID) return false;
+        }
+        for (int i = 0; i < this.dSongWords.size(); i++) {
+            int ID = this.dSongWords.get(i).getID();
+            int otherID = other.dSongWords.get(i).getID();
+            if (ID != otherID) return false;
+        }
+        return true;
+    }
+
 
 }
