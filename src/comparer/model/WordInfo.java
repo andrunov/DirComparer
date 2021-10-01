@@ -30,12 +30,12 @@ public class WordInfo {
      * words similar to this one. Key - similar word itself,
      * value - similarity coefficient (100% means that word is equal)
      * */
-    private final Map<WordInfo, Integer> similarWords;
+    private Map<WordInfo, Integer> similarWords;
 
     public WordInfo(String word) {
         this.word = word;
         this.quantity = 1;
-        this.similarWords = new HashMap<>();
+     //   this.similarWords = new HashMap<>();
     }
 
     public String getWord() {
@@ -67,6 +67,9 @@ public class WordInfo {
     }
 
     public Map<WordInfo, Integer> getSimilarWords() {
+        if (similarWords == null) {
+            similarWords = new HashMap<>();
+        }
         return similarWords;
     }
 

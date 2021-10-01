@@ -224,6 +224,7 @@ public class FileComparer
         long memoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
         System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " mb");
         System.out.println("Performance: " + (finishTime - startTime) + " ms");
+        System.gc();
 
         return result;
     }
