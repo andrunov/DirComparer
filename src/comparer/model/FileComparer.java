@@ -82,7 +82,7 @@ public class FileComparer
         this.filter = new FileFilter(extensions);
         this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
         this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
-        this.tempDictionary = new HashMap<>();
+        FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
     }
 
