@@ -1,6 +1,5 @@
 package comparer.model;
 
-import comparer.controller.MainController;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 
