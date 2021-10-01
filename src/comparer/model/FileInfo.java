@@ -1,10 +1,12 @@
 package comparer.model;
 
+import comparer.controller.MainController;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -168,6 +170,24 @@ public class FileInfo implements Comparable<FileInfo>
         return m.find();
     }
 
+    public static List<WordInfo> putWordsIntoDictionary(List<String> list) {
+        List<WordInfo> result = new ArrayList<>();
+        for (String string : list) {
+            Map<String, WordInfo> dictionary = FileComparer.getTempDictionary();
+            WordInfo wordInfo = null;
+            if (dictionary.containsKey(string)) {
+                wordInfo = dictionary.get(string);
+                wordInfo.setQuantity(wordInfo.getQuantity() + 1);
+            } else {
+                wordInfo = new WordInfo(string);
+                dictionary.put(string, wordInfo);
+            }
+            result.add(wordInfo);
+        }
+
+        return result;
+    }
+
     /*absolute path to file*/
     private String absolutePath;
 
@@ -209,8 +229,8 @@ public class FileInfo implements Comparable<FileInfo>
         name = cutExtension(name);
         this.songWords = getSplitString(getSongName(name));
         this.singerWords = getSplitString(getSingerName(name));
-        this.dSongWords = FileComparer.putWordsIntoDictionary(this.songWords);
-        this.dSingerWords = FileComparer.putWordsIntoDictionary(this.singerWords);
+        this.dSongWords = putWordsIntoDictionary(this.songWords);
+        this.dSingerWords = putWordsIntoDictionary(this.singerWords);
         this.accepted = false;
     }
 

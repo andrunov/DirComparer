@@ -15,119 +15,9 @@ public class FileComparer
     * that allow considering that words are similar*/
     private static final int WORD_SIMILARITY_COEFF = 50;
 
-    /*
-     * percent of equal letters in two words
-     * that allow considering that words are equals*/
-    private static final int WORD_EQUALITY_COEFF = 100;
-
     private static Map<String, WordInfo> tempDictionary;
 
-    private static Map<Integer, WordInfo> dictionary;
-
-    static {
-        tempDictionary = new HashMap<>();
-        dictionary = new HashMap<>();
-    }
-
-    private static void updateDictionaries() {
-
-        int counter = 0;
-        int sumQuantity = 0;
-
-        for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
-            WordInfo wordInfo = entry.getValue();
-            wordInfo.setID(counter);
-            dictionary.put(counter, wordInfo);
-            sumQuantity = sumQuantity + entry.getValue().getQuantity();
-            counter++;
-        }
-
-        tempDictionary.clear();
-
-        double averageQuantity = (double) sumQuantity/counter;
-
-        for (Map.Entry<Integer, WordInfo> entry : dictionary.entrySet()) {
-            WordInfo wordInfo = entry.getValue();
-            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
-            for (Map.Entry<Integer, WordInfo> otherEntry : dictionary.entrySet()) {
-
-                WordInfo otherWordInfo = otherEntry.getValue();
-                if (wordInfo.getID() != otherWordInfo.getID()) {
-                    int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
-                    if ((difference >= WORD_SIMILARITY_COEFF)) {
-                        wordInfo.getSimilarWords().put(otherWordInfo, difference);
-                    }
-                }
-            }
-        }
-        dictionary.size();
-    }
-
-    /*
-     * find quantity of similar letters in two words,
-     * return 100 means words equality
-     * return 0 means that words are definitely different
-     * return value in range from 1 nj 99 means that words are similar in that degree */
-    private static int compareWords(String word1, String word2){
-
-        double lengthDiff =  ((double)(word1.length()) / word2.length());
-        if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
-        if (lengthDiff == 1.00) {
-            if (word1.equals(word2)) return 100;
-        }
-
-        String shortWord;
-        String longWord;
-        if (word1.length() <= word2.length()) {
-            shortWord = word1;
-            longWord = word2;
-        } else {
-            shortWord = word2;
-            longWord = word1;
-        }
-
-        int result = 0;
-        int lastDiffPosition = 0;
-        int diffChangeCount = 0;
-        int[] foundIndexes = new int[longWord.length()];
-        for (int i = 0; i < shortWord.length(); i++){
-            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
-                if (foundIndexes[j] == 1) continue;
-                if (shortWord.charAt(i) == longWord.charAt(j)) {
-                    foundIndexes[j] = 1;
-                    if ((i - j) != lastDiffPosition) {
-                        diffChangeCount++;
-                        if (diffChangeCount >= 2) return 0;
-                        lastDiffPosition = i - j;
-                    }
-                    result = result + 1;
-                    break;
-                }
-            }
-        }
-        int length = Math.max(shortWord.length(), longWord.length());
-        result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
-        return result;
-    }
-
-
-    public static List<WordInfo> putWordsIntoDictionary(List<String> list) {
-        List<WordInfo> result = new ArrayList<>();
-        for (String string : list) {
-            Map<String, WordInfo> dictionary = FileComparer.getTempDictionary();
-            WordInfo wordInfo = null;
-            if (dictionary.containsKey(string)) {
-                wordInfo = dictionary.get(string);
-                wordInfo.setQuantity(wordInfo.getQuantity() + 1);
-            } else {
-                wordInfo = new WordInfo(string);
-                dictionary.put(string, wordInfo);
-            }
-            result.add(wordInfo);
-        }
-
-        return result;
-    }
+    private List<WordInfo> dictionary;
 
     /*first directory path*/
     private String startDirectoryName;
@@ -192,10 +82,8 @@ public class FileComparer
         this.filter = new FileFilter(extensions);
         this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
         this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
-    }
-
-    public static Map<String, WordInfo> getTempDictionary() {
-        return tempDictionary;
+        this.tempDictionary = new HashMap<>();
+        this.dictionary = new ArrayList<>();
     }
 
     /*getters and setters*/
@@ -309,6 +197,11 @@ public class FileComparer
         this.showSimilarityLow = showSimilarityLow;
     }
 
+    public static Map<String, WordInfo> getTempDictionary() {
+        return tempDictionary;
+    }
+
+
     /*this method contains main logic of comparing*/
     public boolean compare(){
 
@@ -420,7 +313,6 @@ public class FileComparer
         Sorter.sort(this.nameSimilarityMiddle);
         Sorter.sort(this.nameSimilarityLow);
         Sorter.sort(this.noSimilarities);
-        dictionary.clear();
     }
 
     /*find quantity of equal words in two List<String>*/
@@ -498,6 +390,84 @@ public class FileComparer
         return result;
     }
 
+    private void updateDictionaries() {
+
+        int counter = 0;
+        int sumQuantity = 0;
+
+        for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
+            WordInfo wordInfo = entry.getValue();
+            wordInfo.setID(counter);
+            dictionary.add(wordInfo);
+            sumQuantity = sumQuantity + entry.getValue().getQuantity();
+            counter++;
+        }
+
+        tempDictionary.clear();
+
+        double averageQuantity = (double) sumQuantity/counter;
+
+        for (WordInfo wordInfo : dictionary) {
+            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
+            for (WordInfo otherWordInfo : dictionary) {
+
+                if (wordInfo.getID() != otherWordInfo.getID()) {
+                    int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
+                    if ((difference >= WORD_SIMILARITY_COEFF)) {
+                        wordInfo.getSimilarWords().put(otherWordInfo, difference);
+                    }
+                }
+            }
+        }
+        dictionary.clear();
+    }
+
+    /*
+     * find quantity of similar letters in two words,
+     * return 100 means words equality
+     * return 0 means that words are definitely different
+     * return value in range from 1 nj 99 means that words are similar in that degree */
+    private int compareWords(String word1, String word2){
+
+        double lengthDiff =  ((double)(word1.length()) / word2.length());
+        if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
+        if (lengthDiff == 1.00) {
+            if (word1.equals(word2)) return 100;
+        }
+
+        String shortWord;
+        String longWord;
+        if (word1.length() <= word2.length()) {
+            shortWord = word1;
+            longWord = word2;
+        } else {
+            shortWord = word2;
+            longWord = word1;
+        }
+
+        int result = 0;
+        int lastDiffPosition = 0;
+        int diffChangeCount = 0;
+        int[] foundIndexes = new int[longWord.length()];
+        for (int i = 0; i < shortWord.length(); i++){
+            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
+                if (foundIndexes[j] == 1) continue;
+                if (shortWord.charAt(i) == longWord.charAt(j)) {
+                    foundIndexes[j] = 1;
+                    if ((i - j) != lastDiffPosition) {
+                        diffChangeCount++;
+                        if (diffChangeCount >= 2) return 0;
+                        lastDiffPosition = i - j;
+                    }
+                    result = result + 1;
+                    break;
+                }
+            }
+        }
+        int length = Math.max(shortWord.length(), longWord.length());
+        result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
+        return result;
+    }
 
     /*insert two similar FileInfo in directory send as 1st parameter*/
     private void addEqualities(List<FileInfo> list, FileInfo startFileInfo, FileInfo endFileInfo){
