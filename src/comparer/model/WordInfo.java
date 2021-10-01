@@ -1,23 +1,45 @@
 package comparer.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class WordInfo {
 
+    /**
+     * unique identifier*/
     private int ID;
 
-    private String word;
+    /**
+     * contains word itself*/
+    private final String word;
 
+    /**
+     * quantity ow this word in representation
+     * */
     private int quantity;
 
+    /**
+     * weight of this word in representation.
+     * Than bigger weight, than more unique word.
+     * Small value means that word is very spread in representation.
+     * */
     private double weight;
 
-    private Map<Integer, WordInfo> similarWords;
+    /**
+     * words similar to this one. Key - similar word itself,
+     * value - similarity coefficient (100% means that word is equal)
+     * */
+    private final Map<WordInfo, Integer> similarWords;
 
     public WordInfo(String word) {
         this.word = word;
         this.quantity = 1;
+        this.similarWords = new HashMap<>();
+    }
+
+    public String getWord() {
+        return word;
     }
 
     public int getQuantity() {
@@ -44,19 +66,20 @@ public class WordInfo {
         this.ID = ID;
     }
 
+    public Map<WordInfo, Integer> getSimilarWords() {
+        return similarWords;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WordInfo wordInfo = (WordInfo) o;
-        return word.equals(wordInfo.word);
+        return ID == wordInfo.ID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(word);
+        return Objects.hash(ID);
     }
-
-
-
 }

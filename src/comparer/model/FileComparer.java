@@ -35,8 +35,11 @@ public class FileComparer
         int sumQuantity = 0;
 
         for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
-            dictionary.put(counter++, entry.getValue());
+            WordInfo wordInfo = entry.getValue();
+            wordInfo.setID(counter);
+            dictionary.put(counter, wordInfo);
             sumQuantity = sumQuantity + entry.getValue().getQuantity();
+            counter++;
         }
 
         tempDictionary.clear();
@@ -46,11 +49,67 @@ public class FileComparer
         for (Map.Entry<Integer, WordInfo> entry : dictionary.entrySet()) {
             WordInfo wordInfo = entry.getValue();
             wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
+            for (Map.Entry<Integer, WordInfo> otherEntry : dictionary.entrySet()) {
+
+                WordInfo otherWordInfo = otherEntry.getValue();
+                if (wordInfo.getID() != otherWordInfo.getID()) {
+                    int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
+                    if ((difference >= WORD_SIMILARITY_COEFF)) {
+                        wordInfo.getSimilarWords().put(otherWordInfo, difference);
+                    }
+                }
+            }
+        }
+        dictionary.size();
+    }
+
+    /*
+     * find quantity of similar letters in two words,
+     * return 100 means words equality
+     * return 0 means that words are definitely different
+     * return value in range from 1 nj 99 means that words are similar in that degree */
+    private static int compareWords(String word1, String word2){
+
+        double lengthDiff =  ((double)(word1.length()) / word2.length());
+        if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
+        if (lengthDiff == 1.00) {
+            if (word1.equals(word2)) return 100;
         }
 
+        String shortWord;
+        String longWord;
+        if (word1.length() <= word2.length()) {
+            shortWord = word1;
+            longWord = word2;
+        } else {
+            shortWord = word2;
+            longWord = word1;
+        }
 
-
+        int result = 0;
+        int lastDiffPosition = 0;
+        int diffChangeCount = 0;
+        int[] foundIndexes = new int[longWord.length()];
+        for (int i = 0; i < shortWord.length(); i++){
+            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
+                if (foundIndexes[j] == 1) continue;
+                if (shortWord.charAt(i) == longWord.charAt(j)) {
+                    foundIndexes[j] = 1;
+                    if ((i - j) != lastDiffPosition) {
+                        diffChangeCount++;
+                        if (diffChangeCount >= 2) return 0;
+                        lastDiffPosition = i - j;
+                    }
+                    result = result + 1;
+                    break;
+                }
+            }
+        }
+        int length = Math.max(shortWord.length(), longWord.length());
+        result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
+        return result;
     }
+
 
     public static List<WordInfo> putWordsIntoDictionary(List<String> list) {
         List<WordInfo> result = new ArrayList<>();
@@ -257,7 +316,7 @@ public class FileComparer
         System.gc();
         long startTime = System.currentTimeMillis();
         Runtime runtime = Runtime.getRuntime();
-        long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024);
+        long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
 
         boolean result = fillFilenames();
         if (result) {
@@ -269,8 +328,8 @@ public class FileComparer
         clean();
 
         long finishTime = System.currentTimeMillis();
-        long memoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024);
-        System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " kb");
+        long memoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+        System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " mb");
         System.out.println("Performance: " + (finishTime - startTime) + " ms");
 
         return result;
@@ -319,11 +378,11 @@ public class FileComparer
                         addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
                     }
                 } else {
-                    int songSimilarWords = this.comparePhrases(startFileInfo.getSongWords(), endFileInfo.getSongWords());
+                    int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords());
                     if (startFileInfo.getSingerWords().size() == 0 || endFileInfo.getSingerWords().size() == 0) {
                         insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
                     } else {
-                        int singerSimilarWords = this.comparePhrases(startFileInfo.getSingerWords(), endFileInfo.getSingerWords());
+                        int singerSimilarWords = this.comparePhrases(startFileInfo.getdSingerWords(), endFileInfo.getdSingerWords());
                         insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
                     }
                 }
@@ -389,10 +448,10 @@ public class FileComparer
      * however the order of words may be different)
      * return 0 means that phrases are definitely different
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    private int comparePhrases(List<String> phrase1, List<String> phrase2){
+    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
         int result = 0;
-        List<String> longPhrase1;
-        List<String> shortPhrase;
+        List<WordInfo> longPhrase1;
+        List<WordInfo> shortPhrase;
         if (phrase1.size() >= phrase2.size()) {
             longPhrase1 = phrase1;
             shortPhrase = phrase2;
@@ -402,21 +461,23 @@ public class FileComparer
         }
         int[] foundIndexes = new int[shortPhrase.size()];
 
-        for (String startWord : longPhrase1){
+        for (WordInfo startWord : longPhrase1){
             int counter = 0;
             int maxFound = 0;
             int indexForMaxFound = 0;
 
-            for (String endWord: shortPhrase){
+            for (WordInfo endWord: shortPhrase){
                 if (foundIndexes[counter] < 100) {
-                    int difference = this.compareWords(startWord, endWord);
 
-                    if ((difference == WORD_EQUALITY_COEFF)) {
+                    int difference;
+                    if (startWord.getID() == endWord.getID()) {
+                        difference = 100;
                         maxFound = difference;
                         indexForMaxFound = counter;
                         break;
 
-                    } else if ((difference >= WORD_SIMILARITY_COEFF)) {
+                    } else if (startWord.getSimilarWords().containsKey(endWord)) {
+                        difference = startWord.getSimilarWords().get(endWord);
                         if (difference > maxFound) {
                             maxFound = difference;
                             indexForMaxFound = counter;
@@ -434,54 +495,6 @@ public class FileComparer
             result = result + i;
         }
         result = result / length;
-        return result;
-    }
-
-
-    /*
-    * find quantity of similar letters in two words,
-    * return 100 means words equality
-    * return 0 means that words are definitely different
-    * return value in range from 1 nj 99 means that words are similar in that degree */
-    private int compareWords(String word1, String word2){
-
-        double lengthDiff =  ((double)(word1.length()) / word2.length());
-        if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
-        if (lengthDiff == 1.00) {
-            if (word1.equals(word2)) return 100;
-        }
-
-        String shortWord;
-        String longWord;
-        if (word1.length() <= word2.length()) {
-            shortWord = word1;
-            longWord = word2;
-        } else {
-            shortWord = word2;
-            longWord = word1;
-        }
-
-        int result = 0;
-        int lastDiffPosition = 0;
-        int diffChangeCount = 0;
-        int[] foundIndexes = new int[longWord.length()];
-        for (int i = 0; i < shortWord.length(); i++){
-            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
-                if (foundIndexes[j] == 1) continue;
-                if (shortWord.charAt(i) == longWord.charAt(j)) {
-                    foundIndexes[j] = 1;
-                    if ((i - j) != lastDiffPosition) {
-                        diffChangeCount++;
-                        if (diffChangeCount >= 2) return 0;
-                        lastDiffPosition = i - j;
-                    }
-                    result = result + 1;
-                    break;
-                }
-            }
-        }
-        int length = Math.max(shortWord.length(), longWord.length());
-        result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
         return result;
     }
 
