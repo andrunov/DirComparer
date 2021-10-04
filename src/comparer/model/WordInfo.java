@@ -1,6 +1,5 @@
 package comparer.model;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,6 +25,7 @@ public class WordInfo {
      * */
     private double weight;
 
+
     /**
      * words similar to this one. Key - similar word itself,
      * value - similarity coefficient (100% means that word is equal)
@@ -35,7 +35,6 @@ public class WordInfo {
     public WordInfo(String word) {
         this.word = word;
         this.quantity = 1;
-     //   this.similarWords = new HashMap<>();
     }
 
     public String getWord() {
@@ -67,10 +66,11 @@ public class WordInfo {
     }
 
     public Map<WordInfo, Integer> getSimilarWords() {
-        if (similarWords == null) {
-            similarWords = new HashMap<>();
-        }
         return similarWords;
+    }
+
+    public void setSimilarWords(Map<WordInfo, Integer> similarWords) {
+        this.similarWords = similarWords;
     }
 
     @Override

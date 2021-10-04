@@ -34,7 +34,6 @@ public class FileInfo implements Comparable<FileInfo>
         newFileInfo.setBaseFolderPath(fileInfo.getBaseFolderPath());
         newFileInfo.setName(fileInfo.getName());
         newFileInfo.setSize(fileInfo.getSize());
-        newFileInfo.setSongWords(fileInfo.getSongWords());
         return newFileInfo;
     }
 
@@ -199,13 +198,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*size of file*/
     private long size;
 
-    /*split in words song name */
-    private List<String> songWords;
-
     private List<WordInfo> dSongWords;
-
-    /*split in words singer name */
-    private List<String> singerWords;
 
     private List<WordInfo> dSingerWords;
 
@@ -226,10 +219,8 @@ public class FileInfo implements Comparable<FileInfo>
         this.name = name;
         this.size = size;
         name = cutExtension(name);
-        this.songWords = getSplitString(getSongName(name));
-        this.singerWords = getSplitString(getSingerName(name));
-        this.dSongWords = putWordsIntoDictionary(this.songWords);
-        this.dSingerWords = putWordsIntoDictionary(this.singerWords);
+        this.dSongWords = putWordsIntoDictionary(getSplitString(getSongName(name)));
+        this.dSingerWords = putWordsIntoDictionary(getSplitString(getSingerName(name)));
         this.accepted = false;
     }
 
@@ -264,22 +255,6 @@ public class FileInfo implements Comparable<FileInfo>
 
     public void setSize(long size) {
         this.size = size;
-    }
-
-    public List<String> getSongWords() {
-        return songWords;
-    }
-
-    public void setSongWords(List<String> songWords) {
-        this.songWords = songWords;
-    }
-
-    public List<String> getSingerWords() {
-        return singerWords;
-    }
-
-    public void setSingerWords(List<String> singerWords) {
-        this.singerWords = singerWords;
     }
 
     public void setSimilarFiles(List<FileInfo> similarFiles) {
@@ -386,7 +361,7 @@ public class FileInfo implements Comparable<FileInfo>
 
     public boolean nameIsEquals(FileInfo other) {
         if (this.dSingerWords.size() != other.getdSingerWords().size()) return false;
-        if (this.dSongWords.size() != other.getSongWords().size()) return false;
+        if (this.dSongWords.size() != other.getdSongWords().size()) return false;
         for (int i = 0; i < this.dSingerWords.size(); i++) {
             int ID = this.dSingerWords.get(i).getID();
             int otherID = other.dSingerWords.get(i).getID();

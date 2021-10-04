@@ -273,7 +273,7 @@ public class FileComparer
                     }
                 } else {
                     int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords());
-                    if (startFileInfo.getSingerWords().size() == 0 || endFileInfo.getSingerWords().size() == 0) {
+                    if (startFileInfo.getdSingerWords().size() == 0 || endFileInfo.getdSingerWords().size() == 0) {
                         insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
                     } else {
                         int singerSimilarWords = this.comparePhrases(startFileInfo.getdSingerWords(), endFileInfo.getdSingerWords());
@@ -369,11 +369,13 @@ public class FileComparer
                         indexForMaxFound = counter;
                         break;
 
-                    } else if (startWord.getSimilarWords().containsKey(endWord)) {
-                        difference = startWord.getSimilarWords().get(endWord);
-                        if (difference > maxFound) {
-                            maxFound = difference;
-                            indexForMaxFound = counter;
+                    } else if (startWord.getSimilarWords() != null) {
+                        if (startWord.getSimilarWords().containsKey(endWord)) {
+                            difference = startWord.getSimilarWords().get(endWord);
+                            if (difference > maxFound) {
+                                maxFound = difference;
+                                indexForMaxFound = counter;
+                            }
                         }
                     }
                 }
@@ -415,6 +417,9 @@ public class FileComparer
                 if (wordInfo.getID() != otherWordInfo.getID()) {
                     int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
                     if ((difference >= WORD_SIMILARITY_COEFF)) {
+                        if (wordInfo.getSimilarWords() == null) {
+                            wordInfo.setSimilarWords(new HashMap<>());
+                        }
                         wordInfo.getSimilarWords().put(otherWordInfo, difference);
                     }
                 }
@@ -511,7 +516,7 @@ public class FileComparer
 
         if (similarityDegree == 100) {
 
-            if (startFileInfo.getSingerWords().size() == 0 && endFileInfo.getSingerWords().size() == 0) {
+            if (startFileInfo.getdSingerWords().size() == 0 && endFileInfo.getdSingerWords().size() == 0) {
                 addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
 
