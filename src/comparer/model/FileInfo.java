@@ -35,7 +35,6 @@ public class FileInfo implements Comparable<FileInfo>
         FileInfo newFileInfo = new FileInfo();
         newFileInfo.ID = fileInfo.ID;
         newFileInfo.setAbsolutePath(fileInfo.getAbsolutePath());
-        newFileInfo.setBaseFolderPath(fileInfo.getBaseFolderPath());
         newFileInfo.setSize(fileInfo.getSize());
         return newFileInfo;
     }
@@ -197,9 +196,6 @@ public class FileInfo implements Comparable<FileInfo>
     /*absolute path to file*/
     private String absolutePath;
 
-    /*base folder from to show file path*/
-    private String baseFolderPath;
-
     /*size of file*/
     private long size;
 
@@ -221,7 +217,6 @@ public class FileInfo implements Comparable<FileInfo>
     public FileInfo(String absolutePath, String baseFolderPath, String name, long size) {
         this.ID = FileInfo.fileInfoCounter++;
         this.absolutePath = absolutePath;
-        this.baseFolderPath = baseFolderPath;
         this.size = size;
         name = cutExtension(name);
         this.dSongWords = putWordsIntoDictionary(getSplitString(getSongName(name)));
@@ -272,11 +267,8 @@ public class FileInfo implements Comparable<FileInfo>
     }
 
     public String getBaseFolderPath() {
-        return baseFolderPath;
-    }
-
-    public void setBaseFolderPath(String baseFolderPath) {
-        this.baseFolderPath = baseFolderPath;
+        int lastSlash = this.absolutePath.lastIndexOf('\\') ;
+        return this.absolutePath.substring(0, lastSlash);
     }
 
     public static int getMinLength() {
