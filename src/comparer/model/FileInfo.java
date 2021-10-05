@@ -237,8 +237,7 @@ public class FileInfo implements Comparable<FileInfo>
     public String getName()
     {
         int lastSlash = this.absolutePath.lastIndexOf('\\') ;
-        int lastDot = this.absolutePath.lastIndexOf('.');
-        return this.absolutePath.substring(lastSlash + 1, lastDot);
+        return this.absolutePath.substring(lastSlash + 1);
     }
 
     public List<FileInfo> getSimilarFiles()

@@ -13,11 +13,11 @@ public class FileComparer
     /*
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
-    private static final int WORD_SIMILARITY_COEFF = 50;
+    private static final int WORD_SIMILARITY_COEFF = 75;
 
     private static Map<String, WordInfo> tempDictionary;
 
-    private List<WordInfo> dictionary;
+    private final List<WordInfo> dictionary;
 
     /*first directory path*/
     private String startDirectoryName;
@@ -348,6 +348,7 @@ public class FileComparer
                     int difference;
                     if (startWord.getID() == endWord.getID()) {
                         difference = 100;
+                        difference = (int) (difference * (startWord.getWeight()));
                         maxFound = difference;
                         indexForMaxFound = counter;
                         break;
@@ -355,6 +356,7 @@ public class FileComparer
                     } else if (startWord.getSimilarWords() != null) {
                         if (startWord.getSimilarWords().containsKey(endWord)) {
                             difference = startWord.getSimilarWords().get(endWord);
+                            difference = (int) (difference + startWord.getWeight() + endWord.getWeight());
                             if (difference > maxFound) {
                                 maxFound = difference;
                                 indexForMaxFound = counter;
@@ -393,8 +395,13 @@ public class FileComparer
 
         double averageQuantity = (double) sumQuantity/counter;
 
+        System.out.println("average quantity: " + averageQuantity);
+        System.out.println("Word\tquantity\tweight");
+
         for (WordInfo wordInfo : dictionary) {
-            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
+            wordInfo.setWeight((averageQuantity - wordInfo.getQuantity())/wordInfo.getQuantity()*100);
+
+            System.out.println(wordInfo.getWord() + "\t" +wordInfo.getQuantity()  + "\t" + wordInfo.getWeight());
             for (WordInfo otherWordInfo : dictionary) {
 
                 if (wordInfo.getID() != otherWordInfo.getID()) {
