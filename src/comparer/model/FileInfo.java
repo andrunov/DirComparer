@@ -21,6 +21,9 @@ public class FileInfo implements Comparable<FileInfo>
     /*show absolute path in reports or not*/
     private static boolean showAbsolutePath;
 
+    /*for increase ID of wordInfo objects*/
+    private static int fileInfoCounter;
+
     /*static getter for minLength*/
     static {
         minLength = AppPreferences.getMinStringLength();
@@ -30,9 +33,9 @@ public class FileInfo implements Comparable<FileInfo>
     /*copy FileInfo excluding List<FileInfo> similarFiles*/
     public static FileInfo copy(FileInfo fileInfo){
         FileInfo newFileInfo = new FileInfo();
+        newFileInfo.ID = fileInfo.ID;
         newFileInfo.setAbsolutePath(fileInfo.getAbsolutePath());
         newFileInfo.setBaseFolderPath(fileInfo.getBaseFolderPath());
-        newFileInfo.setName(fileInfo.getName());
         newFileInfo.setSize(fileInfo.getSize());
         return newFileInfo;
     }
@@ -186,14 +189,16 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
+    /**
+     * unique identifier
+     * */
+    private int ID;
+
     /*absolute path to file*/
     private String absolutePath;
 
     /*base folder from to show file path*/
     private String baseFolderPath;
-
-    /*name of file*/
-    private String name;
 
     /*size of file*/
     private long size;
@@ -214,9 +219,9 @@ public class FileInfo implements Comparable<FileInfo>
 
     /*constructor*/
     public FileInfo(String absolutePath, String baseFolderPath, String name, long size) {
+        this.ID = FileInfo.fileInfoCounter++;
         this.absolutePath = absolutePath;
         this.baseFolderPath = baseFolderPath;
-        this.name = name;
         this.size = size;
         name = cutExtension(name);
         this.dSongWords = putWordsIntoDictionary(getSplitString(getSongName(name)));
@@ -236,12 +241,9 @@ public class FileInfo implements Comparable<FileInfo>
 
     public String getName()
     {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
+        int lastSlash = this.absolutePath.lastIndexOf('\\') ;
+        int lastDot = this.absolutePath.lastIndexOf('.');
+        return this.absolutePath.substring(lastSlash + 1, lastDot);
     }
 
     public List<FileInfo> getSimilarFiles()
@@ -317,28 +319,24 @@ public class FileInfo implements Comparable<FileInfo>
         return String.format("%-2s%-87.87s%10.10s%3s%5s","|",this.showPath(),sizeFormatted, "mb","|");
     }
 
-    /*compare to method*/
-    @Override
-    public int compareTo(FileInfo other)
-    {
-        int result = this.name.compareTo(other.name);
-        if (result==0){
-            result = Long.compare(this.size, other.size);
-        }
-        return result;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FileInfo fileInfo = (FileInfo) o;
-        return absolutePath.equals(fileInfo.absolutePath);
+        return ID == fileInfo.ID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(absolutePath);
+        return Objects.hash(ID);
+    }
+
+    /*compare to method*/
+    @Override
+    public int compareTo(FileInfo other)
+    {
+        return this.ID - other.ID;
     }
 
     /*show file path according static boolean showAbsolutePath*/
@@ -348,8 +346,6 @@ public class FileInfo implements Comparable<FileInfo>
             return this.getAbsolutePath().substring(this.getBaseFolderPath().length()+1);
         }
     }
-
-
 
     public List<WordInfo> getdSongWords() {
         return dSongWords;

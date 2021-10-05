@@ -316,23 +316,6 @@ public class FileComparer
         Sorter.sort(this.noSimilarities);
     }
 
-    /*find quantity of equal words in two List<String>*/
-    private int findEqualWords(List<String> startWords, List<String> endWords){
-        int result = 0;
-        for (String startWord : startWords){
-            for (String endWord: endWords){
-                int difference = startWord.compareTo(endWord);
-                if (difference == 0){
-                    result++;
-                    /*words in lists were sort, so if endWord > startWord that means there cant be equals words left*/
-                }else if(difference<0){
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
     /*find quantity of similar words in two List<String>, return 100 means equality */
 
     /*
@@ -621,7 +604,7 @@ public class FileComparer
 
                     File file = new File(absoluteFilePath);
                     if (file.isFile()) {
-                        result.add(new FileInfo(absoluteFilePath, baseDirectoryPath,filePath, file.length()));
+                        result.add(new FileInfo(absoluteFilePath, baseDirectoryPath, filePath, file.length()));
                     } else if (file.isDirectory()) {
                         result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
                     }

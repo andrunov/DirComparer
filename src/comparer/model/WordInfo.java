@@ -6,11 +6,13 @@ import java.util.Objects;
 public class WordInfo {
 
     /**
-     * unique identifier*/
+     * unique identifier
+     * */
     private int ID;
 
     /**
-     * contains word itself*/
+     * contains word itself
+     * */
     private final String word;
 
     /**
