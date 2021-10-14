@@ -18,16 +18,12 @@ public class FileInfo implements Comparable<FileInfo>
     /*words shorted than minLength letters not participate in compare*/
     private static int minLength;
 
-    /*show absolute path in reports or not*/
-    private static boolean showAbsolutePath;
-
     /*for increase ID of wordInfo objects*/
     private static int fileInfoCounter;
 
     /*static getter for minLength*/
     static {
         minLength = AppPreferences.getMinStringLength();
-        showAbsolutePath = AppPreferences.getShowAbsolutePath();
     }
 
     /*copy FileInfo excluding List<FileInfo> similarFiles*/
@@ -278,26 +274,18 @@ public class FileInfo implements Comparable<FileInfo>
         FileInfo.minLength = minLength;
     }
 
-    public static boolean isShowAbsolutePath() {
-        return showAbsolutePath;
-    }
-
-    public static void setShowAbsolutePath(boolean showAbsolutePath) {
-        FileInfo.showAbsolutePath = showAbsolutePath;
-    }
-
     /*to string method*/
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(" ---------------------------------------------------------------------------------------------------------");
         String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
-        sb.append(String.format("\r\n%-2s%-87.87s%10.10s%3s%5s","|",this.showPath(),sizeFormatted, "mb","|"));
+        sb.append(String.format("\r\n%-2s%-87.87s%10.10s%3s%5s","|",this.showName(),sizeFormatted, "mb","|"));
         if (!this.similarFiles.isEmpty()) {
             sb.append(String.format("\r\n%-5s%102s", "|", "|"));
             for (FileInfo fileInfo : similarFiles) {
                 sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize()*1.0/1048576);
-                sb.append(String.format("\r\n%-5s%-87.87s%10.10s%3s%2s","|",fileInfo.showPath(),sizeFormatted,"mb","|"));
+                sb.append(String.format("\r\n%-5s%-87.87s%10.10s%3s%2s","|",fileInfo.showName(),sizeFormatted,"mb","|"));
             }
         }
         sb.append("\r\n ---------------------------------------------------------------------------------------------------------");
@@ -307,7 +295,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*to string without similarities*/
     public String printWithoutSimilarities() {
         String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
-        return String.format("%-2s%-87.87s%10.10s%3s%5s","|",this.showPath(),sizeFormatted, "mb","|");
+        return String.format("%-2s%-87.87s%10.10s%3s%5s","|",this.showName(),sizeFormatted, "mb","|");
     }
 
     @Override
@@ -331,11 +319,8 @@ public class FileInfo implements Comparable<FileInfo>
     }
 
     /*show file path according static boolean showAbsolutePath*/
-    private String showPath(){
-        if (showAbsolutePath) return this.getAbsolutePath();
-        else {
-            return this.getAbsolutePath().substring(this.getBaseFolderPath().length()+1);
-        }
+    private String showName(){
+       return this.getAbsolutePath().substring(this.getBaseFolderPath().length()+1);
     }
 
     public List<WordInfo> getdSongWords() {

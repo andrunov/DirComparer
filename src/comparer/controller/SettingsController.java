@@ -53,14 +53,6 @@ public class SettingsController {
     @FXML
     private Button questionPath;
 
-    /*radio button for set absolute path in report*/
-    @FXML
-    private RadioButton absolutePathRadBtn;
-
-    /*radio button for set relative path in report*/
-    @FXML
-    private RadioButton relativePathRadBtn;
-
     /*label for for filter field*/
     @FXML
     private Label filterLbl;
@@ -89,6 +81,10 @@ public class SettingsController {
     @FXML
     private CheckBox showSimilarityLow;
 
+    /*checkbox for show analyze by letters*/
+    @FXML
+    private CheckBox analyzeByLetters;
+
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
@@ -106,9 +102,9 @@ public class SettingsController {
             this.filterTextField.setText(Formatter.getArrayAsString(fileFilter.getExtensions()));
         }
         this.minLengthWordField.setText(String.valueOf(FileInfo.getMinLength()));
-        this.absolutePathRadBtn.setSelected(AppPreferences.getShowAbsolutePath());
         this.showSimilarityMiddle.setSelected(this.comparer.isShowSimilarityMiddle());
         this.showSimilarityLow.setSelected(this.comparer.isShowSimilarityLow());
+        this.analyzeByLetters.setSelected(this.comparer.isAnalyzeByLetters());
     }
 
 
@@ -145,14 +141,14 @@ public class SettingsController {
             this.comparer.setFilter(filter);
             this.comparer.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
             this.comparer.setShowSimilarityLow(this.showSimilarityLow.isSelected());
+            this.comparer.setAnalyzeByLetters(this.analyzeByLetters.isSelected());
             FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));
-            FileInfo.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setMinStringLength(this.minLengthWordField.getText());
-            AppPreferences.setShowAbsolutePath(this.absolutePathRadBtn.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             AppPreferences.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
             AppPreferences.setShowSimilarityLow(this.showSimilarityLow.isSelected());
+            AppPreferences.setAnalyseByLetters(this.analyzeByLetters.isSelected());
             dialogStage.close();
         }
     }
@@ -210,11 +206,10 @@ public class SettingsController {
         this.filterLbl.setStyle(newSize);
         this.minLengthLbl.setStyle(newSize);
         this.pathLbl.setStyle(newSize);
-        this.absolutePathRadBtn.setStyle(newSize);
-        this.relativePathRadBtn.setStyle(newSize);
         this.questionPath.setStyle(newSize);
         this.showSimilarityMiddle.setStyle(newSize);
         this.showSimilarityLow.setStyle(newSize);
+        this.analyzeByLetters.setStyle(newSize);
         this.showMiddleLbl.setStyle(newSize);
         this.showLowLbl.setStyle(newSize);
     };

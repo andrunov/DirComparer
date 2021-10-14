@@ -59,7 +59,7 @@ public class WordInfo {
         this.weight = weight;
     }
 
-    public Integer getID() {
+    public int getID() {
         return ID;
     }
 

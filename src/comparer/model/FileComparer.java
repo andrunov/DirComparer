@@ -76,12 +76,17 @@ public class FileComparer
     /*show low similarity if true*/
     private boolean showSimilarityLow;
 
+    public boolean isAnalyzeByLetters() {
+        return analyzeByLetters;
+    }
+
     /*constructor. if extensions undefined filter no use*/
     public FileComparer() {
         String[] extensions = AppPreferences.getFilterExtensions();
         this.filter = new FileFilter(extensions);
         this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
         this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
+        this.analyzeByLetters = AppPreferences.getAnalyseByLetters();
         FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
     }
@@ -201,6 +206,12 @@ public class FileComparer
         return tempDictionary;
     }
 
+    public void setAnalyzeByLetters(boolean analyzeByLetters) {
+        this.analyzeByLetters = analyzeByLetters;
+    }
+
+    /*show analyze by letters*/
+    private boolean analyzeByLetters;
 
     /*this method contains main logic of comparing*/
     public boolean compare(){
@@ -261,6 +272,7 @@ public class FileComparer
     * in other case rest comparings will not works properly*/
     private void compareDirectories(){
         for (FileInfo startFileInfo : startDirectory) {
+            startFileInfo.getSize();
             for (FileInfo endFileInfo : endDirectory) {
 
                 if (startFileInfo == endFileInfo) continue;
@@ -352,8 +364,7 @@ public class FileComparer
                         maxFound = difference;
                         indexForMaxFound = counter;
                         break;
-
-                    } /*else if (startWord.getSimilarWords() != null) {
+                    } else if (this.analyzeByLetters && startWord.getSimilarWords() != null) {
                         if (startWord.getSimilarWords().containsKey(endWord)) {
                             difference = startWord.getSimilarWords().get(endWord);
                             difference = (int) (difference * (startWord.getWeight()));
@@ -362,7 +373,7 @@ public class FileComparer
                                 indexForMaxFound = counter;
                             }
                         }
-                    }*/
+                    }
                 }
                 counter++;
             }
@@ -391,18 +402,11 @@ public class FileComparer
         }
 
         tempDictionary.clear();
-
         double averageQuantity = (double) sumQuantity/counter;
-
-        //TODO remove prints
-
-        //System.out.println("average quantity: " + averageQuantity);
-        //System.out.println("Word\tquantity\tweight");
 
         for (WordInfo wordInfo : dictionary) {
             wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
 
-            //System.out.println(wordInfo.getWord() + "\t" +wordInfo.getQuantity()  + "\t" + wordInfo.getWeight());
             for (WordInfo otherWordInfo : dictionary) {
 
                 if (wordInfo.getID() != otherWordInfo.getID()) {

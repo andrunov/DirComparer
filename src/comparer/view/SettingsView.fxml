@@ -53,29 +53,12 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Button>
-                  <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="367.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                     <children>
-                        <RadioButton fx:id="relativePathRadBtn" disable="true" mnemonicParsing="false" selected="true" text="%RelativePath">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="showAbsolutePathsGroup" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="absolutePathRadBtn" disable="true" mnemonicParsing="false" text="%AbsolutePath" toggleGroup="$showAbsolutePathsGroup">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </RadioButton>
-                     </children>
-                  </HBox>
                   <Button fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" stylesheets="@../style/CustomRed.css" text="%Cancel" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Button>
-                  <Label fx:id="pathLbl" text="%PathInReport" GridPane.rowIndex="5">
+                  <Label fx:id="pathLbl" text="%Show" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -89,7 +72,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Button fx:id="questionPath" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showPathInfo" text="%Info" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                  <Button fx:id="questionPath" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showPathInfo" text="%Info" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -114,6 +97,11 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
+                  <CheckBox fx:id="analyzeByLetters" mnemonicParsing="false" text="%AnalyzeByLetters" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </CheckBox>
                </children>
             </GridPane>
         </items>
