@@ -320,9 +320,9 @@ public class FileComparer
 
     /*
      * find quantity of similar words in two phrases,
-     * return 100 means phrases equality (phrases contains equal words,
+     * return 100 NOT means phrases equality (phrases contains equal words,
      * however the order of words may be different)
-     * return 0 means that phrases are definitely different
+     * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
     private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
         int result = 0;
@@ -353,16 +353,16 @@ public class FileComparer
                         indexForMaxFound = counter;
                         break;
 
-                    } else if (startWord.getSimilarWords() != null) {
+                    } /*else if (startWord.getSimilarWords() != null) {
                         if (startWord.getSimilarWords().containsKey(endWord)) {
                             difference = startWord.getSimilarWords().get(endWord);
-                            difference = (int) (difference + startWord.getWeight() + endWord.getWeight());
+                            difference = (int) (difference * (startWord.getWeight()));
                             if (difference > maxFound) {
                                 maxFound = difference;
                                 indexForMaxFound = counter;
                             }
                         }
-                    }
+                    }*/
                 }
                 counter++;
             }
@@ -370,11 +370,10 @@ public class FileComparer
                 foundIndexes[indexForMaxFound] = maxFound;
             }
         }
-        int length = Math.max(phrase1.size(), phrase2.size());
         for (int i : foundIndexes) {
             result = result + i;
         }
-        result = result / length;
+        result = result / foundIndexes.length;
         return result;
     }
 
@@ -395,13 +394,15 @@ public class FileComparer
 
         double averageQuantity = (double) sumQuantity/counter;
 
-        System.out.println("average quantity: " + averageQuantity);
-        System.out.println("Word\tquantity\tweight");
+        //TODO remove prints
+
+        //System.out.println("average quantity: " + averageQuantity);
+        //System.out.println("Word\tquantity\tweight");
 
         for (WordInfo wordInfo : dictionary) {
-            wordInfo.setWeight((averageQuantity - wordInfo.getQuantity())/wordInfo.getQuantity()*100);
+            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
 
-            System.out.println(wordInfo.getWord() + "\t" +wordInfo.getQuantity()  + "\t" + wordInfo.getWeight());
+            //System.out.println(wordInfo.getWord() + "\t" +wordInfo.getQuantity()  + "\t" + wordInfo.getWeight());
             for (WordInfo otherWordInfo : dictionary) {
 
                 if (wordInfo.getID() != otherWordInfo.getID()) {
