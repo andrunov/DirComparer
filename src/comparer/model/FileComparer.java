@@ -337,55 +337,8 @@ public class FileComparer
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
     private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
-        int result = 0;
-        List<WordInfo> longPhrase1;
-        List<WordInfo> shortPhrase;
-        if (phrase1.size() >= phrase2.size()) {
-            longPhrase1 = phrase1;
-            shortPhrase = phrase2;
-        } else {
-            longPhrase1 = phrase2;
-            shortPhrase = phrase1;
-        }
-        int[] foundIndexes = new int[shortPhrase.size()];
-
-        for (WordInfo startWord : longPhrase1){
-            int counter = 0;
-            int maxFound = 0;
-            int indexForMaxFound = 0;
-
-            for (WordInfo endWord: shortPhrase){
-                if (foundIndexes[counter] < 100) {
-
-                    int difference;
-                    if (startWord.getID() == endWord.getID()) {
-                        difference = 100;
-                        difference = (int) (difference * (startWord.getWeight()));
-                        maxFound = difference;
-                        indexForMaxFound = counter;
-                        break;
-                    } else if (this.analyzeByLetters && startWord.getSimilarWords() != null) {
-                        if (startWord.getSimilarWords().containsKey(endWord)) {
-                            difference = startWord.getSimilarWords().get(endWord);
-                            difference = (int) (difference * (startWord.getWeight()));
-                            if (difference > maxFound) {
-                                maxFound = difference;
-                                indexForMaxFound = counter;
-                            }
-                        }
-                    }
-                }
-                counter++;
-            }
-            if (maxFound > foundIndexes[indexForMaxFound]) {
-                foundIndexes[indexForMaxFound] = maxFound;
-            }
-        }
-        for (int i : foundIndexes) {
-            result = result + i;
-        }
-        result = result / foundIndexes.length;
-        return result;
+        Difference difference = new Difference(phrase1, phrase2);
+        return difference.getDifference();
     }
 
     private void updateDictionaries() {
