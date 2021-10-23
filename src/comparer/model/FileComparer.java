@@ -216,11 +216,12 @@ public class FileComparer
     /*this method contains main logic of comparing*/
     public boolean compare(){
 
-        // memory and performance test
+        /* memory and performance test
         System.gc();
         long startTime = System.currentTimeMillis();
         Runtime runtime = Runtime.getRuntime();
         long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+         */
 
         boolean result = fillFilenames();
         if (result) {
@@ -231,11 +232,13 @@ public class FileComparer
         }
         clean();
 
+        /*
         long finishTime = System.currentTimeMillis();
         long memoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
         System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " mb");
         System.out.println("Performance: " + (finishTime - startTime) + " ms");
         System.gc();
+         */
 
         return result;
     }
@@ -272,7 +275,6 @@ public class FileComparer
     * in other case rest comparings will not works properly*/
     private void compareDirectories(){
         for (FileInfo startFileInfo : startDirectory) {
-            startFileInfo.getSize();
             for (FileInfo endFileInfo : endDirectory) {
 
                 if (startFileInfo == endFileInfo) continue;
@@ -524,7 +526,7 @@ public class FileComparer
     private void deleteEqualityDuplications(List<FileInfo> list) {
         for (FileInfo firstLoopFI : list) {
             String primaryFileInfoPath = firstLoopFI.getAbsolutePath();
-            ArrayList<String> similarFIPaths = new ArrayList<String>();
+            ArrayList<String> similarFIPaths = new ArrayList<>();
             for (FileInfo similarFI : firstLoopFI.getSimilarFiles()) {
                 similarFIPaths.add(similarFI.getAbsolutePath());
                 for (FileInfo secondLoopFI : list) {
@@ -562,18 +564,20 @@ public class FileComparer
         List<FileInfo> result = new ArrayList<>();
         File directory = new File(directoryPath);
         if (directory.isDirectory()){
-            String[] filePaths = directory.list();;
-            for (String filePath: filePaths){
-                String absoluteFilePath = directoryPath + "\\" + filePath;
-                if (this.filter.accept(absoluteFilePath)) {
+            String[] filePaths = directory.list();
+            if (filePaths != null) {
+                for (String filePath : filePaths) {
+                    String absoluteFilePath = directoryPath + "\\" + filePath;
+                    if (this.filter.accept(absoluteFilePath)) {
 
-                    File file = new File(absoluteFilePath);
-                    if (file.isFile()) {
-                        result.add(new FileInfo(absoluteFilePath, baseDirectoryPath, filePath, file.length()));
-                    } else if (file.isDirectory()) {
-                        result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
+                        File file = new File(absoluteFilePath);
+                        if (file.isFile()) {
+                            result.add(new FileInfo(absoluteFilePath, baseDirectoryPath, filePath, file.length()));
+                        } else if (file.isDirectory()) {
+                            result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
+                        }
+
                     }
-
                 }
             }
         }
