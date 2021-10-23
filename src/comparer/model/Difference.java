@@ -4,6 +4,9 @@ import java.util.List;
 
 public class Difference {
 
+    /*min coeff of difference to mark word as a similar*/
+    private static final int MIN_DIFF = 75;
+
     private List<WordInfo> firstList;
 
     private List<WordInfo> secondList;
@@ -19,7 +22,7 @@ public class Difference {
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    public int getDifference() {
+    public int getDifference( boolean analyzeByLetters) {
         int result = 0;
         List<WordInfo> shortList = null;
         List<WordInfo> longList = null;
@@ -49,13 +52,26 @@ public class Difference {
             WordInfo first = shortList.get(i);
             for (int j = 0; j < longList.size(); j++) {
                 WordInfo second = longList.get(j);
+
                 if (first.getID() == second.getID()) {
                     congruence[i] = true;
+
+                } else if (analyzeByLetters && first.getSimilarWords() != null) {
+                    if (first.getSimilarWords().containsKey(second)) {
+                        int difference = first.getSimilarWords().get(second);
+                        difference = (int) (difference * (first.getWeight()));
+                        if (difference > MIN_DIFF) {
+                            congruence[i] = true;
+                        }
+                    }
+                }
+
+                if (congruence[i]) {
                     int exactOrder = 100 - 100 * (i - j)/longList.size();
                     if (exactOrder < 0) exactOrder = exactOrder * -1;
                     order[i] = exactOrder;
                     continue outer;
-                }  //TODO insert analyze by letters here
+                }
             }
         }
 

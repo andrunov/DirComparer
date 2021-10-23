@@ -338,7 +338,7 @@ public class FileComparer
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
     private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
         Difference difference = new Difference(phrase1, phrase2);
-        return difference.getDifference();
+        return difference.getDifference(this.analyzeByLetters);
     }
 
     private void updateDictionaries() {

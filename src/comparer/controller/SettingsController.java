@@ -168,7 +168,7 @@ public class SettingsController {
     /*show info about absolute and relative path*/
     @FXML
     private void showPathInfo(){
-        Message.info(this.resourceBundle,"PathInfo");
+        Message.info(this.resourceBundle,"AnalyzeByLettersInfo");
     }
 
     /*check that user input correct data*/
