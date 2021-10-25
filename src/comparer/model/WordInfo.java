@@ -87,4 +87,17 @@ public class WordInfo {
     public int hashCode() {
         return Objects.hash(ID);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ID);
+        sb.append('\t');
+        sb.append(word);
+        sb.append('\t');
+        sb.append(quantity);
+        sb.append('\t');
+        sb.append(weight);
+        return sb.toString();
+    }
 }

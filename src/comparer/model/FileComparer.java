@@ -439,23 +439,27 @@ public class FileComparer
             addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if ((songSimilarityDegree >= 80)  && (singerSimilarityDegree > 50)) {
+        } else if ((songSimilarityDegree >= 90) && (songSimilarityDegree < 100) && (singerSimilarityDegree >= 50)) {
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if ((songSimilarityDegree >= 60) && (songSimilarityDegree < 80) && (singerSimilarityDegree > 40)) {
+        } else if ((songSimilarityDegree >= 80) && (songSimilarityDegree < 90) && (singerSimilarityDegree >= 50)) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if ((songSimilarityDegree >= 80)) {
+        } else if ((songSimilarityDegree >= 70) && (songSimilarityDegree < 80) && (singerSimilarityDegree >= 50)) {
+            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if ((songSimilarityDegree >= 70)) {
             addSimilarity(this.partNameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityMiddle && songSimilarityDegree >= 30) {
+        } else if (this.showSimilarityMiddle && songSimilarityDegree >= 60) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityLow && (songSimilarityDegree > 0)) {
+        } else if (this.showSimilarityLow && (songSimilarityDegree >= 50)) {
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
         }

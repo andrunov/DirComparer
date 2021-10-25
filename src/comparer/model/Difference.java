@@ -54,7 +54,10 @@ public class Difference {
                 WordInfo second = longList.get(j);
 
                 if (first.getID() == second.getID()) {
-                    congruence[i] = true;
+                    int difference = (int) (100 * (first.getWeight()));
+                    if (difference > MIN_DIFF) {
+                        congruence[i] = true;
+                    }
 
                 } else if (analyzeByLetters && first.getSimilarWords() != null) {
                     if (first.getSimilarWords().containsKey(second)) {
@@ -79,9 +82,10 @@ public class Difference {
             if (congruence[i]) {
                 result = result + order[i];
             }
-            result = result/congruence.length;
-            result = result * shortList.size() / longList.size();
         }
+
+        result = result/congruence.length;
+        result = result * shortList.size() / longList.size();
 
         return result;
     }
