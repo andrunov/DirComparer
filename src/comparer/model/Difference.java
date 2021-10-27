@@ -7,6 +7,9 @@ public class Difference {
     /*min coeff of difference to mark word as a similar*/
     private static final int MIN_DIFF = 75;
 
+    /*min weight of word to be considered*/
+    private static final int MIN_WEIGHT = 5;
+
     private List<WordInfo> firstList;
 
     private List<WordInfo> secondList;
@@ -55,7 +58,7 @@ public class Difference {
 
                 if (first.getID() == second.getID()) {
                     int difference = (int) (100 * (first.getWeight()));
-                    if (difference > MIN_DIFF) {
+                    if (difference > MIN_WEIGHT) {
                         congruence[i] = true;
                     }
 
