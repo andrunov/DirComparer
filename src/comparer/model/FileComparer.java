@@ -286,11 +286,11 @@ public class FileComparer
                         addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
                     }
                 } else {
-                    int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords());
+                    int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords(), true);
                     if (startFileInfo.getdSingerWords().size() == 0 || endFileInfo.getdSingerWords().size() == 0) {
                         insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
                     } else {
-                        int singerSimilarWords = this.comparePhrases(startFileInfo.getdSingerWords(), endFileInfo.getdSingerWords());
+                        int singerSimilarWords = this.comparePhrases(startFileInfo.getdSingerWords(), endFileInfo.getdSingerWords(), false);
                         insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
                     }
                 }
@@ -338,9 +338,9 @@ public class FileComparer
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
+    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2, boolean accountWeight){
         Difference difference = new Difference(phrase1, phrase2);
-        return difference.getDifference(this.analyzeByLetters);
+        return difference.getDifference(accountWeight, this.analyzeByLetters);
     }
 
     private void updateDictionaries() {
@@ -361,7 +361,7 @@ public class FileComparer
 
         for (WordInfo wordInfo : dictionary) {
             wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
-          //  System.out.println(wordInfo.getWord() +"\t" + wordInfo.getQuantity() + "\t" + wordInfo.getWeight());
+            //System.out.println(wordInfo.getWord() +"\t" + wordInfo.getQuantity() + "\t" + wordInfo.getWeight());
 
             for (WordInfo otherWordInfo : dictionary) {
 
@@ -435,31 +435,28 @@ public class FileComparer
 
     /*insert two similar FileInfo in suitable directory depending of similarity found words*/
     private void insertSimilarity(FileInfo startFileInfo, FileInfo endFileInfo, int songSimilarityDegree, int singerSimilarityDegree){
-        if (songSimilarityDegree >0 && singerSimilarityDegree >0) {
-            System.out.println(startFileInfo.getName() + "\t" + endFileInfo.getName() + "\t" + songSimilarityDegree + "\t" + singerSimilarityDegree);
-        }
 
         if (songSimilarityDegree == 100 && singerSimilarityDegree ==100) {
             addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (songSimilarityDegree >= 90 && singerSimilarityDegree >= 50) {
-            addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (songSimilarityDegree >= 75 && singerSimilarityDegree >= 50) {
-            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (songSimilarityDegree >= 60 && singerSimilarityDegree >= 50) {
-            addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (this.showSimilarityMiddle && songSimilarityDegree >= 50 && singerSimilarityDegree >= 50) {
+        } else if (this.showSimilarityMiddle && songSimilarityDegree >= 75 && singerSimilarityDegree <= 75) {
             addSimilarity(this.partNameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityLow && songSimilarityDegree >= 50) {
+        } else if (songSimilarityDegree >= 75) {
+            addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if (songSimilarityDegree > 60) {
+            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if (songSimilarityDegree > 50) {
+            addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+            startFileInfo.setAccepted(true);
+
+        } else if (this.showSimilarityLow && songSimilarityDegree > 40) {
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
         }
@@ -467,10 +464,6 @@ public class FileComparer
 
     /*insert two similar FileInfo in suitable directory depending of similarity found words*/
     private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int similarityDegree){
-
-        if (similarityDegree >0) {
-            System.out.println(startFileInfo.getName() + "\t" + endFileInfo.getName() + "\t" + similarityDegree  );
-        }
 
         if (similarityDegree == 100) {
 
@@ -483,19 +476,19 @@ public class FileComparer
                 startFileInfo.setAccepted(true);
             }
 
-        } else if (similarityDegree >= 90) {
+        } else if (similarityDegree >= 75) {
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (similarityDegree >= 75) {
+        } else if (similarityDegree > 60) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (similarityDegree >= 60) {
+        } else if (similarityDegree > 50) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityLow && (similarityDegree > 50)) {
+        } else if (this.showSimilarityLow && (similarityDegree > 40)) {
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
         }

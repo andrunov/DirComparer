@@ -25,7 +25,7 @@ public class Difference {
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    public int getDifference( boolean analyzeByLetters) {
+    public int getDifference(boolean accountWeight, boolean analyzeByLetters) {
         double result = 0;
         List<WordInfo> shortList = null;
         List<WordInfo> longList = null;
@@ -52,23 +52,21 @@ public class Difference {
 
         for (int i = 0; i < shortList.size(); i++) {
             WordInfo first = shortList.get(i);
-            for (int j = 0; j < longList.size(); j++) {
-                WordInfo second = longList.get(j);
-
+            for (WordInfo second : longList) {
                 if (first.getID() == second.getID()) {
-                   // congruence[i] = first.getWeight();
-                    congruence[i] = 1;
+                    if (accountWeight && first.getWeight() > 0.05) {
+                        congruence[i] = 1.0;
+                    }
 
                 } else if (analyzeByLetters && first.getSimilarWords() != null) {
                     if (first.getSimilarWords().containsKey(second)) {
                         int difference = first.getSimilarWords().get(second);
-                        congruence[i] = difference * (first.getWeight());
+                        if (accountWeight && first.getWeight() > 0.05) {
+                            congruence[i] = difference;
+                        }
                     }
                 }
 
-                double order = 1 - (double) (i - j) / longList.size();
-                if (order < 0) order = order * -1;
-                //congruence[i] = congruence[i] * order;
                 congruence[i] = congruence[i];
             }
         }

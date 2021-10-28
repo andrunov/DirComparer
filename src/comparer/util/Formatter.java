@@ -27,8 +27,7 @@ public class Formatter {
                 list.add(word.toLowerCase().replace('ё','е'));
             }
         }
-        Collections.sort(list);
-        return removeDuplications(list);
+        return list;
     }
 
     /*split 1-st par string into words according length of word (2-nd parameter)
