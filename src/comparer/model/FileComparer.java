@@ -440,7 +440,7 @@ public class FileComparer
             addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityMiddle && songSimilarityDegree >= 75 && singerSimilarityDegree <= 75) {
+        } else if (songSimilarityDegree >= 75 && singerSimilarityDegree <= 75) {
             addSimilarity(this.partNameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
