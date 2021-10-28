@@ -435,6 +435,9 @@ public class FileComparer
 
     /*insert two similar FileInfo in suitable directory depending of similarity found words*/
     private void insertSimilarity(FileInfo startFileInfo, FileInfo endFileInfo, int songSimilarityDegree, int singerSimilarityDegree){
+        if (songSimilarityDegree >0 && singerSimilarityDegree >0) {
+            System.out.println(startFileInfo.getName() + "\t" + endFileInfo.getName() + "\t" + songSimilarityDegree + "\t" + singerSimilarityDegree);
+        }
 
         if (songSimilarityDegree == 100 && singerSimilarityDegree ==100) {
             addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
@@ -464,6 +467,10 @@ public class FileComparer
 
     /*insert two similar FileInfo in suitable directory depending of similarity found words*/
     private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int similarityDegree){
+
+        if (similarityDegree >0) {
+            System.out.println(startFileInfo.getName() + "\t" + endFileInfo.getName() + "\t" + similarityDegree  );
+        }
 
         if (similarityDegree == 100) {
 

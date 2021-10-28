@@ -26,7 +26,7 @@ public class Difference {
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
     public int getDifference( boolean analyzeByLetters) {
-        int result = 0;
+        double result = 0;
         List<WordInfo> shortList = null;
         List<WordInfo> longList = null;
 
@@ -48,48 +48,37 @@ public class Difference {
             else return 0;
         }
 
-        boolean[] congruence = new boolean[shortList.size()];
-        int[] order = new int[shortList.size()];
+        double[] congruence = new double[shortList.size()];
 
-        outer: for (int i = 0; i < shortList.size(); i++) {
+        for (int i = 0; i < shortList.size(); i++) {
             WordInfo first = shortList.get(i);
             for (int j = 0; j < longList.size(); j++) {
                 WordInfo second = longList.get(j);
 
                 if (first.getID() == second.getID()) {
-                    int difference = (int) (100 * (first.getWeight()));
-                    if (difference > MIN_WEIGHT) {
-                        congruence[i] = true;
-                    }
+                   // congruence[i] = first.getWeight();
+                    congruence[i] = 1;
 
                 } else if (analyzeByLetters && first.getSimilarWords() != null) {
                     if (first.getSimilarWords().containsKey(second)) {
                         int difference = first.getSimilarWords().get(second);
-                        difference = (int) (difference * (first.getWeight()));
-                        if (difference > MIN_DIFF) {
-                            congruence[i] = true;
-                        }
+                        congruence[i] = difference * (first.getWeight());
                     }
                 }
 
-                if (congruence[i]) {
-                    int exactOrder = 100 - 100 * (i - j)/longList.size();
-                    if (exactOrder < 0) exactOrder = exactOrder * -1;
-                    order[i] = exactOrder;
-                    continue outer;
-                }
+                double order = 1 - (double) (i - j) / longList.size();
+                if (order < 0) order = order * -1;
+                //congruence[i] = congruence[i] * order;
+                congruence[i] = congruence[i];
             }
         }
 
-        for (int i = 0; i < congruence.length; i++) {
-            if (congruence[i]) {
-                result = result + order[i];
-            }
+        for (double value : congruence) {
+            result = result + value;
         }
 
-        result = result/congruence.length;
-        result = result * shortList.size() / longList.size();
+        result = result / longList.size();
 
-        return result;
+        return (int) (result * 100);
     }
 }
