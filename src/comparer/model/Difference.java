@@ -27,8 +27,8 @@ public class Difference {
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
     public int getDifference(boolean accountWeight, boolean analyzeByLetters) {
         double result = 0;
-        List<WordInfo> shortList = null;
-        List<WordInfo> longList = null;
+        List<WordInfo> shortList;
+        List<WordInfo> longList;
 
         if (this.firstList == null) {
             if (this.secondList == null) return 100;
@@ -56,6 +56,8 @@ public class Difference {
                 if (first.getID() == second.getID()) {
                     if (accountWeight && first.getWeight() > 0.05) {
                         congruence[i] = 1.0;
+                    } else {
+                        congruence[i] = 1.0;
                     }
 
                 } else if (analyzeByLetters && first.getSimilarWords() != null) {
@@ -63,11 +65,11 @@ public class Difference {
                         int difference = first.getSimilarWords().get(second);
                         if (accountWeight && first.getWeight() > 0.05) {
                             congruence[i] = difference;
+                        } else {
+                            congruence[i] = difference;
                         }
                     }
                 }
-
-                congruence[i] = congruence[i];
             }
         }
 
