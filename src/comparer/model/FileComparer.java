@@ -366,17 +366,38 @@ public class FileComparer
             for (WordInfo otherWordInfo : dictionary) {
 
                 if (wordInfo.getID() != otherWordInfo.getID()) {
+
+                    if (this.updateDifferences(wordInfo, otherWordInfo) == 1) continue;
+
                     int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
                     if ((difference >= WORD_SIMILARITY_COEFF)) {
                         if (wordInfo.getSimilarWords() == null) {
                             wordInfo.setSimilarWords(new HashMap<>());
                         }
                         wordInfo.getSimilarWords().put(otherWordInfo, difference);
+                        //System.out.println(wordInfo.getWord() +"\t" + otherWordInfo.getWord() + "\t" + difference);
                     }
                 }
             }
         }
         dictionary.clear();
+    }
+
+    /*
+    * updates differences in two WordInfo if at least
+    * one of them is already has it. Returns 1 if update
+    * was successfully and otherwise returns 0*/
+    private int updateDifferences(WordInfo wordInfo, WordInfo otherWordInfo) {
+        if (wordInfo.getSimilarWords() != null && wordInfo.getSimilarWords().containsKey(otherWordInfo)) return 1;
+        if (otherWordInfo.getSimilarWords() != null && otherWordInfo.getSimilarWords().containsKey(wordInfo)) {
+            if (wordInfo.getSimilarWords() == null) {
+                wordInfo.setSimilarWords(new HashMap<>());
+            }
+            int difference = otherWordInfo.getSimilarWords().get(wordInfo);
+            wordInfo.getSimilarWords().put(otherWordInfo, difference);
+            return 1;
+        }
+        return 0;
     }
 
     /*
@@ -422,7 +443,7 @@ public class FileComparer
             }
         }
         int length = Math.max(shortWord.length(), longWord.length());
-        result = (int) (Math.round((result - diffChangeCount) * 100.00 / length));
+        result = (int) (Math.round(result  * 100.00 / length / diffChangeCount));
         return result;
     }
 
