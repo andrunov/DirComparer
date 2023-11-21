@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
 import java.awt.*;
@@ -21,6 +22,9 @@ import java.util.ResourceBundle;
 
 /*controller for MainView.fxml window*/
 public class MainController implements Initializable {
+
+    @FXML
+    private TextField fileNameTextField;
 
     /*label of first directory*/
     @FXML
@@ -37,6 +41,9 @@ public class MainController implements Initializable {
     /*result label*/
     @FXML
     private Label resultLbl;
+
+    @FXML
+    private Button goBtn;
 
     /*button for firs directory selection*/
     @FXML
@@ -303,6 +310,8 @@ public class MainController implements Initializable {
         double newHeight = this.mainApp.getPrimaryStage().getHeight();
         double newWidth = Formatter.getTextSize(newHeight);
         String newSize = "-fx-font-size:" +  String.valueOf(newWidth) + ";";
+        this.fileNameTextField.setStyle(newSize);
+        this.goBtn.setStyle(newSize);
         this.firstDirLbl.setStyle(newSize);
         this.secondDirLbl.setStyle(newSize);
         this.infoLbl.setStyle(newSize);
