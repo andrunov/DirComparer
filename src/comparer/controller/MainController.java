@@ -3,6 +3,7 @@ package comparer.controller;
 
 import comparer.MainApp;
 import comparer.model.FileComparer;
+import comparer.model.FileInfo;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
@@ -165,6 +166,33 @@ public class MainController implements Initializable {
         catch (Exception e){
             Message.errorAlert(this.resourceBundle,"Error: ", e);
           //  e.printStackTrace();
+        }
+    }
+
+    /*start comparing procedure*/
+    @FXML
+    private void executeSearch(){
+
+        if (this.firstDirectory != null) {
+            this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
+            String searchPhrase = this.fileNameTextField.getText().trim();
+            if (searchPhrase.isEmpty()) {
+                this.comparer.setFileToSearch(null);
+            } else {
+                this.comparer.setFileToSearch(new FileInfo(searchPhrase));
+            }
+        }
+
+        this.comparer.setResourceBundle(this.resourceBundle);
+        try{
+            if(this.comparer.search()) {
+                setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
+                setVisibility(true);
+            }
+        }
+        catch (Exception e){
+            Message.errorAlert(this.resourceBundle,"Error: ", e);
+            e.printStackTrace();
         }
     }
 

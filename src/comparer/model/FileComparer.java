@@ -37,6 +37,18 @@ public class FileComparer
     /*another directory where need to find duplicates files */
     private List<FileInfo> endDirectory = new ArrayList<>();
 
+    public FileInfo getFileToSearch() {
+        return fileToSearch;
+    }
+
+    public void setFileToSearch(FileInfo fileToSearch) {
+        this.fileToSearch = fileToSearch;
+    }
+
+    /*  file that needs to de search
+    */
+    private FileInfo fileToSearch;
+
     /*list for files matching by names and size, expect full equality*/
     private List<FileInfo> fullEquality = new ArrayList<>();
 
@@ -243,6 +255,36 @@ public class FileComparer
         return result;
     }
 
+    /*this method contains main logic of comparing*/
+    public boolean search(){
+
+        /* memory and performance test
+        System.gc();
+        long startTime = System.currentTimeMillis();
+        Runtime runtime = Runtime.getRuntime();
+        long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+         */
+
+        boolean result = fillFilenamesForSearch();
+        if (result) {
+            compareDirectories();
+            outputPreparations();
+            HtmlWriter writer = new HtmlWriter(this,"UTF8");
+            result = writer.writeHtmlReport();
+        }
+        clean();
+
+        /*
+        long finishTime = System.currentTimeMillis();
+        long memoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+        System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " mb");
+        System.out.println("Performance: " + (finishTime - startTime) + " ms");
+        System.gc();
+         */
+
+        return result;
+    }
+
     /*preparations before compare directories
     * check directories and fill collections*/
     private boolean fillFilenames() {
@@ -264,6 +306,25 @@ public class FileComparer
         }else {
             this.startDirectory = fillDirectory(this.startDirectoryName, this.startDirectoryName);
             this.endDirectory = fillDirectory(this.endDirectoryName, this.endDirectoryName);
+            this.singleDirCompare = false;
+        }
+        updateDictionaries();
+        return true;
+    }
+
+    private boolean fillFilenamesForSearch() {
+        if ((this.startDirectoryName==null)&&(this.fileToSearch==null)){
+            Message.warningAlert(this.resourceBundle,"SelectDirAndWordAlert");
+            return false;
+        } else  if (this.startDirectoryName==null){
+            Message.warningAlert(this.resourceBundle,"SelectDirAlert");
+            return false;
+        } else if (this.fileToSearch==null){
+            Message.warningAlert(this.resourceBundle,"SelectWordAlert");
+            return false;
+        } else {
+            this.startDirectory = fillDirectory(this.startDirectoryName, this.startDirectoryName);
+            this.endDirectory.add(this.fileToSearch);
             this.singleDirCompare = false;
         }
         updateDictionaries();

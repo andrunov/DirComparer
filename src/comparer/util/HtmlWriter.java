@@ -300,8 +300,8 @@ public class HtmlWriter {
         sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
         String path = fileInfo.getAbsolutePath();
         writer.printf(tableRowRight, //format string
-                this.getDirectoryName(path),
-                this.getShortName(this.getDirectoryName(path)),
+           //     this.getDirectoryName(path),
+           //     this.getShortName(this.getDirectoryName(path)),
                 path,
                 fileInfo.getName(),
                 sizeFormatted);

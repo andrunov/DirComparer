@@ -54,7 +54,13 @@ public class FileInfo implements Comparable<FileInfo>
     /*cuts file extension*/
     private static String cutExtension(String fileName){
         int dotPosition = fileName.lastIndexOf('.');
-        return fileName.substring(0,dotPosition);
+        String result = null;
+        if (dotPosition == -1) {
+            result = fileName;
+        } else {
+            result = fileName.substring(0, dotPosition);
+        }
+        return result;
     }
 
     /*cuts song name*/
@@ -220,6 +226,11 @@ public class FileInfo implements Comparable<FileInfo>
         this.accepted = false;
     }
 
+    /*constructor*/
+    public FileInfo(String name) {
+        this(null, null, name, 0);
+    }
+
     /*getters and setters*/
 
     public String getAbsolutePath() {
@@ -346,6 +357,5 @@ public class FileInfo implements Comparable<FileInfo>
         }
         return true;
     }
-
 
 }
