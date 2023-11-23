@@ -175,13 +175,18 @@ public class MainController implements Initializable {
 
         if (this.firstDirectory != null) {
             this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
-            String searchPhrase = this.fileNameTextField.getText().trim();
-            if (searchPhrase.isEmpty()) {
-                this.comparer.setFileToSearch(null);
-            } else {
-                this.comparer.setFileToSearch(new FileInfo(searchPhrase));
-            }
         }
+
+
+        String searchPhrase = this.fileNameTextField.getText().trim();
+        if (searchPhrase.isEmpty()) {
+            this.comparer.setFileToSearch(null);
+        } else {
+            this.comparer.setFileToSearch(new FileInfo(searchPhrase));
+            //TODO remove later
+            this.comparer.setEndDirectoryName(searchPhrase);
+        }
+
 
         this.comparer.setResourceBundle(this.resourceBundle);
         try{

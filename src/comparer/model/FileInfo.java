@@ -228,7 +228,7 @@ public class FileInfo implements Comparable<FileInfo>
 
     /*constructor*/
     public FileInfo(String name) {
-        this(null, null, name, 0);
+        this(name, null, name, 0);
     }
 
     /*getters and setters*/

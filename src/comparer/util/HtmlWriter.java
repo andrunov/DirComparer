@@ -141,6 +141,7 @@ public class HtmlWriter {
     /*
     * extract short name of file or directory from file path*/
     private String getShortName(String filePath) {
+
         int lastSlashPosition = filePath.lastIndexOf('\\') + 1;
         return filePath.substring(lastSlashPosition);
     }
@@ -300,8 +301,8 @@ public class HtmlWriter {
         sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
         String path = fileInfo.getAbsolutePath();
         writer.printf(tableRowRight, //format string
-           //     this.getDirectoryName(path),
-           //     this.getShortName(this.getDirectoryName(path)),
+                "",
+                "",
                 path,
                 fileInfo.getName(),
                 sizeFormatted);
