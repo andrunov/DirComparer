@@ -86,6 +86,9 @@ public class HtmlWriter {
             writer.println(beginHtml);
             this.printHtmlTitle(writer);
 
+            this.printHtmlTableBegin(writer, 123, "title");
+            this.printHtmlTableHeader(writer);
+
             /*1-st level - 100 equality*/
             this.printHtmlTable(writer, this.comparer.getFullEquality(), resourceBundle.getString("1stLevelEquality"));
 
@@ -114,12 +117,7 @@ public class HtmlWriter {
                 this.printHtmlTable(writer, this.comparer.getNameSimilarityLow(), resourceBundle.getString("7thLevelEquality"));
             }
 
-            /*8 level - no equalities
-            * in this point in this.startDirectory is only filesInfo that no has similarities
-            if (!this.comparer.isSingleDirCompare()) {
-                this.printHtmlTableNotFound(writer, this.comparer.getNoSimilarity(), resourceBundle.getString("8thLevelEquality"));
-            }
-             */
+            this.printHtmlTableEnd(writer);
 
             writer.printf(endHtml);
 
@@ -186,28 +184,13 @@ public class HtmlWriter {
     /*
     * HTML table for report*/
     private void printHtmlTable(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
-        this.printHtmlTableBegin(writer, fileInfoList, title);
         if (fileInfoList.size() > 0) {
-            this.printHtmlTableHeader(writer);
             for (FileInfo fileInfo : fileInfoList) {
                 this.printHtmlTableRowLeft(writer, fileInfo);
             }
         }
-        this.printHtmlTableEnd(writer);
     }
 
-    /*
-     * HTML table for report*/
-    private void printHtmlTableNotFound(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
-        this.printHtmlTableBegin(writer, fileInfoList, title);
-        if (fileInfoList.size() > 0) {
-            this.printHtmlTableHeaderNotFound(writer);
-            for (FileInfo fileInfo : fileInfoList) {
-                this.printHtmlTableRowNotFound(writer, fileInfo);
-            }
-        }
-        this.printHtmlTableEnd(writer);
-    }
 
     /*
      * HTML table row not found for report*/
@@ -238,13 +221,13 @@ public class HtmlWriter {
 
     /*
      * HTML table title for report*/
-    private void printHtmlTableBegin(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
+    private void printHtmlTableBegin(PrintWriter writer, int filesFound, String title) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        if (fileInfoList.size() > 0) {
+        if (filesFound > 0) {
             writer.printf(beginTableFound, //format string
                                 title,   //...parameters
                                 resourceBundle.getString("Found"),
-                                fileInfoList.size(),
+                    filesFound,
                                 resourceBundle.getString("Files"));
         } else {
             writer.printf(beginTableNotFound, //format string
