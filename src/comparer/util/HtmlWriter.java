@@ -86,26 +86,34 @@ public class HtmlWriter {
             writer.println(beginHtml);
             this.printHtmlTitle(writer);
 
-            this.printHtmlTableBegin(writer, 123, "title");
+            int filesFound = this.comparer.getFullEquality().size();
+            filesFound = filesFound + this.comparer.getNameEquality().size();
+            filesFound = filesFound + this.comparer.getNameSimilarityHighest().size();
+            filesFound = filesFound + this.comparer.getNameSimilarityHigh().size();
+            filesFound = filesFound + this.comparer.getNameSimilarityMiddle().size();
+            filesFound = filesFound + this.comparer.getNameSimilarityLow().size();
+
+
+            this.printHtmlTableBegin(writer, filesFound, this.getShortName(this.comparer.getStartDirectoryName()));
             this.printHtmlTableHeader(writer);
 
             /*1-st level - 100 equality*/
-            this.printHtmlTable(writer, this.comparer.getFullEquality(), resourceBundle.getString("1stLevelEquality"));
+            this.printHtmlTable(writer, this.comparer.getFullEquality());
 
             /*2 level - 100% names equality*/
-            this.printHtmlTable(writer, this.comparer.getNameEquality(), resourceBundle.getString("2ndLevelEquality"));
+            this.printHtmlTable(writer, this.comparer.getNameEquality());
 
             /*4 level - very high similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityHighest(), resourceBundle.getString("4thLevelEquality"));
+            this.printHtmlTable(writer, this.comparer.getNameSimilarityHighest());
 
             /*5 level - high similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityHigh(), resourceBundle.getString("5thLevelEquality"));
+            this.printHtmlTable(writer, this.comparer.getNameSimilarityHigh());
 
             /*6 level - middle similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle(), resourceBundle.getString("6thLevelEquality"));
+            this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle());
 
             /*7 level - low similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityLow(), resourceBundle.getString("7thLevelEquality"));
+            this.printHtmlTable(writer, this.comparer.getNameSimilarityLow());
 
             this.printHtmlTableEnd(writer);
 
@@ -173,7 +181,7 @@ public class HtmlWriter {
 
     /*
     * HTML table for report*/
-    private void printHtmlTable(PrintWriter writer, List<FileInfo> fileInfoList, String title) {
+    private void printHtmlTable(PrintWriter writer, List<FileInfo> fileInfoList) {
         if (fileInfoList.size() > 0) {
             for (FileInfo fileInfo : fileInfoList) {
                 this.printHtmlTableRowLeft(writer, fileInfo);
@@ -181,33 +189,6 @@ public class HtmlWriter {
         }
     }
 
-
-    /*
-     * HTML table row not found for report*/
-    private void printHtmlTableRowNotFound(PrintWriter writer, FileInfo fileInfo) {
-        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
-        sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
-        String path = fileInfo.getAbsolutePath();
-        writer.println("<tr>");
-        writer.printf(tableRowNotFound, //format string
-                this.getDirectoryName(path), //...parameters
-                this.getShortName(this.getDirectoryName(path)),
-                path,
-                fileInfo.getName(),
-                sizeFormatted);
-        writer.println("</tr>");
-    }
-
-
-    /*
-     * HTML table header not found title for report*/
-    private void printHtmlTableHeaderNotFound(PrintWriter writer) {
-        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        writer.printf(tableHeaderNotFound, //format string
-                resourceBundle.getString("Folder"),   //...parameters
-                resourceBundle.getString("FileName"),
-                resourceBundle.getString("FileSizeB"));
-    }
 
     /*
      * HTML table title for report*/
@@ -250,21 +231,6 @@ public class HtmlWriter {
                 fileInfo.getName(),
                 sizeFormatted);
 
-    }
-
-    /*
-     * HTML table right part of row for report*/
-    private void printHtmlTableRowRight(PrintWriter writer, FileInfo fileInfo) {
-        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
-        sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
-        String path = fileInfo.getAbsolutePath();
-        writer.printf(tableRowRight, //format string
-                "",
-                "",
-                path,
-                fileInfo.getName(),
-                sizeFormatted);
-        writer.println("</tr>");
     }
 
     /*
