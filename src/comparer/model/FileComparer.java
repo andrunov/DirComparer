@@ -340,12 +340,8 @@ public class FileComparer
 
                 if (startFileInfo == endFileInfo) continue;
 
-                if (startFileInfo.getSize() == endFileInfo.getSize()) {
-                    if (startFileInfo.nameIsEquals(endFileInfo)) {
+                if (startFileInfo.nameIsEquals(endFileInfo)) {
                         addEqualities(this.fullEquality, startFileInfo, endFileInfo);
-                    } else {
-                        addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
-                    }
                 } else {
                     int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords(), true);
                     if (startFileInfo.getdSingerWords().size() == 0 || endFileInfo.getdSingerWords().size() == 0) {
