@@ -26,8 +26,5 @@ public class Sorter {
     /*sort List<FileInfo>*/
     public static void sort(List<FileInfo> fileInfoList){
         Collections.sort(fileInfoList,fileInfoComparator);
-        for (FileInfo fileInfo : fileInfoList){
-            Collections.sort(fileInfo.getSimilarFiles(),fileInfoComparator);
-        }
     }
 }

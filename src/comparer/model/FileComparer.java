@@ -341,23 +341,6 @@ public class FileComparer
 
     /*preparations before print result int file*/
     private void outputPreparations(){
-
-        /*
-        deleteDuplications(this.fullEquality);
-        deleteDuplications(this.sizeEquality);
-        deleteDuplications(this.nameEquality);
-        deleteDuplications(this.nameSimilarityHighest);
-        deleteDuplications(this.nameSimilarityHigh);
-        deleteDuplications(this.nameSimilarityMiddle);
-        deleteDuplications(this.nameSimilarityLow);
-        removeEmpties(this.fullEquality);
-        removeEmpties(this.sizeEquality);
-        removeEmpties(this.nameEquality);
-        removeEmpties(this.nameSimilarityHighest);
-        removeEmpties(this.nameSimilarityHigh);
-        removeEmpties(this.nameSimilarityMiddle);
-        removeEmpties(this.nameSimilarityLow);
-         */
         Sorter.sort(this.fullEquality);
         Sorter.sort(this.sizeEquality);
         Sorter.sort(this.nameEquality);
@@ -517,32 +500,6 @@ public class FileComparer
         }
     }
 
-    /*delete duplications of similar fileInfo in reports*/
-    private void deleteDuplications(List<FileInfo> list)
-    {
-        for (FileInfo fileInfo : list){
-            for (FileInfo similar : fileInfo.getSimilarFiles()){
-                if ((similar != fileInfo) && list.contains(similar)) {
-                    int index = list.indexOf(similar);
-                    FileInfo duplicate = list.get(index);
-                    duplicate.getSimilarFiles().remove(fileInfo);
-                }
-            }
-        }
-    }
-
-
-    /*delete elements which has empty similarFilenames fields*/
-    private void removeEmpties(List<FileInfo> list)
-    {
-        Iterator<FileInfo> iterator = list.iterator();
-        while (iterator.hasNext()){
-            FileInfo holder = iterator.next();
-            if (holder.getSimilarFiles().isEmpty()){
-                iterator.remove();
-            }
-        }
-    }
 
     /*fill map with filenames and their split names by the words */
     private List<FileInfo> fillDirectory(String directoryPath, String baseDirectoryPath){

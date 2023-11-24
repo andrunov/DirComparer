@@ -38,14 +38,6 @@ public class FileInfo implements Comparable<FileInfo>
         List<FileInfo> singleList = new ArrayList<>();
         singleList.add(singleSimilar);
         FileInfo newFileInfo = FileInfo.copy(fileInfo);
-        newFileInfo.setSimilarFiles(singleList);
-        return newFileInfo;
-    }
-
-    /*copy FileInfo including List<FileInfo> */
-    public static FileInfo copy(FileInfo fileInfo, List<FileInfo> similarities){
-        FileInfo newFileInfo = FileInfo.copy(fileInfo);
-        newFileInfo.setSimilarFiles(similarities);
         return newFileInfo;
     }
 
@@ -114,8 +106,6 @@ public class FileInfo implements Comparable<FileInfo>
 
     private List<WordInfo> dWords;
 
-    /*list of files with similar names*/
-    private List<FileInfo> similarFiles = new ArrayList<>();
 
     /*field-marker that this object has participate in compares*/
     private boolean accepted;
@@ -155,11 +145,6 @@ public class FileInfo implements Comparable<FileInfo>
         return this.absolutePath.substring(lastSlash + 1);
     }
 
-    public List<FileInfo> getSimilarFiles()
-    {
-        return similarFiles;
-    }
-
     public long getSize() {
         return size;
     }
@@ -168,9 +153,6 @@ public class FileInfo implements Comparable<FileInfo>
         this.size = size;
     }
 
-    public void setSimilarFiles(List<FileInfo> similarFiles) {
-        this.similarFiles = similarFiles;
-    }
 
     public boolean isAccepted() {
         return accepted;
@@ -200,13 +182,6 @@ public class FileInfo implements Comparable<FileInfo>
         sb.append(" ---------------------------------------------------------------------------------------------------------");
         String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
         sb.append(String.format("\r\n%-2s%-87.87s%10.10s%3s%5s","|",this.showName(),sizeFormatted, "mb","|"));
-        if (!this.similarFiles.isEmpty()) {
-            sb.append(String.format("\r\n%-5s%102s", "|", "|"));
-            for (FileInfo fileInfo : similarFiles) {
-                sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize()*1.0/1048576);
-                sb.append(String.format("\r\n%-5s%-87.87s%10.10s%3s%2s","|",fileInfo.showName(),sizeFormatted,"mb","|"));
-            }
-        }
         sb.append("\r\n ---------------------------------------------------------------------------------------------------------");
         return sb.toString();
     }

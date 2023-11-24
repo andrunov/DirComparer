@@ -239,7 +239,6 @@ public class HtmlWriter {
     /*
      * HTML table left part of row for report*/
     private void printHtmlTableRowLeft(PrintWriter writer, FileInfo fileInfo) {
-        int similars = fileInfo.getSimilarFiles().size();
         String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
         sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
         String path = fileInfo.getAbsolutePath();
