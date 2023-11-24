@@ -63,82 +63,6 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
-    /*cuts song name*/
-    private static String getSongName(String fileName){
-        String result = null;
-        int dashPosition = getDashPosition(fileName);
-        if (dashPosition == -1) {
-            result = fileName;
-        } else {
-            result = fileName.substring(dashPosition);
-        }
-        return result;
-    }
-
-    /*cuts song name*/
-    private static String getSingerName(String fileName){
-        String result = null;
-        int dashPosition = getDashPosition(fileName);
-        if (dashPosition == -1) {
-            result = "";
-        } else {
-            result = fileName.substring(0,dashPosition);
-        }
-        return result;
-    }
-
-    /*
-     * gets position of delimeter singer name from song name
-     * in file name*/
-    private static int getDashPosition(String fileName) {
-        return  getDashPosition(fileName, 0);
-    }
-
-    /*
-    * gets position of delimeter in file name from "from" position*/
-    private static int getDashPosition(String fileName, int from) {
-
-        int result = fileName.indexOf(" - ", from);
-
-        if (result == -1) {
-
-            result = fileName.indexOf(" -", from);
-            if (result == -1) {
-
-                result = fileName.indexOf("- ", from);
-                if (result == -1) {
-
-                    result = fileName.indexOf("_-_", from);
-                    if (result == -1) {
-
-                        result = fileName.indexOf("_", from);
-                        if (result == -1) {
-
-                            result = fileName.indexOf('-', from);
-                            if (result == -1) {
-
-                                result = fileName.indexOf(8211, from);
-                                if (result == -1) {
-
-                                    result = fileName.indexOf(8212, from);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //try to split filename more successfully by recursion
-        if (result != -1) {
-            if (!isName(fileName.substring(0, result)) || !isName(fileName.substring(result))){
-
-                    result = getDashPosition(fileName, result + 1);
-            }
-        }
-
-        return result;
-    }
 
     /*
     * split phrase into list of words*/
@@ -159,17 +83,6 @@ public class FileInfo implements Comparable<FileInfo>
             }
         }
         return result;
-    }
-
-    /**
-     *
-     * @param string
-     * @return true if string param contains at least 1 letter
-     */
-    private static boolean isName(String string) {
-        Pattern p = Pattern.compile("[а-яА-Яa-zA-Z]");
-        Matcher m = p.matcher(string);
-        return m.find();
     }
 
     public static List<WordInfo> putWordsIntoDictionary(List<String> list) {
@@ -203,8 +116,6 @@ public class FileInfo implements Comparable<FileInfo>
 
     private List<WordInfo> dSongWords;
 
-    private List<WordInfo> dSingerWords;
-
     /*list of files with similar names*/
     private List<FileInfo> similarFiles = new ArrayList<>();
 
@@ -221,8 +132,7 @@ public class FileInfo implements Comparable<FileInfo>
         this.absolutePath = absolutePath;
         this.size = size;
         name = cutExtension(name);
-        this.dSongWords = putWordsIntoDictionary(getSplitString(getSongName(name)));
-        this.dSingerWords = putWordsIntoDictionary(getSplitString(getSingerName(name)));
+        this.dSongWords = putWordsIntoDictionary(getSplitString(name));
         this.accepted = false;
     }
 
@@ -338,18 +248,9 @@ public class FileInfo implements Comparable<FileInfo>
         return dSongWords;
     }
 
-    public List<WordInfo> getdSingerWords() {
-        return dSingerWords;
-    }
 
     public boolean nameIsEquals(FileInfo other) {
-        if (this.dSingerWords.size() != other.getdSingerWords().size()) return false;
         if (this.dSongWords.size() != other.getdSongWords().size()) return false;
-        for (int i = 0; i < this.dSingerWords.size(); i++) {
-            int ID = this.dSingerWords.get(i).getID();
-            int otherID = other.dSingerWords.get(i).getID();
-            if (ID != otherID) return false;
-        }
         for (int i = 0; i < this.dSongWords.size(); i++) {
             int ID = this.dSongWords.get(i).getID();
             int otherID = other.dSongWords.get(i).getID();
