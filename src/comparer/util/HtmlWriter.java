@@ -115,10 +115,11 @@ public class HtmlWriter {
             }
 
             /*8 level - no equalities
-            * in this point in this.startDirectory is only filesInfo that no has similarities */
+            * in this point in this.startDirectory is only filesInfo that no has similarities
             if (!this.comparer.isSingleDirCompare()) {
                 this.printHtmlTableNotFound(writer, this.comparer.getNoSimilarity(), resourceBundle.getString("8thLevelEquality"));
             }
+             */
 
             writer.printf(endHtml);
 
@@ -179,12 +180,7 @@ public class HtmlWriter {
     /*
     * HTML title for report*/
     private void printHtmlTitle(PrintWriter writer) {
-
-        if (this.comparer.isSingleDirCompare()) {
-            this.printHtmlTitleSingle(writer);
-        } else {
-            this.printHtmlTitleTwo(writer);
-        }
+        this.printHtmlTitleSingle(writer);
     }
 
     /*
@@ -264,9 +260,6 @@ public class HtmlWriter {
             writer.printf(tableHeader, //format string
                     resourceBundle.getString("Folder"),   //...parameters
                     resourceBundle.getString("FileName"),
-                    resourceBundle.getString("FileSizeB"),
-                    resourceBundle.getString("Folder"),
-                    resourceBundle.getString("FileName"),
                     resourceBundle.getString("FileSizeB"));
     }
 
@@ -279,19 +272,12 @@ public class HtmlWriter {
         String path = fileInfo.getAbsolutePath();
         writer.println("<tr>");
         writer.printf(tableRowLeft, //format string
-                similars,   //...parameters
                 this.getDirectoryName(path),
-                similars,
                 this.getShortName(this.getDirectoryName(path)),
-                similars,
                 path,
-                similars,
                 fileInfo.getName(),
-                similars,
                 sizeFormatted);
-        for (FileInfo similar : fileInfo.getSimilarFiles()) {
-            this.printHtmlTableRowRight(writer, similar);
-        }
+
     }
 
     /*
