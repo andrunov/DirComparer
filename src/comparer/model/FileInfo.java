@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Class for hold info about file
@@ -114,7 +112,7 @@ public class FileInfo implements Comparable<FileInfo>
     /*size of file*/
     private long size;
 
-    private List<WordInfo> dSongWords;
+    private List<WordInfo> dWords;
 
     /*list of files with similar names*/
     private List<FileInfo> similarFiles = new ArrayList<>();
@@ -132,7 +130,7 @@ public class FileInfo implements Comparable<FileInfo>
         this.absolutePath = absolutePath;
         this.size = size;
         name = cutExtension(name);
-        this.dSongWords = putWordsIntoDictionary(getSplitString(name));
+        this.dWords = putWordsIntoDictionary(getSplitString(name));
         this.accepted = false;
     }
 
@@ -244,16 +242,16 @@ public class FileInfo implements Comparable<FileInfo>
        return this.getAbsolutePath().substring(this.getBaseFolderPath().length()+1);
     }
 
-    public List<WordInfo> getdSongWords() {
-        return dSongWords;
+    public List<WordInfo> getdWords() {
+        return dWords;
     }
 
 
     public boolean nameIsEquals(FileInfo other) {
-        if (this.dSongWords.size() != other.getdSongWords().size()) return false;
-        for (int i = 0; i < this.dSongWords.size(); i++) {
-            int ID = this.dSongWords.get(i).getID();
-            int otherID = other.dSongWords.get(i).getID();
+        if (this.dWords.size() != other.getdWords().size()) return false;
+        for (int i = 0; i < this.dWords.size(); i++) {
+            int ID = this.dWords.get(i).getID();
+            int otherID = other.dWords.get(i).getID();
             if (ID != otherID) return false;
         }
         return true;

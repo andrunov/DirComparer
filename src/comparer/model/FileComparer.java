@@ -343,7 +343,7 @@ public class FileComparer
                 if (startFileInfo.nameIsEquals(endFileInfo)) {
                     addEqualities(this.fullEquality, startFileInfo, endFileInfo);
                 } else {
-                    int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords(), true);
+                    int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords(), true);
                     insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
                 }
             }
