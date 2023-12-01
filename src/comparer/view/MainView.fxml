@@ -4,11 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="600.0" prefHeight="250.0" prefWidth="600.0" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="600.0" prefHeight="650.0" prefWidth="600.0" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
    <children>
-      <BorderPane prefHeight="250.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <center>
-            <GridPane prefWidth="650.0" BorderPane.alignment="CENTER">
+      <BorderPane prefHeight="650.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <GridPane maxHeight="250.0" prefHeight="250.0" prefWidth="650.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="350.0" prefWidth="450.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="100.0" prefWidth="100.0" />
@@ -100,6 +100,15 @@
                   <Insets bottom="5.0" top="5.0" />
                </BorderPane.margin>
             </GridPane>
+         </top>
+         <center>
+            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn minWidth="50.0" prefWidth="100.0" text="%Folder" />
+                <TableColumn minWidth="250.0" prefWidth="350.0" text="%FileName" />
+                <TableColumn minWidth="50.0" prefWidth="100.0" text="%FileSizeB" />
+              </columns>
+            </TableView>
          </center>
       </BorderPane>
    </children>

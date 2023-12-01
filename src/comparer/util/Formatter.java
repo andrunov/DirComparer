@@ -96,7 +96,7 @@ public class Formatter {
     /*adjust control's text size according app's height*/
     public static double getTextSize(Double height){
         double defaultSize = 8.0; //default size
-        double sizeByHeight = 0.06 * height;
+        double sizeByHeight = 0.02 * height;
         return sizeByHeight > defaultSize ? sizeByHeight : defaultSize ;
     }
 
