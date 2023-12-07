@@ -261,7 +261,7 @@ public class FileComparer
             HtmlWriter writer = new HtmlWriter(this,"UTF8");
             result = writer.writeHtmlReport();
         }
-        clean();
+        //clean();
 
         /*
         long finishTime = System.currentTimeMillis();

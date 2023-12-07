@@ -74,6 +74,7 @@ public class MainApp extends Application {
 
             // Give the mainController access to the main app.
             mainController = loader.getController();
+            mainController.setupResultTable();
             mainController.setMainApp(this);
 
 

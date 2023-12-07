@@ -8,16 +8,21 @@ import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -81,6 +86,9 @@ public class MainController implements Initializable {
     /*button for exit application*/
     @FXML
     private Button exitBtn;
+
+    @FXML
+    private TableView tableResult;
 
     /*language pocket*/
     private ResourceBundle resourceBundle;
@@ -193,11 +201,27 @@ public class MainController implements Initializable {
             if(this.comparer.search()) {
                 setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
                 setVisibility(true);
+                this.addDataToTable();
+                this.comparer.clean();
             }
         }
         catch (Exception e){
             Message.errorAlert(this.resourceBundle,"Error: ", e);
             e.printStackTrace();
+        }
+    }
+
+    private void addDataToTable() {
+
+        List<FileInfo> report = new ArrayList<>();
+        report.addAll(this.comparer.getFullEquality());
+        report.addAll(this.comparer.getNameEquality());
+        report.addAll(this.comparer.getNameSimilarityHighest());
+        report.addAll(this.comparer.getNameSimilarityHigh());
+        report.addAll(this.comparer.getNameSimilarityMiddle());
+        report.addAll(this.comparer.getNameSimilarityLow());
+        for (FileInfo fileInfo : report) {
+            this.tableResult.getItems().add(fileInfo);
         }
     }
 
@@ -360,4 +384,18 @@ public class MainController implements Initializable {
         this.exitBtn.setStyle(newSize);
     };
 
+    public void setupResultTable() {
+        ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
+        for (TableColumn<FileInfo, String> column : columns) {
+            if (column.getId().equals("rowFolderName")) {
+                column.setCellValueFactory(new PropertyValueFactory<>("shortDirectoryName"));
+            }
+            if (column.getId().equals("rowFileName")) {
+                column.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            }
+            if (column.getId().equals("rowFileSize")) {
+                column.setCellValueFactory(new PropertyValueFactory<>("sizeFormatted"));
+            }
+        }
+    }
 }

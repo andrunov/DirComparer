@@ -149,6 +149,10 @@ public class FileInfo implements Comparable<FileInfo>
         return size;
     }
 
+    public String getSizeFormatted() {
+        return Formatter.doubleFormat("###,###.##",this.getSize() * 1.0 / 1048576);
+    }
+
     public void setSize(long size) {
         this.size = size;
     }
@@ -190,6 +194,12 @@ public class FileInfo implements Comparable<FileInfo>
     public String printWithoutSimilarities() {
         String sizeFormatted = Formatter.doubleFormat("###,###.##",this.size*1.0/1048576);
         return String.format("%-2s%-87.87s%10.10s%3s%5s","|",this.showName(),sizeFormatted, "mb","|");
+    }
+
+    private String getShortDirectoryName() {
+
+        int lastSlashPosition = this.absolutePath.lastIndexOf('\\') + 1;
+        return this.absolutePath.substring(lastSlashPosition);
     }
 
     @Override
