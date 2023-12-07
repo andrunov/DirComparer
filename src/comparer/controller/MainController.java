@@ -267,6 +267,7 @@ public class MainController implements Initializable {
         this.settingsBtn.setText(this.resourceBundle.getString("Settings"));
         this.aboutBtn.setText(this.resourceBundle.getString("AppInfo"));
         this.exitBtn.setText(this.resourceBundle.getString("Exit"));
+        this.updateResultTable();
     }
 
     /*updates text for infoLbl Label depending of
@@ -339,6 +340,7 @@ public class MainController implements Initializable {
         this.comparer.setReportName(null);
         this.firstDirectory = null;
         this.secondDirectory = null;
+        this.tableResult.getItems().clear();
         updateTextInfoLbl();
         setVisibility(false);
     }
@@ -388,13 +390,28 @@ public class MainController implements Initializable {
         ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
         for (TableColumn<FileInfo, String> column : columns) {
             if (column.getId().equals("rowFolderName")) {
-                column.setCellValueFactory(new PropertyValueFactory<>("shortDirectoryName"));
+                column.setCellValueFactory(new PropertyValueFactory<>("ShortDirectoryName"));
             }
             if (column.getId().equals("rowFileName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("Name"));
             }
             if (column.getId().equals("rowFileSize")) {
-                column.setCellValueFactory(new PropertyValueFactory<>("sizeFormatted"));
+                column.setCellValueFactory(new PropertyValueFactory<>("SizeFormatted"));
+            }
+        }
+    }
+
+    public void updateResultTable() {
+        ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
+        for (TableColumn<FileInfo, String> column : columns) {
+            if (column.getId().equals("rowFolderName")) {
+                column.setText(this.resourceBundle.getString("Folder"));
+            }
+            if (column.getId().equals("rowFileName")) {
+                column.setText(this.resourceBundle.getString("FileName"));
+            }
+            if (column.getId().equals("rowFileSize")) {
+                column.setText(this.resourceBundle.getString("FileSizeB"));
             }
         }
     }

@@ -196,10 +196,12 @@ public class FileInfo implements Comparable<FileInfo>
         return String.format("%-2s%-87.87s%10.10s%3s%5s","|",this.showName(),sizeFormatted, "mb","|");
     }
 
-    private String getShortDirectoryName() {
-
-        int lastSlashPosition = this.absolutePath.lastIndexOf('\\') + 1;
-        return this.absolutePath.substring(lastSlashPosition);
+    public String getShortDirectoryName() {
+        int lastSlashFilePosition = this.absolutePath.lastIndexOf('\\') + 1;
+        int lastSlashDirPosition = this.absolutePath.lastIndexOf('\\', lastSlashFilePosition);
+        String dirName = this.absolutePath.substring(0, lastSlashDirPosition);
+        int lastSlashPosition = dirName.lastIndexOf('\\') + 1;
+        return dirName.substring(lastSlashPosition);
     }
 
     @Override
