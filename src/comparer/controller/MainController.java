@@ -384,6 +384,7 @@ public class MainController implements Initializable {
         this.settingsBtn.setStyle(newSize);
         this.aboutBtn.setStyle(newSize);
         this.exitBtn.setStyle(newSize);
+        this.tableResult.setStyle(newSize);
     };
 
     public void setupResultTable() {
