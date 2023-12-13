@@ -36,18 +36,6 @@ public class MainController implements Initializable {
     @FXML
     private Label firstDirLbl;
 
-    /*label of second directory*/
-    @FXML
-    private Label secondDirLbl;
-
-    /*info label*/
-    @FXML
-    private Label infoLbl;
-
-    /*result label*/
-    @FXML
-    private Label resultLbl;
-
     @FXML
     private Button goBtn;
 
@@ -55,17 +43,9 @@ public class MainController implements Initializable {
     @FXML
     private Button firstDirSelectBtn;
 
-    /*button for second directory selection*/
-    @FXML
-    private Button secondDirSelectBtn;
-
     /*button for change language pocket*/
     @FXML
     private Button changeLocalButton;
-
-    /*button for start comparing procedure*/
-    @FXML
-    private Button executeButton;
 
     /*button for exit application*/
     @FXML
@@ -136,47 +116,6 @@ public class MainController implements Initializable {
         }
     }
 
-    /*choose second directory*/
-    @FXML
-    private void choseSecondDirectory(){
-        File initialDirectory = this.secondDirectory == null ? null : this.secondDirectory.getParentFile();
-        File directory = chooseDirectory(initialDirectory, "secondDirectory");
-        if (directory != null) {
-            this.secondDirectory = directory;
-            AppPreferences.setDirectory(directory.getParentFile(), "secondDirectory");
-            setTextDirLabel(this.secondDirLbl, "SecondDirectory", "" + getDirInfo(directory));
-            updateTextInfoLbl();
-        }
-    }
-
-    /*start comparing procedure*/
-    @FXML
-    private void executeComparing(){
-        if (this.firstDirectory != null) {
-            this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
-            if (this.secondDirectory != null) {
-                this.comparer.setEndDirectoryName(this.secondDirectory.getAbsolutePath());
-            }
-        }else {
-             //*if selected single directory save it as firstDirectory*//*
-            if (this.secondDirectory != null) {
-                this.comparer.setStartDirectoryName(this.secondDirectory.getAbsolutePath());
-            }
-        }
-
-        this.comparer.setResourceBundle(this.resourceBundle);
-        try{
-            if(this.comparer.compare()) {
-                setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
-                setVisibility(true);
-            }
-        }
-        catch (Exception e){
-            Message.errorAlert(this.resourceBundle,"Error: ", e);
-          //  e.printStackTrace();
-        }
-    }
-
     /*start comparing procedure*/
     @FXML
     private void executeSearch(){
@@ -199,7 +138,7 @@ public class MainController implements Initializable {
         this.comparer.setResourceBundle(this.resourceBundle);
         try{
             if(this.comparer.search()) {
-                setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
+                //setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
                 setVisibility(true);
                 this.addDataToTable();
                 this.comparer.clean();
@@ -259,9 +198,7 @@ public class MainController implements Initializable {
     private void updateLocalText(){
         updateTextInfoLbl();
         this.firstDirSelectBtn.setText(this.resourceBundle.getString("Select"));
-        this.secondDirSelectBtn.setText(this.resourceBundle.getString("Select"));
         this.changeLocalButton.setText(this.resourceBundle.getString("ChangeLocal"));
-        this.executeButton.setText(this.resourceBundle.getString("Compare"));
         this.clearBtn.setText(this.resourceBundle.getString("Clear"));
         this.openResultBtn.setText(this.resourceBundle.getString("Open"));
         this.settingsBtn.setText(this.resourceBundle.getString("Settings"));
@@ -274,22 +211,7 @@ public class MainController implements Initializable {
     * firstDirectory and secondDirectory directories*/
     private void updateTextInfoLbl(){
         setTextDirLabel(firstDirLbl,"FirstDirectory",getDirInfo(firstDirectory));
-        setTextDirLabel(secondDirLbl,"SecondDirectory",getDirInfo(secondDirectory));
         String reportName = this.comparer.getReportName();
-        if(reportName != null) {
-            setTextDirLabel(resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
-        }
-        if ((firstDirectory ==null)&&(secondDirectory ==null)){
-            infoLbl.setText(resourceBundle.getString("InfoDefault"));
-        }
-        else if ((firstDirectory ==null)||(secondDirectory ==null)){
-            infoLbl.setText(resourceBundle.getString("CompareSingleDirectory"));
-        }else if(firstDirectory.equals(secondDirectory)){
-            infoLbl.setText(resourceBundle.getString("CompareSingleDirectory"));
-        }
-        else {
-            infoLbl.setText(resourceBundle.getString("CompareTwoDirectories"));
-        }
     }
 
     /*updates text for several Labels*/
@@ -329,7 +251,6 @@ public class MainController implements Initializable {
 
     /*set visibility to open result button and label*/
     private void setVisibility(boolean visibility){
-        this.resultLbl.setVisible(visibility);
         this.openResultBtn.setVisible(visibility);
     }
 
@@ -372,13 +293,8 @@ public class MainController implements Initializable {
         this.fileNameTextField.setStyle(newSize);
         this.goBtn.setStyle(newSize);
         this.firstDirLbl.setStyle(newSize);
-        this.secondDirLbl.setStyle(newSize);
-        this.infoLbl.setStyle(newSize);
-        this.resultLbl.setStyle(newSize);
         this.firstDirSelectBtn.setStyle(newSize);
-        this.secondDirSelectBtn.setStyle(newSize);
         this.changeLocalButton.setStyle(newSize);
-        this.executeButton.setStyle(newSize);
         this.openResultBtn.setStyle(newSize);
         this.clearBtn.setStyle(newSize);
         this.settingsBtn.setStyle(newSize);
