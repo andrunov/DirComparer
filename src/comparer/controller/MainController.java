@@ -150,6 +150,29 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    public void onClick () {
+        FileInfo fileInfo = (FileInfo) this.tableResult.getSelectionModel().getSelectedItem();
+        TablePosition<FileInfo, String> cell = (TablePosition<FileInfo, String>) this.tableResult.getSelectionModel().getSelectedCells().get(0);
+        String columnID = cell.getTableColumn().getId();
+        if (columnID.equals("rowFolderName")) {
+            try {
+                assert this.desktop != null;
+                this.desktop.open(new File(fileInfo.getBaseFolderPath()));
+            } catch (Exception e) {
+                Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
+            }
+        } else if (columnID.equals("rowFileName")) {
+            try {
+                assert this.desktop != null;
+                this.desktop.open(new File(fileInfo.getAbsolutePath()));
+            } catch (Exception e) {
+                Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
+            }
+        }
+
+    }
+
     private void addDataToTable() {
 
         List<FileInfo> report = new ArrayList<>();
