@@ -121,6 +121,8 @@ public class MainController implements Initializable {
     @FXML
     private void executeSearch(){
 
+        this.tableResult.getItems().clear();
+
         if (this.firstDirectory != null) {
             this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
         }
@@ -301,6 +303,9 @@ public class MainController implements Initializable {
 
         ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
         for (TableColumn<RowTableData, String> column : columns) {
+            if (column.getId().equals("rowSimilar")) {
+                column.setCellValueFactory(new PropertyValueFactory<>("PercSimilarity"));
+            }
             if (column.getId().equals("rowFolderName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPath"));
             }
@@ -360,6 +365,9 @@ public class MainController implements Initializable {
         this.tableResult.setPlaceholder(new Label(this.resourceBundle.getString("TableViewPlaceholder")));
         ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
         for (TableColumn<RowTableData, String> column : columns) {
+            if (column.getId().equals("rowSimilar")) {
+                column.setText(this.resourceBundle.getString("Similar"));
+            }
             if (column.getId().equals("rowFolderName")) {
                 column.setText(this.resourceBundle.getString("Folder"));
             }

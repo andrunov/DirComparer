@@ -13,6 +13,10 @@ public class RowTableData {
         return similarity;
     }
 
+    public String getPercSimilarity() {
+        return similarity + " %";
+    }
+
     public String getBaseFolderPath() {
         return this.fileInfo.getBaseFolderPath();
     }

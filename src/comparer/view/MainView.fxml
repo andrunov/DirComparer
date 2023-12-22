@@ -77,6 +77,7 @@
          <center>
             <TableView fx:id="tableResult" editable="true" prefHeight="492.0" prefWidth="600.0" stylesheets="@../style/TableView.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
               <columns>
+                  <TableColumn fx:id="rowSimilar" minWidth="50.0" prefWidth="100.0" text="%Similar" />
                 <TableColumn fx:id="rowFolderName" minWidth="50.0" prefWidth="200.0" text="%Folder" />
                 <TableColumn fx:id="rowFileName" minWidth="250.0" prefWidth="257.0" text="%FileName" />
                 <TableColumn fx:id="rowFileSize" minWidth="50.0" prefWidth="100.0" text="%FileSizeB" />

@@ -6,6 +6,15 @@
     -fx-border-width: 0px;
 }
 
+.table-row-cell:focused   {
+    -fx-background-color: rgba(0, 140, 255, 0.15);
+}
+
+.table-row-cell:focused .table-cell  {
+    -fx-text-fill: green;
+    -fx-font-weight: bold;
+}
+
 .table-cell:hover   {
     -fx-text-fill: blue;
     -fx-background-color: #ddffd2;

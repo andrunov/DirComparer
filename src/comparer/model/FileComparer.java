@@ -253,33 +253,6 @@ public class FileComparer
         return result;
     }
 
-    /*preparations before compare directories
-    * check directories and fill collections*/
-    private boolean fillFilenames() {
-        if ((this.startDirectoryName==null)&&(this.endDirectoryName==null)){
-            Message.warningAlert(this.resourceBundle,"SelectDirAlertContentTex");
-            return false;
-            /*condition for single directory comparing*/
-        }else if (this.endDirectoryName==null){
-            this.endDirectoryName = this.startDirectoryName;
-            this.startDirectory = fillDirectory(this.startDirectoryName, this.startDirectoryName);
-            this.endDirectory = this.startDirectory;
-            this.singleDirCompare = true;
-            /*condition for single directory comparing*/
-        }else if (this.startDirectoryName==null){
-            this.startDirectoryName = this.endDirectoryName;
-            this.endDirectory = fillDirectory(this.endDirectoryName, this.endDirectoryName);
-            this.startDirectory = this.endDirectory;
-            this.singleDirCompare = true;
-        }else {
-            this.startDirectory = fillDirectory(this.startDirectoryName, this.startDirectoryName);
-            this.endDirectory = fillDirectory(this.endDirectoryName, this.endDirectoryName);
-            this.singleDirCompare = false;
-        }
-        updateDictionaries();
-        return true;
-    }
-
     private boolean fillFilenamesForSearch() {
         if ((this.startDirectoryName==null)&&(this.fileToSearch==null)){
             Message.warningAlert(this.resourceBundle,"SelectDirAndWordAlert");
@@ -309,11 +282,14 @@ public class FileComparer
                 if (startFileInfo == endFileInfo) continue;
 
                 if (startFileInfo.nameIsEquals(endFileInfo)) {
-                    addEqualities(this.fullEquality, startFileInfo, endFileInfo);
+                    RowTableData rowTableData = new RowTableData(startFileInfo, 100);
+                    this.report.add(rowTableData);
                 } else {
                     int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords(), true);
-                    RowTableData rowTableData = new RowTableData(startFileInfo, songSimilarWords);
-                    this.report.add(rowTableData);
+                    if (songSimilarWords > 0) {
+                        RowTableData rowTableData = new RowTableData(startFileInfo, songSimilarWords);
+                        this.report.add(rowTableData);
+                    }
                 }
             }
         }
@@ -462,14 +438,7 @@ public class FileComparer
         this.endDirectoryName = null;
         this.startDirectory.clear();
         this.endDirectory.clear();
-        this.fullEquality.clear();
-        this.nameEquality.clear();
-        this.sizeEquality.clear();
-        this.nameSimilarityHighest.clear();
-        this.nameSimilarityHigh.clear();
-        this.nameSimilarityMiddle.clear();
-        this.nameSimilarityLow.clear();
-        this.noSimilarities.clear();
+        this.report.clear();
     }
 
 }
