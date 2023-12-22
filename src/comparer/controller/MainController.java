@@ -306,10 +306,12 @@ public class MainController implements Initializable {
 
     public void setupResultTable() {
 
+        this.tableResult.setPlaceholder(new Label(this.resourceBundle.getString("TableViewPlaceholder")));
+
         ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
         for (TableColumn<FileInfo, String> column : columns) {
             if (column.getId().equals("rowFolderName")) {
-                column.setCellValueFactory(new PropertyValueFactory<>("ShortDirectoryName"));
+                column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPath"));
             }
             if (column.getId().equals("rowFileName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("Name"));
@@ -362,6 +364,7 @@ public class MainController implements Initializable {
     }
 
     public void updateResultTable() {
+        this.tableResult.setPlaceholder(new Label(this.resourceBundle.getString("TableViewPlaceholder")));
         ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
         for (TableColumn<FileInfo, String> column : columns) {
             if (column.getId().equals("rowFolderName")) {
