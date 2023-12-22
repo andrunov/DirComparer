@@ -2,6 +2,7 @@ package comparer.controller;
 
 
 import comparer.MainApp;
+import comparer.RowTableData;
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
 import comparer.util.AppPreferences;
@@ -140,7 +141,7 @@ public class MainController implements Initializable {
             if(this.comparer.search()) {
                 //setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
                 setVisibility(true);
-                this.addDataToTable();
+                this.tableResult.getItems().addAll(this.comparer.getReport());
                 this.comparer.clean();
             }
         }
@@ -152,17 +153,7 @@ public class MainController implements Initializable {
 
 
     private void addDataToTable() {
-
-        List<FileInfo> report = new ArrayList<>();
-        report.addAll(this.comparer.getFullEquality());
-        report.addAll(this.comparer.getNameEquality());
-        report.addAll(this.comparer.getNameSimilarityHighest());
-        report.addAll(this.comparer.getNameSimilarityHigh());
-        report.addAll(this.comparer.getNameSimilarityMiddle());
-        report.addAll(this.comparer.getNameSimilarityLow());
-        for (FileInfo fileInfo : report) {
-            this.tableResult.getItems().add(fileInfo);
-        }
+        this.tableResult.getItems().addAll(this.comparer.getReport());
     }
 
     /*open dialog to choose directory*/
@@ -308,8 +299,8 @@ public class MainController implements Initializable {
 
         this.tableResult.setPlaceholder(new Label(this.resourceBundle.getString("TableViewPlaceholder")));
 
-        ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
-        for (TableColumn<FileInfo, String> column : columns) {
+        ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
+        for (TableColumn<RowTableData, String> column : columns) {
             if (column.getId().equals("rowFolderName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPath"));
             }
@@ -322,36 +313,38 @@ public class MainController implements Initializable {
         }
 
         this.tableResult.setRowFactory( tv -> {
-            TableRow<FileInfo> row = new TableRow<FileInfo>() {
+            TableRow<RowTableData> row = new TableRow<RowTableData>() {
                 @Override
-                protected void updateItem(FileInfo fileInfo, boolean empty) {
-                    super.updateItem(fileInfo, empty);
-                    if (fileInfo == null)
+                protected void updateItem(RowTableData rowTableData, boolean empty) {
+                    super.updateItem(rowTableData, empty);
+                    /*
+                    if (rowTableData == null)
                         setStyle("");
-                    else if (fileInfo.isAccepted())
+                    else if (rowTableData.isAccepted())
                         setStyle("-fx-background-color: #baffba;");
-                    else if (fileInfo.getSize() > 0)
+                    else if (rowTableData.getSize() > 0)
                         setStyle("-fx-background-color: #ffd7d1;");
                     else
                         setStyle("");
+                     */
                 }
             };
 
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    FileInfo fileInfo = row.getItem();
+                    RowTableData rowTableData = row.getItem();
                     String columnID = row.getTableView().getSelectionModel().getSelectedCells().get(0).getTableColumn().getId();
                     if (columnID.equals("rowFolderName")) {
                         try {
                             assert this.desktop != null;
-                            this.desktop.open(new File(fileInfo.getBaseFolderPath()));
+                            this.desktop.open(new File(rowTableData.getBaseFolderPath()));
                         } catch (Exception e) {
                             Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
                         }
                     } else if (columnID.equals("rowFileName")) {
                         try {
                             assert this.desktop != null;
-                            this.desktop.open(new File(fileInfo.getAbsolutePath()));
+                            this.desktop.open(new File(rowTableData.getAbsolutePath()));
                         } catch (Exception e) {
                             Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
                         }
@@ -365,8 +358,8 @@ public class MainController implements Initializable {
 
     public void updateResultTable() {
         this.tableResult.setPlaceholder(new Label(this.resourceBundle.getString("TableViewPlaceholder")));
-        ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
-        for (TableColumn<FileInfo, String> column : columns) {
+        ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
+        for (TableColumn<RowTableData, String> column : columns) {
             if (column.getId().equals("rowFolderName")) {
                 column.setText(this.resourceBundle.getString("Folder"));
             }
