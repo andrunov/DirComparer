@@ -11,10 +11,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 
@@ -150,28 +150,6 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    public void onClick () {
-        FileInfo fileInfo = (FileInfo) this.tableResult.getSelectionModel().getSelectedItem();
-        TablePosition<FileInfo, String> cell = (TablePosition<FileInfo, String>) this.tableResult.getSelectionModel().getSelectedCells().get(0);
-        String columnID = cell.getTableColumn().getId();
-        if (columnID.equals("rowFolderName")) {
-            try {
-                assert this.desktop != null;
-                this.desktop.open(new File(fileInfo.getBaseFolderPath()));
-            } catch (Exception e) {
-                Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
-            }
-        } else if (columnID.equals("rowFileName")) {
-            try {
-                assert this.desktop != null;
-                this.desktop.open(new File(fileInfo.getAbsolutePath()));
-            } catch (Exception e) {
-                Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
-            }
-        }
-
-    }
 
     private void addDataToTable() {
 
@@ -327,6 +305,7 @@ public class MainController implements Initializable {
     };
 
     public void setupResultTable() {
+
         ObservableList<TableColumn<FileInfo, String>> columns = this.tableResult.getColumns();
         for (TableColumn<FileInfo, String> column : columns) {
             if (column.getId().equals("rowFolderName")) {
@@ -339,6 +318,47 @@ public class MainController implements Initializable {
                 column.setCellValueFactory(new PropertyValueFactory<>("SizeFormatted"));
             }
         }
+
+        this.tableResult.setRowFactory( tv -> {
+            TableRow<FileInfo> row = new TableRow<FileInfo>() {
+                @Override
+                protected void updateItem(FileInfo fileInfo, boolean empty) {
+                    super.updateItem(fileInfo, empty);
+                    if (fileInfo == null)
+                        setStyle("");
+                    else if (fileInfo.isAccepted())
+                        setStyle("-fx-background-color: #baffba;");
+                    else if (fileInfo.getSize() > 0)
+                        setStyle("-fx-background-color: #ffd7d1;");
+                    else
+                        setStyle("");
+                }
+            };
+
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    FileInfo fileInfo = row.getItem();
+                    String columnID = row.getTableView().getSelectionModel().getSelectedCells().get(0).getTableColumn().getId();
+                    if (columnID.equals("rowFolderName")) {
+                        try {
+                            assert this.desktop != null;
+                            this.desktop.open(new File(fileInfo.getBaseFolderPath()));
+                        } catch (Exception e) {
+                            Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
+                        }
+                    } else if (columnID.equals("rowFileName")) {
+                        try {
+                            assert this.desktop != null;
+                            this.desktop.open(new File(fileInfo.getAbsolutePath()));
+                        } catch (Exception e) {
+                            Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
+                        }
+                    }
+                }
+            });
+
+            return row ;
+        });
     }
 
     public void updateResultTable() {
