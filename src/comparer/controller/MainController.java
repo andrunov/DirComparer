@@ -117,6 +117,11 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    private void onEnter() {
+        this.executeSearch();
+    }
+
     /*start comparing procedure*/
     @FXML
     private void executeSearch(){

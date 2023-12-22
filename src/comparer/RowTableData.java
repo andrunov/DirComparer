@@ -14,7 +14,7 @@ public class RowTableData {
     }
 
     public String getPercSimilarity() {
-        return similarity + " %";
+        return similarity + "%";
     }
 
     public String getBaseFolderPath() {
