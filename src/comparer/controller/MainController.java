@@ -308,7 +308,6 @@ public class MainController implements Initializable {
         for (TableColumn<RowTableData, String> column : columns) {
             if (column.getId().equals("rowSimilar")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("PercSimilarity"));
-                column.setStyle("-fx-alignment: center;");
             }
             if (column.getId().equals("rowFolderName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPath"));

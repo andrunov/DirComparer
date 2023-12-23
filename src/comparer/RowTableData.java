@@ -14,7 +14,7 @@ public class RowTableData {
     }
 
     public String getPercSimilarity() {
-        return similarity + "%";
+        return "  " + similarity + "%";
     }
 
     public String getBaseFolderPath() {
@@ -26,7 +26,7 @@ public class RowTableData {
     }
 
     public String getSizeFormatted() {
-        return this.fileInfo.getSizeFormatted();
+        return this.fileInfo.getSizeFormatted() + "  ";
     }
 
     private FileInfo fileInfo;
