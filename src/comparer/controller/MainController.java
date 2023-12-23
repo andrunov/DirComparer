@@ -22,8 +22,6 @@ import javafx.stage.DirectoryChooser;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -310,6 +308,7 @@ public class MainController implements Initializable {
         for (TableColumn<RowTableData, String> column : columns) {
             if (column.getId().equals("rowSimilar")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("PercSimilarity"));
+                column.setStyle("-fx-alignment: center;");
             }
             if (column.getId().equals("rowFolderName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPath"));
@@ -319,6 +318,7 @@ public class MainController implements Initializable {
             }
             if (column.getId().equals("rowFileSize")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("SizeFormatted"));
+                column.setStyle("-fx-alignment: CENTER_RIGHT;");
             }
         }
 
@@ -327,16 +327,32 @@ public class MainController implements Initializable {
                 @Override
                 protected void updateItem(RowTableData rowTableData, boolean empty) {
                     super.updateItem(rowTableData, empty);
-                    /*
-                    if (rowTableData == null)
-                        setStyle("");
-                    else if (rowTableData.isAccepted())
-                        setStyle("-fx-background-color: #baffba;");
-                    else if (rowTableData.getSize() > 0)
-                        setStyle("-fx-background-color: #ffd7d1;");
-                    else
-                        setStyle("");
-                     */
+                    if (rowTableData == null) {
+                        setStyle("-fx-background-color: white;");
+                    } else {
+                        if (rowTableData.getSimilarity() == 100)
+                            setStyle("-fx-background-color: rgba(0,255,0,0.10);");
+                        else if (rowTableData.getSimilarity() >= 90)
+                            setStyle("-fx-background-color: rgba(0,204,51,0.10);");
+                        else if (rowTableData.getSimilarity() >= 80)
+                            setStyle("-fx-background-color: rgba(0,153,102,0.10);");
+                        else if (rowTableData.getSimilarity() >= 70)
+                            setStyle("-fx-background-color: rgba(0,102,153,0.10);");
+                        else if (rowTableData.getSimilarity() >= 60)
+                            setStyle("-fx-background-color: rgba(0,51,204,0.10);");
+                        else if (rowTableData.getSimilarity() >= 50)
+                            setStyle("-fx-background-color: rgba(0,0,255,0.10);");
+                        else if (rowTableData.getSimilarity() >= 40)
+                            setStyle("-fx-background-color: rgba(51,204,0,0.10);");
+                        else if (rowTableData.getSimilarity() >= 30)
+                            setStyle("-fx-background-color: rgba(102,153,0,0.10);");
+                        else if (rowTableData.getSimilarity() >= 20)
+                            setStyle("-fx-background-color: rgba(153,102,0,0.10);");
+                        else if (rowTableData.getSimilarity() >= 10)
+                            setStyle("-fx-background-color: rgba(204,51,0,0.10);");
+                        else if (rowTableData.getSimilarity() >= 0)
+                            setStyle("-fx-background-color: rgba(255,0,0,0.10);");
+                        }
                 }
             };
 
