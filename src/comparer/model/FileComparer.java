@@ -285,7 +285,7 @@ public class FileComparer
                     RowTableData rowTableData = new RowTableData(startFileInfo, 100);
                     this.report.add(rowTableData);
                 } else {
-                    int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords(), true);
+                    int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
                     if (songSimilarWords > 0) {
                         RowTableData rowTableData = new RowTableData(startFileInfo, songSimilarWords);
                         this.report.add(rowTableData);
@@ -308,9 +308,9 @@ public class FileComparer
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2, boolean accountWeight){
+    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
         Difference difference = new Difference(phrase1, phrase2);
-        return difference.getDifference(accountWeight, this.analyzeByLetters);
+        return difference.getDifference(this.analyzeByLetters);
     }
 
     private void updateDictionaries() {
