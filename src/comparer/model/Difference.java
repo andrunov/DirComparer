@@ -52,7 +52,9 @@ public class Difference {
 
         for (int i = 0; i < shortList.size(); i++) {
             WordInfo first = shortList.get(i);
+            if (first.isIgnorance()) continue;
             for (WordInfo second : longList) {
+                if (second.isIgnorance()) continue;
                 if (first.getID() == second.getID()) {
                     congruence[i] = 100;
 

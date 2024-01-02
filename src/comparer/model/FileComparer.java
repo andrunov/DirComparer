@@ -16,6 +16,8 @@ public class FileComparer
     * that allow considering that words are similar*/
     private static final int WORD_SIMILARITY_COEFF = 75;
 
+    private static final String IGNORE_STRING = "a,'a,an,and,as,at,be,by,de,el,for,if,in,is,it,la,of,oh,on,or,so,the,to,un,up,а,ай,ау,ах,бы,в,во,да,до,жe,за,из,как,ли,на,не,ни,но,ну,об,ой,от,ох,по,со,так,то,уж,эх";
+
     private static Map<String, WordInfo> tempDictionary;
 
     private final List<WordInfo> dictionary;
@@ -295,11 +297,6 @@ public class FileComparer
         }
     }
 
-    /*preparations before print result int file*/
-    private void outputPreparations(){
-
-    }
-
     /*find quantity of similar words in two List<String>, return 100 means equality */
 
     /*
@@ -318,11 +315,19 @@ public class FileComparer
         int counter = 0;
         int sumQuantity = 0;
 
+        // add ignore words
+        for (String ignoreWord : IGNORE_STRING.split(",")) {
+            if (tempDictionary.containsKey(ignoreWord)) {
+                tempDictionary.get(ignoreWord).setIgnorance(true);
+            }
+        }
+
         for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
             WordInfo wordInfo = entry.getValue();
             wordInfo.setID(counter);
             dictionary.add(wordInfo);
-            sumQuantity = sumQuantity + entry.getValue().getQuantity();
+            //TODO for directory comparer version
+            //sumQuantity = sumQuantity + entry.getValue().getQuantity();
             counter++;
         }
 
@@ -330,7 +335,8 @@ public class FileComparer
         double averageQuantity = (double) sumQuantity/counter;
 
         for (WordInfo wordInfo : dictionary) {
-            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
+            //TODO for directory comparer version
+            //wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
             //System.out.println(wordInfo.getWord() +"\t" + wordInfo.getQuantity() + "\t" + wordInfo.getWeight());
 
             for (WordInfo otherWordInfo : dictionary) {
