@@ -326,17 +326,18 @@ public class FileComparer
             WordInfo wordInfo = entry.getValue();
             wordInfo.setID(counter);
             dictionary.add(wordInfo);
-            //TODO for directory comparer version
-            //sumQuantity = sumQuantity + entry.getValue().getQuantity();
+            sumQuantity = sumQuantity + entry.getValue().getQuantity();
             counter++;
         }
 
         tempDictionary.clear();
+
+        //TODO remove later if no need
+    /*
         double averageQuantity = (double) sumQuantity/counter;
 
         for (WordInfo wordInfo : dictionary) {
-            //TODO for directory comparer version
-            //wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
+            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
             //System.out.println(wordInfo.getWord() +"\t" + wordInfo.getQuantity() + "\t" + wordInfo.getWeight());
 
             for (WordInfo otherWordInfo : dictionary) {
@@ -354,56 +355,11 @@ public class FileComparer
                 }
             }
         }
+
+     */
         dictionary.clear();
     }
 
-
-    /*
-     * find quantity of similar letters in two words,
-     * return 100 means words equality
-     * return 0 means that words are definitely different
-     * return value in range from 1 nj 99 means that words are similar in that degree */
-    private int compareWords(String word1, String word2){
-
-        double lengthDiff =  ((double)(word1.length()) / word2.length());
-        if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
-        if (lengthDiff == 1.00) {
-            if (word1.equals(word2)) return 100;
-        }
-
-        String shortWord;
-        String longWord;
-        if (word1.length() <= word2.length()) {
-            shortWord = word1;
-            longWord = word2;
-        } else {
-            shortWord = word2;
-            longWord = word1;
-        }
-
-        int result = 0;
-        int lastDiffPosition = 0;
-        int diffChangeCount = 0;
-        int[] foundIndexes = new int[longWord.length()];
-        for (int i = 0; i < shortWord.length(); i++){
-            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
-                if (foundIndexes[j] == 1) continue;
-                if (shortWord.charAt(i) == longWord.charAt(j)) {
-                    foundIndexes[j] = 1;
-                    if ((i - j) != lastDiffPosition) {
-                        diffChangeCount++;
-                        if (diffChangeCount >= 2) return 0;
-                        lastDiffPosition = i - j;
-                    }
-                    result = result + 1;
-                    break;
-                }
-            }
-        }
-        int length = Math.max(shortWord.length(), longWord.length());
-        result = (int) (Math.round(result  * 100.00 / length));
-        return result;
-    }
 
     /*insert two similar FileInfo in directory send as 1st parameter*/
     private void addEqualities(List<FileInfo> list, FileInfo startFileInfo, FileInfo endFileInfo){
