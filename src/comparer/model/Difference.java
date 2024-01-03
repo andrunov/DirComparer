@@ -26,7 +26,7 @@ public class Difference {
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    public int getDifference(boolean analyzeByLetters) {
+    public int getСoincidence(boolean analyzeByLetters) {
         double result = 0;
         List<WordInfo> shortList;
         List<WordInfo> longList;
@@ -49,26 +49,25 @@ public class Difference {
             else return 0;
         }
 
-        double[] congruence = new double[shortList.size()];
-        int difference = 0;
+        int coincidence = 0;
 
         for (WordInfo first : shortList) {
             if (first.isIgnorance()) continue;
             for (WordInfo second : longList) {
                 if (second.isIgnorance()) continue;
                 if (first.getID() == second.getID()) {
-                    difference = 100;
+                    coincidence = 100;
 
-                } else if (analyzeByLetters && first.getSimilarWords() != null) {
-                    if (first.getSimilarWords().containsKey(second)) {
-                        difference = first.getSimilarWords().get(second);
-                    }
+                } else if (analyzeByLetters
+                  && first.getSimilarWords() != null
+                  && first.getSimilarWords().containsKey(second)) {
+                            coincidence = first.getSimilarWords().get(second);
                 } else if (analyzeByLetters) {
-                    difference = compareWords(first.getWord(), second.getWord());
+                    coincidence = compareWords(first.getWord(), second.getWord());
                     first.setSimilarWords(new HashMap<>());
-                    first.getSimilarWords().put(second, difference);
+                    first.getSimilarWords().put(second, coincidence);
                 }
-                result = result + difference;
+                result = result + coincidence;
             }
         }
 
