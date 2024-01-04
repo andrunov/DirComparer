@@ -326,31 +326,33 @@ public class MainController implements Initializable {
                 @Override
                 protected void updateItem(RowTableData rowTableData, boolean empty) {
                     super.updateItem(rowTableData, empty);
+                    int R = 0;
+                    int G = 0;
+                    int B = 0;
                     if (rowTableData == null) {
                         setStyle("-fx-background-color: white;");
                     } else {
-                        if (rowTableData.getSimilarity() == 100)
-                            setStyle("-fx-background-color: rgba(0,255,0,0.10);");
-                        else if (rowTableData.getSimilarity() >= 90)
-                            setStyle("-fx-background-color: rgba(0,204,51,0.10);");
-                        else if (rowTableData.getSimilarity() >= 80)
-                            setStyle("-fx-background-color: rgba(0,153,102,0.10);");
-                        else if (rowTableData.getSimilarity() >= 70)
-                            setStyle("-fx-background-color: rgba(0,102,153,0.10);");
-                        else if (rowTableData.getSimilarity() >= 60)
-                            setStyle("-fx-background-color: rgba(0,51,204,0.10);");
-                        else if (rowTableData.getSimilarity() >= 50)
-                            setStyle("-fx-background-color: rgba(0,0,255,0.10);");
-                        else if (rowTableData.getSimilarity() >= 40)
-                            setStyle("-fx-background-color: rgba(51,204,0,0.10);");
-                        else if (rowTableData.getSimilarity() >= 30)
-                            setStyle("-fx-background-color: rgba(102,153,0,0.10);");
-                        else if (rowTableData.getSimilarity() >= 20)
-                            setStyle("-fx-background-color: rgba(153,102,0,0.10);");
-                        else if (rowTableData.getSimilarity() >= 10)
-                            setStyle("-fx-background-color: rgba(204,51,0,0.10);");
-                        else if (rowTableData.getSimilarity() >= 0)
-                            setStyle("-fx-background-color: rgba(255,0,0,0.10);");
+                        int similarity = rowTableData.getSimilarity();
+
+                        if (similarity > 75 && similarity <=100) {
+                            R = 0;
+                            G = 255;
+                            B = (255/25) * (100 - similarity);
+                        } else if (similarity > 50 && similarity <= 75) {
+                            R = 0;
+                            G = (255/25) * (similarity - 50);
+                            B = 255;
+                        } else if (similarity > 25 && similarity <= 50) {
+                            R = (255/25) * (50 - similarity);
+                            G = 0;
+                            B = 255;
+                        } else if (similarity > 0 && similarity <= 25) {
+                            R = 255;
+                            G = 0;
+                            B = (255/25) * similarity;
+                        }
+                        String cssFormatString = String.format("-fx-background-color: rgba(%s,%s,%s,0.075);", R, G, B);
+                        setStyle(cssFormatString);
                         }
                 }
             };

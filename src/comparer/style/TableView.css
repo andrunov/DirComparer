@@ -17,5 +17,5 @@
 
 .table-cell:hover   {
     -fx-text-fill: blue;
-    -fx-border-color: green;
+    -fx-border-color: red;
 }
