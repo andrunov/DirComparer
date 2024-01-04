@@ -6,16 +6,20 @@
     -fx-border-width: 0px;
 }
 
-.table-row-cell:focused   {
-    -fx-border-color: grey;
-}
 
 .table-row-cell:focused .table-cell  {
-    -fx-text-fill: grey;
-    -fx-font-weight: bold;
+    -fx-text-fill: green;
+    -fx-border-color: darkgrey;
 }
 
 .table-cell:hover   {
     -fx-text-fill: blue;
     -fx-border-color: red;
+}
+
+.table-row-cell:focused .table-cell:hover  {
+    -fx-text-fill: blue;
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-font-weight: bold;
 }
