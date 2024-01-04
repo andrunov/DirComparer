@@ -10,6 +10,7 @@ import comparer.util.AppPreferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -26,7 +27,7 @@ public class MainApp extends Application {
     private Stage primaryStage;
 
     /*root layout element*/
-    private AnchorPane rootLayout;
+    private SplitPane rootLayout;
 
     /*link to main controller*/
     private MainController mainController;
@@ -65,7 +66,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(ResourceBundle.getBundle("comparer.resources.bundles.Locale", locale));
             loader.setLocation(MainApp.class.getResource("view/MainView.fxml"));
-            rootLayout = (AnchorPane) loader.load();
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);

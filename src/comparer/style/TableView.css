@@ -20,6 +20,4 @@
 .table-row-cell:focused .table-cell:hover  {
     -fx-text-fill: blue;
     -fx-border-color: red;
-    -fx-border-width: 2px;
-    -fx-font-weight: bold;
 }

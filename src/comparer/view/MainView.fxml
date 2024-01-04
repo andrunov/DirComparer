@@ -4,11 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="600.0" prefHeight="650.0" prefWidth="600.0" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
-   <children>
-      <BorderPane prefHeight="650.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <GridPane maxHeight="250.0" prefHeight="108.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+
+<SplitPane dividerPositions="0.17391304347826086" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <GridPane maxHeight="250.0" prefHeight="108.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="350.0" prefWidth="450.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="100.0" prefWidth="100.0" />
@@ -22,11 +23,13 @@
                   <Button fx:id="firstDirSelectBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="10.0" mnemonicParsing="false" onAction="#choseFirstDirectory" text="%Select" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
-                     </GridPane.margin></Button>
+                     </GridPane.margin>
+                  </Button>
                   <Label fx:id="firstDirLbl" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="10.0" text="%FirstDirectory" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
-                     </GridPane.margin></Label>
+                     </GridPane.margin>
+                  </Label>
                   <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
                         <Button fx:id="changeLocalButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="70.0" mnemonicParsing="false" onAction="#changeLocale" text="%ChangeLocal">
@@ -37,7 +40,8 @@
                         <Button fx:id="settingsBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="70.0" mnemonicParsing="false" onAction="#openSettings" text="%Settings">
                            <HBox.margin>
                               <Insets bottom="2.0" left="5.0" top="2.0" />
-                           </HBox.margin></Button>
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="clearBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="70.0" mnemonicParsing="false" onAction="#clear" text="%Clear">
                            <HBox.margin>
                               <Insets bottom="2.0" left="5.0" top="2.0" />
@@ -63,19 +67,20 @@
                   <TextField fx:id="fileNameTextField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onEnter" promptText="%FileName" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
-                     </GridPane.margin></TextField>
+                     </GridPane.margin>
+                  </TextField>
                   <Button fx:id="goBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="10.0" mnemonicParsing="false" onAction="#executeSearch" prefHeight="37.0" prefWidth="56.0" text="%Go" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
-                     </GridPane.margin></Button>
+                     </GridPane.margin>
+                  </Button>
                </children>
-               <BorderPane.margin>
-                  <Insets bottom="5.0" top="5.0" />
-               </BorderPane.margin>
             </GridPane>
-         </top>
-         <center>
-            <TableView fx:id="tableResult" editable="true" prefHeight="492.0" prefWidth="600.0" stylesheets="@../style/TableView.css" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <TableView fx:id="tableResult" editable="true" prefHeight="492.0" prefWidth="600.0" stylesheets="@../style/TableView.css" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
                   <TableColumn fx:id="rowSimilar" minWidth="50.0" prefWidth="100.0" text="%Similar" />
                 <TableColumn fx:id="rowFolderName" minWidth="50.0" prefWidth="200.0" text="%Folder" />
@@ -83,7 +88,7 @@
                 <TableColumn fx:id="rowFileSize" minWidth="50.0" prefWidth="100.0" text="%FileSizeB" />
               </columns>
             </TableView>
-         </center>
-      </BorderPane>
-   </children>
-</AnchorPane>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>
