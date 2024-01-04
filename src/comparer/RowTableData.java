@@ -9,6 +9,10 @@ public class RowTableData {
         this.similarity = similarity;
     }
 
+    private FileInfo fileInfo;
+
+    int similarity;
+
     public int getSimilarity() {
         return similarity;
     }
@@ -22,18 +26,23 @@ public class RowTableData {
     }
 
     public String getName() {
-        return this.fileInfo.getName();
+        if (this.isDirectory()) return String.format("\uD83D\uDDC0 %s", this.fileInfo.getName());
+        else return this.fileInfo.getName();
     }
 
     public String getSizeFormatted() {
-        return this.fileInfo.getSizeFormatted() + "  ";
+        if (this.isDirectory()) return "";
+        else return this.fileInfo.getSizeFormatted() + "  ";
     }
 
-    private FileInfo fileInfo;
-
-    int similarity;
 
     public String getAbsolutePath() {
         return this.fileInfo.getAbsolutePath();
     }
+
+    public boolean isDirectory() {
+        return this.fileInfo.isDirectory();
+    }
+
+
 }

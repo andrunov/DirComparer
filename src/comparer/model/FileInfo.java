@@ -104,6 +104,9 @@ public class FileInfo implements Comparable<FileInfo>
     /*size of file*/
     private long size;
 
+
+    private boolean isDirectory;
+
     private List<WordInfo> dWords;
 
 
@@ -115,10 +118,11 @@ public class FileInfo implements Comparable<FileInfo>
     }
 
     /*constructor*/
-    public FileInfo(String absolutePath, String baseFolderPath, String name, long size) {
+    public FileInfo(String absolutePath, String name, long size, boolean isDirectory) {
         this.ID = FileInfo.fileInfoCounter++;
         this.absolutePath = absolutePath;
         this.size = size;
+        this.isDirectory = isDirectory;
         name = cutExtension(name);
         this.dWords = putWordsIntoDictionary(getSplitString(name));
         this.accepted = false;
@@ -126,7 +130,7 @@ public class FileInfo implements Comparable<FileInfo>
 
     /*constructor*/
     public FileInfo(String name) {
-        this(name, null, name, 0);
+        this(name, name, 0, false);
     }
 
     /*getters and setters*/
@@ -147,6 +151,10 @@ public class FileInfo implements Comparable<FileInfo>
 
     public long getSize() {
         return size;
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
     }
 
     public String getSizeFormatted() {

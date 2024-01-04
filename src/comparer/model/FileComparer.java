@@ -382,8 +382,9 @@ public class FileComparer
 
                         File file = new File(absoluteFilePath);
                         if (file.isFile()) {
-                            result.add(new FileInfo(absoluteFilePath, baseDirectoryPath, filePath, file.length()));
+                            result.add(new FileInfo(absoluteFilePath, filePath, file.length(), false));
                         } else if (file.isDirectory()) {
+                            result.add(new FileInfo(absoluteFilePath, filePath, file.length(), true));
                             result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
                         }
 
