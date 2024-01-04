@@ -72,6 +72,7 @@ public class Difference {
         }
 
         result = result / longList.size();
+        if (result > 100) result = 100;
 
         return (int) (result);
     }

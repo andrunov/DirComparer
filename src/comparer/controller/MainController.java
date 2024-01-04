@@ -351,7 +351,7 @@ public class MainController implements Initializable {
                             G = 0;
                             B = (255/25) * similarity;
                         }
-                        String cssFormatString = String.format("-fx-background-color: rgba(%s,%s,%s,0.075);", R, G, B);
+                        String cssFormatString = String.format("-fx-background-color: rgba(%s,%s,%s,0.05);", R, G, B);
                         setStyle(cssFormatString);
                         }
                 }
