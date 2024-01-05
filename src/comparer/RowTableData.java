@@ -18,21 +18,21 @@ public class RowTableData {
     }
 
     public String getPercSimilarity() {
-        return "  " + similarity + "%";
+        return String.format("  %s%s" ,similarity,"%");
     }
 
     public String getBaseFolderPath() {
-        return this.fileInfo.getBaseFolderPath();
+        return String.format("\uD83D\uDDC0 %s",this.fileInfo.getBaseFolderPath());
     }
 
     public String getName() {
-        if (this.isDirectory()) return String.format("\uD83D\uDDC0 %s", this.fileInfo.getName());
+        if (this.isDirectory()) return String.format("\uD83D\uDCC2  %s", this.fileInfo.getName());
         else return this.fileInfo.getName();
     }
 
     public String getSizeFormatted() {
         if (this.isDirectory()) return "";
-        else return this.fileInfo.getSizeFormatted() + "  ";
+        else return String.format("%s  ",this.fileInfo.getSizeFormatted());
     }
 
 

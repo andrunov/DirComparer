@@ -352,13 +352,10 @@ public class MainController implements Initializable {
                             B = (255/25) * similarity;
                         }
                         String cssFormatString = String.format("-fx-background-color: rgba(%s,%s,%s,0.05);", R, G, B);
-
                         if (rowTableData.isDirectory()) {
                             cssFormatString = cssFormatString + "-fx-font-weight: bold;";
                         }
                         setStyle(cssFormatString);
-
-
                     }
                 }
             };

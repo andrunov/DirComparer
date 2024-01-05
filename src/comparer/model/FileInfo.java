@@ -158,7 +158,7 @@ public class FileInfo implements Comparable<FileInfo>
     }
 
     public String getSizeFormatted() {
-        return Formatter.doubleFormat("###,###.##",this.getSize() * 1.0 / 1048576);
+        return Formatter.doubleFormat("###,###,###,###,###.##",this.getSize());
     }
 
     public void setSize(long size) {
