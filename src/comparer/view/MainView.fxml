@@ -87,7 +87,7 @@
                 <TableColumn fx:id="rowFileSize" minWidth="50.0" prefWidth="100.0" text="%FileSizeB" />
               </columns>
             </TableView>
-            <Pagination fx:id="pagination" layoutX="8.0" layoutY="366.0" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pagination fx:id="pagination" layoutX="8.0" layoutY="366.0" maxPageIndicatorCount="1" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
   </items>

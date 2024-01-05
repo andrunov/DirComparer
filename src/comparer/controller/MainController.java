@@ -215,6 +215,7 @@ public class MainController implements Initializable {
         this.settingsBtn.setText(this.resourceBundle.getString("Settings"));
         this.aboutBtn.setText(this.resourceBundle.getString("AppInfo"));
         this.exitBtn.setText(this.resourceBundle.getString("Exit"));
+        this.fileNameTextField.setPromptText(this.resourceBundle.getString("FileName"));
         this.updateResultTable();
     }
 
@@ -274,7 +275,8 @@ public class MainController implements Initializable {
         this.secondDirectory = null;
         this.tableResult.getItems().clear();
         this.pagination.setMaxPageIndicatorCount(1);
-
+        this.pagination.setPageCount(1);
+        this.fileNameTextField.clear();
         updateTextInfoLbl();
         setVisibility(false);
     }
