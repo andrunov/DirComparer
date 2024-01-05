@@ -9,24 +9,31 @@ import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 /*controller for MainView.fxml window*/
 public class MainController implements Initializable {
+
+    private static final int ROWS_RER_PAGE = 15;
+
 
     @FXML
     private TextField fileNameTextField;
@@ -68,6 +75,9 @@ public class MainController implements Initializable {
 
     @FXML
     private TableView tableResult;
+
+    @FXML
+    private Pagination pagination;
 
     /*language pocket*/
     private ResourceBundle resourceBundle;
@@ -125,6 +135,7 @@ public class MainController implements Initializable {
     private void executeSearch(){
 
         this.tableResult.getItems().clear();
+        this.comparer.clean();
 
         if (this.firstDirectory != null) {
             this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
@@ -144,10 +155,13 @@ public class MainController implements Initializable {
         this.comparer.setResourceBundle(this.resourceBundle);
         try{
             if(this.comparer.search()) {
-                //setTextDirLabel(this.resultLbl, "Result", getFileInfo(this.comparer.getReportName()));
+                List<RowTableData> report = this.comparer.getReport();
                 setVisibility(true);
-                this.tableResult.getItems().addAll(this.comparer.getReport());
-                this.comparer.clean();
+                pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
+                pagination.setCurrentPageIndex(0);
+                pagination.setMaxPageIndicatorCount(15);
+                int toIndex = Math.min(ROWS_RER_PAGE, report.size());
+                tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
             }
         }
         catch (Exception e){
@@ -259,6 +273,8 @@ public class MainController implements Initializable {
         this.firstDirectory = null;
         this.secondDirectory = null;
         this.tableResult.getItems().clear();
+        this.pagination.setMaxPageIndicatorCount(1);
+
         updateTextInfoLbl();
         setVisibility(false);
     }
@@ -404,5 +420,20 @@ public class MainController implements Initializable {
                 column.setText(this.resourceBundle.getString("FileSizeB"));
             }
         }
+    }
+
+    public void setupPagination() {
+        this.pagination.setPageFactory(this::createPage);
+    }
+
+
+    private Node createPage(int pageIndex) {
+
+        List<RowTableData> datalist = this.comparer.getReport();
+        int fromIndex = pageIndex * ROWS_RER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_RER_PAGE, datalist.size());
+        tableResult.setItems(FXCollections.observableArrayList(datalist.subList(fromIndex, toIndex)));
+
+        return new BorderPane(tableResult);
     }
 }
