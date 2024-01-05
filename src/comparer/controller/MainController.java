@@ -329,7 +329,7 @@ public class MainController implements Initializable {
                 column.setCellValueFactory(new PropertyValueFactory<>("PercSimilarity"));
             }
             if (column.getId().equals("rowFolderName")) {
-                column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPath"));
+                column.setCellValueFactory(new PropertyValueFactory<>("BaseFolderPathFormatted"));
             }
             if (column.getId().equals("rowFileName")) {
                 column.setCellValueFactory(new PropertyValueFactory<>("Name"));

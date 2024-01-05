@@ -22,6 +22,10 @@ public class RowTableData {
     }
 
     public String getBaseFolderPath() {
+        return this.fileInfo.getBaseFolderPath();
+    }
+
+    public String getBaseFolderPathFormatted() {
         return String.format("\uD83D\uDDC0 %s",this.fileInfo.getBaseFolderPath());
     }
 
