@@ -134,4 +134,14 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Boolean.parseBoolean(prefs.get("analyseByLetters", "FALSE"));
     }
+
+    public static void setSplitPaneDividerPosition(Double position) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("splitPaneDividerPosition", String.valueOf(position));
+    }
+
+    public static double getSplitPaneDividerPosition() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Double.parseDouble(prefs.get("splitPaneDividerPosition", "0.18"));
+    }
 }

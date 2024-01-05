@@ -53,6 +53,7 @@ public class MainApp extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
+        this.mainController.saveSettings();
         AppPreferences.setMainWindowHeight(this.getPrimaryStage().getHeight());
         AppPreferences.setMainWindowWidth(this.getPrimaryStage().getWidth());
     }
@@ -75,6 +76,7 @@ public class MainApp extends Application {
 
             // Give the mainController access to the main app.
             mainController = loader.getController();
+            mainController.loadSettings();
             mainController.setupResultTable();
             mainController.setupPagination();
             mainController.setMainApp(this);

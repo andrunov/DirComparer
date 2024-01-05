@@ -34,6 +34,8 @@ public class MainController implements Initializable {
 
     private static final int ROWS_RER_PAGE = 15;
 
+    @FXML
+    private SplitPane splitPane;
 
     @FXML
     private TextField fileNameTextField;
@@ -427,6 +429,14 @@ public class MainController implements Initializable {
 
     public void setupPagination() {
         this.pagination.setPageFactory(this::createPage);
+    }
+
+    public void loadSettings() {
+        this.splitPane.setDividerPosition(0, AppPreferences.getSplitPaneDividerPosition());
+    }
+
+    public void saveSettings() {
+        AppPreferences.setSplitPaneDividerPosition(this.splitPane.getDividerPositions()[0]);
     }
 
 
