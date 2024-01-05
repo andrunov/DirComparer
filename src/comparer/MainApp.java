@@ -42,7 +42,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Directory compares");
-        this.primaryStage.getIcons().add(new Image(MainApp.class.getResourceAsStream( "/comparer/resources/images/appImage.png" )));
+        this.primaryStage.getIcons().add(new Image(MainApp.class.getResourceAsStream( "/comparer/resources/images/glass.png" )));
         initRootLayout(new Locale("ru","RU"));
 
         this.primaryStage.heightProperty().addListener(mainController.stageSizeListener);
