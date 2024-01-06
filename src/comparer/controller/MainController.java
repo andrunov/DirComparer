@@ -433,10 +433,23 @@ public class MainController implements Initializable {
 
     public void loadSettings() {
         this.splitPane.setDividerPosition(0, AppPreferences.getSplitPaneDividerPosition());
+        ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
+        for (TableColumn<RowTableData, String> column : columns) {
+            if (column.isVisible()) {
+                double prefWidth = AppPreferences.getTableColumnWidth(column.getId());
+                column.setPrefWidth(prefWidth);
+            }
+        }
     }
 
     public void saveSettings() {
         AppPreferences.setSplitPaneDividerPosition(this.splitPane.getDividerPositions()[0]);
+        ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
+        for (TableColumn<RowTableData, String> column : columns) {
+            if (column.isVisible()) {
+                AppPreferences.setTableColumnWidth(column.getId(), column.getWidth());
+            }
+        }
     }
 
 

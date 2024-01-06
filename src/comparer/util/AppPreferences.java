@@ -144,4 +144,24 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Double.parseDouble(prefs.get("splitPaneDividerPosition", "0.18"));
     }
+
+    public static double getTableColumnWidth(String columnId) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        String key = String.format("tableColumnWidth_%s", columnId);
+        String def = null;
+        if (columnId.equals("rowSimilar")) {
+            def = "100";
+        } else if (columnId.equals("rowFileSize")) {
+            def = "150";
+        } else {
+            def = "250";
+        }
+        return Double.parseDouble(prefs.get(key, def));
+    }
+
+    public static void setTableColumnWidth(String columnId, double width) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        String key = String.format("tableColumnWidth_%s", columnId);
+        prefs.put(key, String.valueOf(width));
+    }
 }
