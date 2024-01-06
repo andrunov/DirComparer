@@ -149,12 +149,12 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         String key = String.format("tableColumnWidth_%s", columnId);
         String def = null;
-        if (columnId.equals("rowSimilar")) {
-            def = "100";
-        } else if (columnId.equals("rowFileSize")) {
-            def = "150";
-        } else {
-            def = "250";
+        if (columnId.equals("rowSimilar")||columnId.equals("rowFileSize")) {
+            def = "70";
+        } else if (columnId.equals("rowFolderName")) {
+            def = "215";
+        } else if (columnId.equals("rowFileName")) {
+            def = "240";
         }
         return Double.parseDouble(prefs.get(key, def));
     }
