@@ -122,8 +122,9 @@ public class MainController implements Initializable {
         if (directory != null) {
             this.firstDirectory = directory;
             AppPreferences.setDirectory(directory.getParentFile(), "firstDirectory");
-            setTextDirLabel(this.firstDirLbl, "FirstDirectory", getDirInfo(directory));
-            updateTextInfoLbl();
+            //setTextDirLabel(this.firstDirLbl, "FirstDirectory", getDirInfo(directory));
+            this.firstDirLbl.setText(getDirInfo(directory));
+           // updateTextInfoLbl();
         }
     }
 
@@ -237,7 +238,7 @@ public class MainController implements Initializable {
     private String getDirInfo(File directory){
         String result = "";
         if (directory != null) {
-            result = ": " + directory.getPath();
+            result = directory.getPath();
         }
         return result;
     }
