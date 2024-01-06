@@ -58,14 +58,18 @@ public class Difference {
                 if (first.getID() == second.getID()) {
                     coincidence = 100;
 
-                } else if (analyzeByLetters
-                  && first.getSimilarWords() != null
-                  && first.getSimilarWords().containsKey(second)) {
+                } else {
+                    if (analyzeByLetters) {
+                        if (first.getSimilarWords() != null && first.getSimilarWords().containsKey(second)) {
                             coincidence = first.getSimilarWords().get(second);
-                } else if (analyzeByLetters) {
-                    coincidence = compareWords(first.getWord(), second.getWord());
-                    first.setSimilarWords(new HashMap<>());
-                    first.getSimilarWords().put(second, coincidence);
+                        } else {
+                            coincidence = compareWords(first.getWord(), second.getWord());
+                            first.setSimilarWords(new HashMap<>());
+                            first.getSimilarWords().put(second, coincidence);
+                        }
+                    } else {
+                        coincidence = 0;
+                    }
                 }
                 result = result + coincidence;
             }
