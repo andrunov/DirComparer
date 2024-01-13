@@ -1,11 +1,11 @@
 package comparer.model;
 
 import comparer.RowTableData;
+import comparer.controller.MainController;
 import comparer.util.AppPreferences;
 import comparer.util.FileFilter;
 import comparer.util.Message;
 import comparer.util.Sorter;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 
 import java.io.File;
@@ -19,6 +19,8 @@ public class FileComparer extends Task<List<RowTableData>> {
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
     private static final int WORD_SIMILARITY_COEFF = 75;
+
+    private MainController controller;
 
     private static final String IGNORE_STRING = "a,'a,an,and,as,at,be,by,de,el,for,if,in,is,it,la,of,oh,on,or,so,the,to,un,up,а,ай,ау,ах,бы,в,во,да,до,жe,за,из,как,ли,на,не,ни,но,ну,об,ой,от,ох,по,со,так,то,уж,эх";
 
@@ -80,7 +82,6 @@ public class FileComparer extends Task<List<RowTableData>> {
     /*list for files which no has similarities */
     private List<FileInfo> noSimilarities = new ArrayList<>();
 
-
     private List<RowTableData> report = new ArrayList<>();
 
     /*filter of file types*/
@@ -100,7 +101,8 @@ public class FileComparer extends Task<List<RowTableData>> {
     }
 
     /*constructor. if extensions undefined filter no use*/
-    public FileComparer() {
+    public FileComparer(MainController controller) {
+        this.controller = controller;
         String[] extensions = AppPreferences.getFilterExtensions();
         this.filter = new FileFilter(extensions);
         this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
@@ -113,7 +115,7 @@ public class FileComparer extends Task<List<RowTableData>> {
     @Override
     protected List<RowTableData> call() throws Exception {
         this.search();
-        return FXCollections.observableArrayList(this.getReport());
+        return this.getReport();
     }
 
     /*getters and setters*/
@@ -446,6 +448,7 @@ public class FileComparer extends Task<List<RowTableData>> {
 
     @Override
     protected void succeeded() {
+        this.controller.updateTable(this.getReport());
         Thread.currentThread().interrupt();
     }
 

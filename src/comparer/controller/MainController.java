@@ -26,6 +26,7 @@ import javafx.stage.DirectoryChooser;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -103,9 +104,12 @@ public class MainController implements Initializable {
     /*desktop uses for open files just from JavaFX application*/
     private Desktop desktop;
 
+    private  List<RowTableData> rowTableDataList;
+
     /*constructor*/
     public MainController() {
-        this.comparer = new FileComparer();
+        this.rowTableDataList = new ArrayList<>();
+        this.comparer = new FileComparer(this);
         if (Desktop.isDesktopSupported()) {
             this.desktop = Desktop.getDesktop();
         }
@@ -174,15 +178,6 @@ public class MainController implements Initializable {
             thread.start();
             this.progressBar.progressProperty().bind(this.comparer.progressProperty());
 
-            List<RowTableData> report = this.comparer.getReport();
-            setVisibility(true);
-            pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
-            pagination.setCurrentPageIndex(0);
-            pagination.setMaxPageIndicatorCount(15);
-            int toIndex = Math.min(ROWS_RER_PAGE, report.size());
-           // tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
-            tableResult.itemsProperty().bind(comparer.valueProperty());
-
         }
         catch (Exception e){
             Message.errorAlert(this.resourceBundle,"Error: ", e);
@@ -190,8 +185,14 @@ public class MainController implements Initializable {
         }
     }
 
-    private void addDataToTable() {
-        this.tableResult.getItems().addAll(this.comparer.getReport());
+    public void updateTable(List<RowTableData> report) {
+               setVisibility(true);
+        pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
+        pagination.setCurrentPageIndex(0);
+        pagination.setMaxPageIndicatorCount(15);
+        int toIndex = Math.min(ROWS_RER_PAGE, report.size());
+        tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
+        this.rowTableDataList = report;
     }
 
     /*open dialog to choose directory*/
@@ -297,6 +298,7 @@ public class MainController implements Initializable {
         this.pagination.setPageCount(1);
         this.fileNameTextField.clear();
         this.progressBar.setProgress(0);
+        this.rowTableDataList.clear();
         updateTextInfoLbl();
         setVisibility(false);
     }
@@ -473,10 +475,9 @@ public class MainController implements Initializable {
 
     private Node createPage(int pageIndex) {
 
-        List<RowTableData> datalist = this.comparer.getReport();
         int fromIndex = pageIndex * ROWS_RER_PAGE;
-        int toIndex = Math.min(fromIndex + ROWS_RER_PAGE, datalist.size());
-        tableResult.setItems(FXCollections.observableArrayList(datalist.subList(fromIndex, toIndex)));
+        int toIndex = Math.min(fromIndex + ROWS_RER_PAGE, this.rowTableDataList.size());
+        tableResult.setItems(FXCollections.observableArrayList(this.rowTableDataList.subList(fromIndex, toIndex)));
 
         return new BorderPane(tableResult);
     }
