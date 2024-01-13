@@ -472,7 +472,11 @@ public class MainController implements Initializable {
 
         int fromIndex = pageIndex * ROWS_RER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_RER_PAGE, this.rowTableDataList.size());
-        tableResult.setItems(FXCollections.observableArrayList(this.rowTableDataList.subList(fromIndex, toIndex)));
+        if (this.rowTableDataList.size() > 0) {
+            tableResult.setItems(FXCollections.observableArrayList(this.rowTableDataList.subList(fromIndex, toIndex)));
+        } else {
+            tableResult.setItems(FXCollections.observableArrayList(this.rowTableDataList));
+        }
 
         return new BorderPane(tableResult);
     }
