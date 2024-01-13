@@ -11,6 +11,7 @@ import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -58,6 +59,9 @@ public class MainController implements Initializable {
     /*button for exit application*/
     @FXML
     private Button openResultBtn;
+
+    @FXML
+    private ProgressBar progressBar;
 
     /*button for clear resources to default*/
     @FXML
@@ -136,6 +140,14 @@ public class MainController implements Initializable {
     /*start comparing procedure*/
     @FXML
     private void executeSearch(){
+        this.startTask(null);
+
+    }
+
+    public void startTask(ActionEvent event) {
+        if (comparer.isRunning()) {
+            comparer.cancel();
+        }
 
         this.tableResult.getItems().clear();
         this.comparer.clean();
@@ -157,22 +169,26 @@ public class MainController implements Initializable {
 
         this.comparer.setResourceBundle(this.resourceBundle);
         try{
-            if(this.comparer.search()) {
-                List<RowTableData> report = this.comparer.getReport();
-                setVisibility(true);
-                pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
-                pagination.setCurrentPageIndex(0);
-                pagination.setMaxPageIndicatorCount(15);
-                int toIndex = Math.min(ROWS_RER_PAGE, report.size());
-                tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
-            }
+            Thread thread = new Thread(this.comparer);
+            thread.setDaemon(true);
+            thread.start();
+            this.progressBar.progressProperty().bind(this.comparer.progressProperty());
+
+            List<RowTableData> report = this.comparer.getReport();
+            setVisibility(true);
+            pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
+            pagination.setCurrentPageIndex(0);
+            pagination.setMaxPageIndicatorCount(15);
+            int toIndex = Math.min(ROWS_RER_PAGE, report.size());
+           // tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
+            tableResult.itemsProperty().bind(comparer.valueProperty());
+
         }
         catch (Exception e){
             Message.errorAlert(this.resourceBundle,"Error: ", e);
             e.printStackTrace();
         }
     }
-
 
     private void addDataToTable() {
         this.tableResult.getItems().addAll(this.comparer.getReport());
@@ -280,6 +296,7 @@ public class MainController implements Initializable {
         this.pagination.setMaxPageIndicatorCount(1);
         this.pagination.setPageCount(1);
         this.fileNameTextField.clear();
+        this.progressBar.setProgress(0);
         updateTextInfoLbl();
         setVisibility(false);
     }
@@ -463,4 +480,5 @@ public class MainController implements Initializable {
 
         return new BorderPane(tableResult);
     }
+
 }

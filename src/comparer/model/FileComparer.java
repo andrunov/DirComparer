@@ -1,7 +1,12 @@
 package comparer.model;
 
 import comparer.RowTableData;
-import comparer.util.*;
+import comparer.util.AppPreferences;
+import comparer.util.FileFilter;
+import comparer.util.Message;
+import comparer.util.Sorter;
+import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 
 import java.io.File;
 import java.util.*;
@@ -9,8 +14,7 @@ import java.util.*;
 /**
  * Program for find duplicate files in two different directories
  */
-public class FileComparer
-{
+public class FileComparer extends Task<List<RowTableData>> {
     /*
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
@@ -104,6 +108,12 @@ public class FileComparer
         this.analyzeByLetters = AppPreferences.getAnalyseByLetters();
         FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
+    }
+
+    @Override
+    protected List<RowTableData> call() throws Exception {
+        this.search();
+        return FXCollections.observableArrayList(this.getReport());
     }
 
     /*getters and setters*/
@@ -235,13 +245,21 @@ public class FileComparer
         long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
          */
 
+        updateProgress(5,100);
         boolean result = fillFilenamesForSearch();
+        updateProgress(25,100);
+
+
         if (result) {
             compareDirectories();
+
             Sorter.sort(this.report);
-            HtmlWriter writer = new HtmlWriter(this,"UTF8");
-            result = writer.writeHtmlReport();
+            //HtmlWriter writer = new HtmlWriter(this,"UTF8");
+            //result = writer.writeHtmlReport();
         }
+
+
+
         //clean();
 
         /*
@@ -278,21 +296,43 @@ public class FileComparer
     * comparing for full equality is mandatory
     * in other case rest comparings will not works properly*/
     private void compareDirectories(){
+
+        int counter = 0;
+        int completeWork = startDirectory.size() * endDirectory.size();
+
+
         for (FileInfo startFileInfo : startDirectory) {
             for (FileInfo endFileInfo : endDirectory) {
 
-                if (startFileInfo == endFileInfo) continue;
+                if (startFileInfo == endFileInfo) {
+                    counter++;
+                    updateProgress(counter, completeWork);
+
+                    continue;
+                }
 
                 if (startFileInfo.nameIsEquals(endFileInfo)) {
                     RowTableData rowTableData = new RowTableData(startFileInfo, 100);
                     this.report.add(rowTableData);
+                    counter++;
                 } else {
                     int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
                     if (songSimilarWords > 0) {
                         RowTableData rowTableData = new RowTableData(startFileInfo, songSimilarWords);
                         this.report.add(rowTableData);
                     }
+                    counter++;
                 }
+                updateProgress(counter, completeWork);
+                /*
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException interrupted) {
+                    System.out.println(interrupted);
+                }
+
+                 */
+
             }
         }
     }
@@ -375,7 +415,7 @@ public class FileComparer
         File directory = new File(directoryPath);
         if (directory.isDirectory()){
             String[] filePaths = directory.list();
-            if (filePaths != null) {
+             if (filePaths != null) {
                 for (String filePath : filePaths) {
                     String absoluteFilePath = directoryPath + "\\" + filePath;
                     if (this.filter.accept(absoluteFilePath)) {
@@ -402,6 +442,11 @@ public class FileComparer
         this.startDirectory.clear();
         this.endDirectory.clear();
         this.report.clear();
+    }
+
+    @Override
+    protected void succeeded() {
+        Thread.currentThread().interrupt();
     }
 
 }

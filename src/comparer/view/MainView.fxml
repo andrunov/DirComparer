@@ -73,6 +73,14 @@
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </GridPane.margin>
                   </Button>
+                  <ProgressBar fx:id="progressBar" prefHeight="31.0" prefWidth="465.0" progress="0.0" GridPane.rowIndex="1">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+                     </GridPane.margin>
+                  </ProgressBar>
                </children>
             </GridPane>
          </children>
