@@ -95,8 +95,6 @@ public class MainController implements Initializable {
     /*second choose directory for comparing*/
     private File secondDirectory;
 
-    /*reference to compare engine class*/
-    private FileComparer comparer;
 
     /* Reference to the main application*/
     private MainApp mainApp;
@@ -109,7 +107,6 @@ public class MainController implements Initializable {
     /*constructor*/
     public MainController() {
         this.rowTableDataList = new ArrayList<>();
-        this.comparer = new FileComparer(this);
         if (Desktop.isDesktopSupported()) {
             this.desktop = Desktop.getDesktop();
         }
@@ -149,34 +146,33 @@ public class MainController implements Initializable {
     }
 
     public void startTask(ActionEvent event) {
-        if (comparer.isRunning()) {
-            comparer.cancel();
-        }
+
+        FileComparer comparer1 = new FileComparer(this);
 
         this.tableResult.getItems().clear();
-        this.comparer.clean();
+        //comparer.clean();
 
         if (this.firstDirectory != null) {
-            this.comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
+            comparer1.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
         }
 
 
         String searchPhrase = this.fileNameTextField.getText().trim();
         if (searchPhrase.isEmpty()) {
-            this.comparer.setFileToSearch(null);
+            comparer1.setFileToSearch(null);
         } else {
-            this.comparer.setFileToSearch(new FileInfo(searchPhrase));
+            comparer1.setFileToSearch(new FileInfo(searchPhrase));
             //TODO remove later
-            this.comparer.setEndDirectoryName(searchPhrase);
+            comparer1.setEndDirectoryName(searchPhrase);
         }
 
 
-        this.comparer.setResourceBundle(this.resourceBundle);
+        comparer1.setResourceBundle(this.resourceBundle);
         try{
-            Thread thread = new Thread(this.comparer);
+            Thread thread = new Thread(comparer1);
             thread.setDaemon(true);
             thread.start();
-            this.progressBar.progressProperty().bind(this.comparer.progressProperty());
+            this.progressBar.progressProperty().bind(comparer1.progressProperty());
 
         }
         catch (Exception e){
@@ -186,10 +182,12 @@ public class MainController implements Initializable {
     }
 
     public void updateTable(List<RowTableData> report) {
-               setVisibility(true);
+        //setVisibility(true);
+        progressBar.progressProperty().unbind();
+        progressBar.setProgress(0);
         pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
-        pagination.setCurrentPageIndex(0);
         pagination.setMaxPageIndicatorCount(15);
+        pagination.setCurrentPageIndex(0);
         int toIndex = Math.min(ROWS_RER_PAGE, report.size());
         tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
         this.rowTableDataList = report;
@@ -243,7 +241,6 @@ public class MainController implements Initializable {
     * firstDirectory and secondDirectory directories*/
     private void updateTextInfoLbl(){
         setTextDirLabel(firstDirLbl,"FirstDirectory",getDirInfo(firstDirectory));
-        String reportName = this.comparer.getReportName();
     }
 
     /*updates text for several Labels*/
@@ -275,7 +272,8 @@ public class MainController implements Initializable {
     private void openResult(){
         try {
             assert this.desktop != null;
-            this.desktop.open(new File(this.comparer.getReportName()));
+            //TODO remove or rework
+           // this.desktop.open(new File(this.comparer.getReportName()));
         } catch (Exception e) {
             Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
         }
@@ -289,15 +287,12 @@ public class MainController implements Initializable {
     /*clear fields to default*/
     @FXML
     private void clear(){
-        this.comparer.clean();
-        this.comparer.setReportName(null);
         this.firstDirectory = null;
         this.secondDirectory = null;
         this.tableResult.getItems().clear();
-        this.pagination.setMaxPageIndicatorCount(1);
-        this.pagination.setPageCount(1);
+        this.pagination.setMaxPageIndicatorCount(3);
+        this.pagination.setPageCount(0);
         this.fileNameTextField.clear();
-        this.progressBar.setProgress(0);
         this.rowTableDataList.clear();
         updateTextInfoLbl();
         setVisibility(false);
@@ -306,7 +301,7 @@ public class MainController implements Initializable {
     /*open settings window*/
     @FXML
     private void openSettings(){
-        mainApp.showSettingsEditDialog(this.resourceBundle, this.comparer);
+        mainApp.showSettingsEditDialog(this.resourceBundle);
     }
 
     /*show application info*/

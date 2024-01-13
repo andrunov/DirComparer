@@ -88,7 +88,7 @@ public class MainApp extends Application {
     }
 
     /*open settings window*/
-    public void showSettingsEditDialog(ResourceBundle resourceBundle, FileComparer comparer) {
+    public void showSettingsEditDialog(ResourceBundle resourceBundle) {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
@@ -107,7 +107,6 @@ public class MainApp extends Application {
             // create and adjust controller
             SettingsController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setComparer(comparer);
             controller.setFieldsValues();
             controller.setResourceBundle(resourceBundle);
 

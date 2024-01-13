@@ -326,15 +326,6 @@ public class FileComparer extends Task<List<RowTableData>> {
                     counter++;
                 }
                 updateProgress(counter, completeWork);
-                /*
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException interrupted) {
-                    System.out.println(interrupted);
-                }
-
-                 */
-
             }
         }
     }
