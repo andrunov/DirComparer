@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
 <SplitPane fx:id="splitPane" dividerPositions="0.18" minHeight="0.0" minWidth="100.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
@@ -73,13 +75,19 @@
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </GridPane.margin>
                   </Button>
-                  <ProgressBar fx:id="progressBar" prefHeight="31.0" prefWidth="465.0" progress="0.0" GridPane.rowIndex="1">
+                  <ProgressBar fx:id="progressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="464.0" progress="0.0" visible="false" GridPane.rowIndex="1">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </GridPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                     <effect>
+                        <GaussianBlur />
+                     </effect>
                   </ProgressBar>
                </children>
             </GridPane>

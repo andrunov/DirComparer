@@ -5,7 +5,6 @@ package comparer;
 
 import comparer.controller.MainController;
 import comparer.controller.SettingsController;
-import comparer.model.FileComparer;
 import comparer.util.AppPreferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -11,7 +11,6 @@ import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -141,38 +140,35 @@ public class MainController implements Initializable {
     /*start comparing procedure*/
     @FXML
     private void executeSearch(){
-        this.startTask(null);
+        this.startTask();
 
     }
 
-    public void startTask(ActionEvent event) {
+    public void startTask() {
 
-        FileComparer comparer1 = new FileComparer(this);
-
+        FileComparer comparer = new FileComparer(this);
         this.tableResult.getItems().clear();
-        //comparer.clean();
-
+        this.firstDirLbl.setVisible(false);
+        this.progressBar.setVisible(true);
         if (this.firstDirectory != null) {
-            comparer1.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
+            comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
         }
-
 
         String searchPhrase = this.fileNameTextField.getText().trim();
         if (searchPhrase.isEmpty()) {
-            comparer1.setFileToSearch(null);
+            comparer.setFileToSearch(null);
         } else {
-            comparer1.setFileToSearch(new FileInfo(searchPhrase));
+            comparer.setFileToSearch(new FileInfo(searchPhrase));
             //TODO remove later
-            comparer1.setEndDirectoryName(searchPhrase);
+            comparer.setEndDirectoryName(searchPhrase);
         }
 
-
-        comparer1.setResourceBundle(this.resourceBundle);
+        comparer.setResourceBundle(this.resourceBundle);
         try{
-            Thread thread = new Thread(comparer1);
+            Thread thread = new Thread(comparer);
             thread.setDaemon(true);
             thread.start();
-            this.progressBar.progressProperty().bind(comparer1.progressProperty());
+            this.progressBar.progressProperty().bind(comparer.progressProperty());
 
         }
         catch (Exception e){
@@ -183,14 +179,16 @@ public class MainController implements Initializable {
 
     public void updateTable(List<RowTableData> report) {
         //setVisibility(true);
-        progressBar.progressProperty().unbind();
-        progressBar.setProgress(0);
-        pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
-        pagination.setMaxPageIndicatorCount(15);
-        pagination.setCurrentPageIndex(0);
+        this.progressBar.progressProperty().unbind();
+        this.progressBar.setProgress(0);
+        this.pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
+        this.pagination.setMaxPageIndicatorCount(15);
+        this.pagination.setCurrentPageIndex(0);
         int toIndex = Math.min(ROWS_RER_PAGE, report.size());
-        tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
+        this.tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
         this.rowTableDataList = report;
+        this.progressBar.setVisible(false);
+        this.firstDirLbl.setVisible(true);
     }
 
     /*open dialog to choose directory*/
@@ -289,11 +287,10 @@ public class MainController implements Initializable {
     private void clear(){
         this.firstDirectory = null;
         this.secondDirectory = null;
-        this.tableResult.getItems().clear();
-        this.pagination.setMaxPageIndicatorCount(3);
-        this.pagination.setPageCount(0);
-        this.fileNameTextField.clear();
         this.rowTableDataList.clear();
+        this.tableResult.getItems().clear();
+        this.pagination.setPageCount(1);
+        this.fileNameTextField.clear();
         updateTextInfoLbl();
         setVisibility(false);
     }
@@ -443,6 +440,7 @@ public class MainController implements Initializable {
     }
 
     public void setupPagination() {
+        this.pagination.setPageCount(1);
         this.pagination.setPageFactory(this::createPage);
     }
 
