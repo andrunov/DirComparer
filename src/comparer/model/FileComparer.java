@@ -100,6 +100,8 @@ public class FileComparer extends Task<List<RowTableData>> {
         return analyzeByLetters;
     }
 
+    private Progress progress;
+
     /*constructor. if extensions undefined filter no use*/
     public FileComparer(MainController controller) {
         this.controller = controller;
@@ -110,6 +112,7 @@ public class FileComparer extends Task<List<RowTableData>> {
         this.analyzeByLetters = AppPreferences.getAnalyseByLetters();
         FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
+        this.progress = new Progress();
     }
 
     @Override
@@ -247,10 +250,7 @@ public class FileComparer extends Task<List<RowTableData>> {
         long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
          */
 
-        updateProgress(5,100);
         boolean result = fillFilenamesForSearch();
-        updateProgress(25,100);
-
 
         if (result) {
             compareDirectories();
@@ -259,10 +259,6 @@ public class FileComparer extends Task<List<RowTableData>> {
             //HtmlWriter writer = new HtmlWriter(this,"UTF8");
             //result = writer.writeHtmlReport();
         }
-
-
-
-        //clean();
 
         /*
         long finishTime = System.currentTimeMillis();
@@ -286,7 +282,7 @@ public class FileComparer extends Task<List<RowTableData>> {
             Message.warningAlert(this.resourceBundle,"SelectWordAlert");
             return false;
         } else {
-            this.startDirectory = fillDirectory(this.startDirectoryName, this.startDirectoryName);
+            this.startDirectory = fillDirectory(this.startDirectoryName);
             this.endDirectory.add(this.fileToSearch);
             this.singleDirCompare = false;
         }
@@ -299,33 +295,34 @@ public class FileComparer extends Task<List<RowTableData>> {
     * in other case rest comparings will not works properly*/
     private void compareDirectories(){
 
-        int counter = 0;
-        int completeWork = startDirectory.size() * endDirectory.size();
-
+        int compareWork = startDirectory.size() * endDirectory.size();
+        int decreaseWorkStep = compareWork/this.progress.defaultCompleteWork;
 
         for (FileInfo startFileInfo : startDirectory) {
             for (FileInfo endFileInfo : endDirectory) {
 
                 if (startFileInfo == endFileInfo) {
-                    counter++;
-                    updateProgress(counter, completeWork);
-
+                    this.progress.decreaseCompleteWork(decreaseWorkStep);
+                    this.progress.increaseStep();
+                    this.progress.showProgress();
                     continue;
                 }
 
                 if (startFileInfo.nameIsEquals(endFileInfo)) {
                     RowTableData rowTableData = new RowTableData(startFileInfo, 100);
                     this.report.add(rowTableData);
-                    counter++;
                 } else {
                     int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
                     if (songSimilarWords > 0) {
                         RowTableData rowTableData = new RowTableData(startFileInfo, songSimilarWords);
                         this.report.add(rowTableData);
                     }
-                    counter++;
                 }
-                updateProgress(counter, completeWork);
+
+                this.progress.decreaseCompleteWork(decreaseWorkStep);
+                this.progress.increaseStep();
+                this.progress.showProgress();
+
             }
         }
     }
@@ -403,13 +400,18 @@ public class FileComparer extends Task<List<RowTableData>> {
 
 
     /*fill map with filenames and their split names by the words */
-    private List<FileInfo> fillDirectory(String directoryPath, String baseDirectoryPath){
+    private List<FileInfo> fillDirectory(String directoryPath){
         List<FileInfo> result = new ArrayList<>();
         File directory = new File(directoryPath);
         if (directory.isDirectory()){
             String[] filePaths = directory.list();
              if (filePaths != null) {
-                for (String filePath : filePaths) {
+                 this.progress.increaseCompleteWork(directory.list().length);
+                 for (String filePath : filePaths) {
+
+                    this.progress.increaseStep();
+                    this.progress.showProgress();
+
                     String absoluteFilePath = directoryPath + "\\" + filePath;
                     if (this.filter.accept(absoluteFilePath)) {
 
@@ -418,9 +420,8 @@ public class FileComparer extends Task<List<RowTableData>> {
                             result.add(new FileInfo(absoluteFilePath, filePath, file.length(), false));
                         } else if (file.isDirectory()) {
                             result.add(new FileInfo(absoluteFilePath, filePath, file.length(), true));
-                            result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
+                            result.addAll(fillDirectory(absoluteFilePath));
                         }
-
                     }
                 }
             }
@@ -441,6 +442,38 @@ public class FileComparer extends Task<List<RowTableData>> {
     protected void succeeded() {
         this.controller.updateTable(this.getReport());
         Thread.currentThread().interrupt();
+    }
+
+    class Progress {
+
+        int step;
+
+        int completeWork;
+
+        final int defaultCompleteWork;
+
+        Progress() {
+            defaultCompleteWork = 10000;
+            step = 0;
+            completeWork = defaultCompleteWork;
+        }
+
+        void increaseStep() {
+            step++;
+        }
+
+        void increaseCompleteWork(int value) {
+            this.completeWork = this.completeWork + value;
+        }
+
+        void decreaseCompleteWork(int value) {
+            this.completeWork = this.completeWork - value;
+        }
+
+        void showProgress() {
+            updateProgress(step, completeWork);
+        }
+
     }
 
 }
