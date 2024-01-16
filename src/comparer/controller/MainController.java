@@ -5,6 +5,7 @@ import comparer.MainApp;
 import comparer.RowTableData;
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
+import comparer.model.Settings;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
@@ -102,6 +103,9 @@ public class MainController implements Initializable {
     private Desktop desktop;
 
     private  List<RowTableData> rowTableDataList;
+
+
+    private Settings settings;
 
     /*constructor*/
     public MainController() {
@@ -263,6 +267,15 @@ public class MainController implements Initializable {
             result = ": " + file.getParentFile().getPath() + "\\" + file.getName();
         }
         return result;
+    }
+
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public Settings getSettings() {
+        return this.settings;
     }
 
     /*open saved txt-result file*/
@@ -455,7 +468,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void saveSettings() {
+    public void saveFormSettings() {
         AppPreferences.setSplitPaneDividerPosition(this.splitPane.getDividerPositions()[0]);
         ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
         for (TableColumn<RowTableData, String> column : columns) {

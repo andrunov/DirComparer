@@ -5,6 +5,7 @@ package comparer;
 
 import comparer.controller.MainController;
 import comparer.controller.SettingsController;
+import comparer.model.Settings;
 import comparer.util.AppPreferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,8 @@ public class MainApp extends Application {
     /*link to main controller*/
     private MainController mainController;
 
+    private Settings settings;
+
     /*main method*/
     public static void main(String[] args) {
         launch(args);
@@ -52,7 +55,8 @@ public class MainApp extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        this.mainController.saveSettings();
+        this.mainController.saveFormSettings();
+        this.settings.saveFields();
         AppPreferences.setMainWindowHeight(this.getPrimaryStage().getHeight());
         AppPreferences.setMainWindowWidth(this.getPrimaryStage().getWidth());
     }
@@ -73,12 +77,16 @@ public class MainApp extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
+            this.settings = new Settings();
+            this.settings.loadFields();
+
             // Give the mainController access to the main app.
             mainController = loader.getController();
             mainController.loadSettings();
             mainController.setupResultTable();
             mainController.setupPagination();
             mainController.setMainApp(this);
+            mainController.setSettings(this.settings);
 
 
         } catch (IOException e) {
@@ -106,6 +114,7 @@ public class MainApp extends Application {
             // create and adjust controller
             SettingsController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setSettings(this.settings);
             controller.setFieldsValues();
             controller.setResourceBundle(resourceBundle);
 

@@ -1,5 +1,6 @@
 package comparer.controller;
 
+import comparer.model.Settings;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
@@ -15,6 +16,8 @@ import java.util.ResourceBundle;
 
 //*Controller class for SettingsWiew.fxml window*/
 public class SettingsController {
+
+    private Settings settings;
 
     /*window stage*/
     private Stage dialogStage;
@@ -61,8 +64,8 @@ public class SettingsController {
 
     /*set values of class fields*/
     public void setFieldsValues(){
-        this.filterTextField.setText(Formatter.getArrayAsString(AppPreferences.getFilterExtensions()));
-        this.analyzeByLetters.setSelected(AppPreferences.getAnalyseByLetters());
+        this.filterTextField.setText(Formatter.getArrayAsString(settings.getAllowedExtensions()));
+        this.analyzeByLetters.setSelected(settings.isAnalyzeByLetters());
     }
 
 
@@ -71,6 +74,11 @@ public class SettingsController {
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+    }
+
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
 
@@ -94,10 +102,10 @@ public class SettingsController {
             if (!Formatter.stringIsEmpty(this.filterTextField.getText())){
                 extensions = this.filterTextField.getText().split(" ");
             }
-            AppPreferences.setFilterExtensions(extensions);
+            this.settings.setAllowedExtensions(extensions);
+            this.settings.setAnalyzeByLetters(this.analyzeByLetters.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
-            AppPreferences.setAnalyseByLetters(this.analyzeByLetters.isSelected());
             dialogStage.close();
         }
     }

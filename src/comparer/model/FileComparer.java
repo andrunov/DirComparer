@@ -2,7 +2,6 @@ package comparer.model;
 
 import comparer.RowTableData;
 import comparer.controller.MainController;
-import comparer.util.AppPreferences;
 import comparer.util.FileFilter;
 import comparer.util.Message;
 import comparer.util.Sorter;
@@ -105,11 +104,11 @@ public class FileComparer extends Task<List<RowTableData>> {
     /*constructor. if extensions undefined filter no use*/
     public FileComparer(MainController controller) {
         this.controller = controller;
-        String[] extensions = AppPreferences.getFilterExtensions();
+        String[] extensions = controller.getSettings().getAllowedExtensions();
         this.filter = new FileFilter(extensions);
-        this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
-        this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
-        this.analyzeByLetters = AppPreferences.getAnalyseByLetters();
+        this.analyzeByLetters = controller.getSettings().isAnalyzeByLetters();
+     //   this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
+     //   this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
         FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
         this.progress = new Progress();
