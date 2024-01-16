@@ -1,8 +1,6 @@
 package comparer.controller;
 
-import comparer.model.FileComparer;
 import comparer.util.AppPreferences;
-import comparer.util.FileFilter;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
@@ -20,9 +18,6 @@ public class SettingsController {
 
     /*window stage*/
     private Stage dialogStage;
-
-    /*file comparer*/
-    private FileComparer comparer;
 
     /*language pocket*/
     private ResourceBundle resourceBundle;
@@ -64,18 +59,10 @@ public class SettingsController {
         this.resourceBundle = resourceBundle;
     }
 
-    /*set comparer*/
-    public void setComparer(FileComparer comparer) {
-        this.comparer = comparer;
-    }
-
     /*set values of class fields*/
     public void setFieldsValues(){
-        FileFilter fileFilter = comparer.getFilter();
-        if (fileFilter != null) {
-            this.filterTextField.setText(Formatter.getArrayAsString(fileFilter.getExtensions()));
-        }
-        this.analyzeByLetters.setSelected(this.comparer.isAnalyzeByLetters());
+        this.filterTextField.setText(Formatter.getArrayAsString(AppPreferences.getFilterExtensions()));
+        this.analyzeByLetters.setSelected(AppPreferences.getAnalyseByLetters());
     }
 
 
@@ -107,10 +94,7 @@ public class SettingsController {
             if (!Formatter.stringIsEmpty(this.filterTextField.getText())){
                 extensions = this.filterTextField.getText().split(" ");
             }
-            FileFilter filter = new FileFilter(extensions);
             AppPreferences.setFilterExtensions(extensions);
-            this.comparer.setFilter(filter);
-            this.comparer.setAnalyzeByLetters(this.analyzeByLetters.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             AppPreferences.setAnalyseByLetters(this.analyzeByLetters.isSelected());

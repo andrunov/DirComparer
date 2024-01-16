@@ -124,7 +124,7 @@ public class Difference {
                 }
             }
         }
-        int length = Math.max(shortWord.length(), longWord.length());
+        int length = longWord.length();
         result = (int) (Math.round(result  * 100.00 / length));
         return result;
     }
