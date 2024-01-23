@@ -49,36 +49,49 @@ public class Difference {
             else return 0;
         }
 
-        int coincidence = 0;
-
-        for (WordInfo first : shortList) {
-            if (first.isIgnorance()) continue;
-            for (WordInfo second : longList) {
+        int[] coincidences = new int[longList.size()];
+        int i = 0;
+        outerCycle: for (WordInfo first : longList) {
+            if (first.isIgnorance()) {
+                coincidences[i] = -1;
+                i++;
+                continue;
+            }
+            for (WordInfo second : shortList) {
                 if (second.isIgnorance()) continue;
                 if (first.getID() == second.getID()) {
-                    coincidence = 100;
+                    coincidences[i] = 100;
+                    i++;
+                    continue outerCycle;
 
                 } else {
                     if (analyzeByLetters) {
+                        int coincidence = 0;
                         if (first.getSimilarWords() != null && first.getSimilarWords().containsKey(second)) {
                             coincidence = first.getSimilarWords().get(second);
                         } else {
                             coincidence = compareWords(first.getWord(), second.getWord());
                             first.setSimilarWords(new HashMap<>());
                             first.getSimilarWords().put(second, coincidence);
+                            //TODO отладочный код
+                            //System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidences[i]);
                         }
-                    } else {
-                        coincidence = 0;
+                        if (coincidence > coincidences[i]) {
+                            coincidences[i] = coincidence;
+                        }
                     }
                 }
-                result = result + coincidence;
             }
+            i++;
         }
 
+        /*
         result = result / longList.size();
         if (result > 100) result = 100;
 
-        return (int) (result);
+         */
+
+        return this.retrieve(coincidences);
     }
 
 
@@ -124,8 +137,30 @@ public class Difference {
                 }
             }
         }
-        int length = longWord.length();
+        int length = word1.length();
         result = (int) (Math.round(result  * 100.00 / length));
+        if (result < MIN_DIFF) result = 0;
         return result;
     }
+
+    private int retrieve (int[] coincidence) {
+        int result = 0;
+        int foundResult = 0;
+        int foundCounter = 0;
+        int notFoundCounter = 0;
+        for (int i : coincidence) {
+            if (i > 0) {
+                foundCounter++;
+                foundResult = (foundResult + i) / foundCounter;
+            }
+            else if (i == 0) {
+                notFoundCounter++;
+            }
+            // if i == -1 do nothing, this is an ignorance word marker
+        }
+
+        result = foundResult - (foundResult/(foundCounter + notFoundCounter)) * notFoundCounter;
+        return result;
+    }
+
 }
