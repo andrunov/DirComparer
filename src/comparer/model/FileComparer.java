@@ -345,11 +345,13 @@ public class FileComparer extends Task<List<RowTableData>> {
         int sumQuantity = 0;
 
         // add ignore words
+        /* temporary switch off
         for (String ignoreWord : IGNORE_STRING.split(",")) {
             if (tempDictionary.containsKey(ignoreWord)) {
                 tempDictionary.get(ignoreWord).setIgnorance(true);
             }
         }
+         */
 
         for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
             WordInfo wordInfo = entry.getValue();

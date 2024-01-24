@@ -52,13 +52,14 @@ public class Difference {
         int[] coincidences = new int[longList.size()];
         int i = 0;
         outerCycle: for (WordInfo first : longList) {
+            /*  temporary switch off
             if (first.isIgnorance()) {
-                coincidences[i] = -1;
                 i++;
                 continue;
             }
+             */
             for (WordInfo second : shortList) {
-                if (second.isIgnorance()) continue;
+               // if (second.isIgnorance()) continue; temporary switch off
                 if (first.getID() == second.getID()) {
                     coincidences[i] = 100;
                     i++;
@@ -74,7 +75,7 @@ public class Difference {
                             first.setSimilarWords(new HashMap<>());
                             first.getSimilarWords().put(second, coincidence);
                             //TODO отладочный код
-                            //System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidences[i]);
+                            System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
                         }
                         if (coincidence > coincidences[i]) {
                             coincidences[i] = coincidence;
@@ -85,12 +86,6 @@ public class Difference {
             i++;
         }
 
-        /*
-        result = result / longList.size();
-        if (result > 100) result = 100;
-
-         */
-
         return this.retrieve(coincidences);
     }
 
@@ -100,7 +95,7 @@ public class Difference {
      * return 100 means words equality
      * return 0 means that words are definitely different
      * return value in range from 1 nj 99 means that words are similar in that degree */
-    private int compareWords(String word1, String word2){
+    public int compareWords(String word1, String word2){
 
         double lengthDiff =  ((double)(word1.length()) / word2.length());
         if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
@@ -119,27 +114,51 @@ public class Difference {
         }
 
         int result = 0;
-        int lastDiffPosition = 0;
+        int gap = 0;
+        int shift = 0;
         int diffChangeCount = 0;
         int[] foundIndexes = new int[longWord.length()];
         for (int i = 0; i < shortWord.length(); i++){
+            boolean found = false;
+            //System.out.println(i + "-" + shortWord.charAt(i));
             for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
-                if (foundIndexes[j] == 1) continue;
+
+                //System.out.print("  " + j + "-" + longWord.charAt(j));
                 if (shortWord.charAt(i) == longWord.charAt(j)) {
+                    found = true;
+
                     foundIndexes[j] = 1;
-                    if ((i - j) != lastDiffPosition) {
+                    //System.out.print("  совп ");
+                    //printArr(foundIndexes);
+                    //System.out.print("i-j=" + (i-j));
+                    if ((i - j) != shift) {
                         diffChangeCount++;
-                        if (diffChangeCount >= 2) return 0;
-                        lastDiffPosition = i - j;
+                        if (diffChangeCount >= 2) {
+                            //System.out.print("  прер diffChangeCount > 2 ");
+                            return 0;
+                        }
+                        shift = i - j;
+                        //System.out.println("    diff: " + shift);
                     }
                     result = result + 1;
+                    //System.out.print("  результат: " + result);
+                    //System.out.println();
                     break;
                 }
+                //System.out.println();
             }
+            if (!found) {
+                gap++;
+            }
+            if (gap >= 2) {
+                //System.out.print("  прер gap = " + gap );
+                return 0;
+            }
+
         }
         int length = word1.length();
         result = (int) (Math.round(result  * 100.00 / length));
-        if (result < MIN_DIFF) result = 0;
+   //     if (result < MIN_DIFF) result = 0;
         return result;
     }
 
@@ -151,16 +170,27 @@ public class Difference {
         for (int i : coincidence) {
             if (i > 0) {
                 foundCounter++;
-                foundResult = (foundResult + i) / foundCounter;
+                foundResult = foundResult + i;
             }
-            else if (i == 0) {
+            else {
                 notFoundCounter++;
             }
             // if i == -1 do nothing, this is an ignorance word marker
         }
 
-        result = foundResult - (foundResult/(foundCounter + notFoundCounter)) * notFoundCounter;
+        if (foundCounter > 0) {
+            foundResult = foundResult / foundCounter;
+            result = foundResult - (foundResult / (foundCounter + notFoundCounter)) * notFoundCounter;
+        }
         return result;
+    }
+
+    private void printArr(int[] array) {
+        System.out.print("[");
+        for (int element : array) {
+            System.out.print(element + ", ");
+        }
+        System.out.print("]");
     }
 
 }
