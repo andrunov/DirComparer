@@ -53,6 +53,27 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
+    private static String extractFileName(String fileName){
+        int dotPosition = fileName.lastIndexOf('.');
+        String result = null;
+        String name = null;
+        String extension = null;
+        if (dotPosition == -1) {
+            result = fileName;
+        } else {
+            extension = fileName.substring(dotPosition + 1, fileName.length());
+            if ((extension.indexOf(' ') == -1)
+                    || extension.length() < 20) {
+
+                name = fileName.substring(0, dotPosition);
+                result = name;
+            } else {
+                result = fileName;
+            }
+        }
+        return result;
+    }
+
 
     /*
     * split phrase into list of words*/
@@ -131,6 +152,13 @@ public class FileInfo implements Comparable<FileInfo>
     /*constructor*/
     public FileInfo(String name) {
         this(name, name, 0, false);
+        this.ID = FileInfo.fileInfoCounter++;
+        this.absolutePath = name;
+        this.size = 0;
+        this.isDirectory = false;
+        name = extractFileName(name);
+        this.dWords = putWordsIntoDictionary(getSplitString(name));
+        this.accepted = false;
     }
 
     /*getters and setters*/
