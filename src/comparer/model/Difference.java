@@ -68,14 +68,20 @@ public class Difference {
                 } else {
                     if (analyzeByLetters) {
                         int coincidence = 0;
-                        if (first.getSimilarWords() != null && first.getSimilarWords().containsKey(second)) {
-                            coincidence = first.getSimilarWords().get(second);
-                        } else {
-                            coincidence = compareWords(first.getWord(), second.getWord());
+                        if (first.getSimilarWords() == null) {
+                            coincidence = compareWords2(first.getWord(), second.getWord());
                             first.setSimilarWords(new HashMap<>());
                             first.getSimilarWords().put(second, coincidence);
-                            //TODO отладочный код
                             System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
+
+                        } else if (!first.getSimilarWords().containsKey(second)) {
+                            coincidence = compareWords2(first.getWord(), second.getWord());
+                            first.getSimilarWords().put(second, coincidence);
+                            System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
+
+                        } else {
+                            coincidence = first.getSimilarWords().get(second);
+                            //TODO отладочный код
                         }
                         if (coincidence > coincidences[i]) {
                             coincidences[i] = coincidence;
@@ -86,7 +92,7 @@ public class Difference {
             i++;
         }
 
-        return this.retrieve(coincidences);
+        return this.retrieveForPhrase(coincidences);
     }
 
 
@@ -158,11 +164,82 @@ public class Difference {
         }
         int length = word1.length();
         result = (int) (Math.round(result  * 100.00 / length));
-   //     if (result < MIN_DIFF) result = 0;
+        if (result < 0) result = 0;
         return result;
     }
 
-    private int retrieve (int[] coincidence) {
+    public int compareWords2(String word1, String word2){
+
+        double lengthDiff =  ((double)(word1.length()) / word2.length());
+        if (lengthDiff == 1.00) {
+            if (word1.equals(word2)) return 100;
+        }
+
+        String shortWord;
+        String longWord;
+        if (word1.length() <= word2.length()) {
+            shortWord = word1;
+            longWord = word2;
+        } else {
+            shortWord = word2;
+            longWord = word1;
+        }
+
+        int[] shortArr = new int[shortWord.length()];
+        int[] longArr = new int[longWord.length()];
+        for (int i = 0; i < shortWord.length(); i++){
+            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
+                if (shortWord.charAt(i) == longWord.charAt(j)) {
+                    if (longArr[j] != 1) {
+                        shortArr[i] = 1;
+                        longArr[j] = 1;
+                    }
+                    break;
+                }
+            }
+        }
+        int result = 0;
+        int resultShort = extractCoincidence(shortArr);
+        if (resultShort != 0) {
+            int resultLong =  extractCoincidence(longArr);
+            if (resultLong != 0) {
+                result = (resultShort + resultLong) / 2;
+            }
+        }
+        if (result < 0) result = 0;
+        return  result;
+    }
+
+    private int extractCoincidence(int[] array) {
+        double result = 0;
+        int patterns = 1;
+        int previousVal = array[0];
+        int sum = 0;
+        for (int i : array) {
+            if (i == 1) {
+                sum++;
+            }
+            if (i != previousVal) {
+                patterns++;
+            }
+            previousVal = i;
+        }
+        if (patterns <= 2) {
+            result = (double) sum / array.length;
+        } else if (patterns == 3) {
+            result = (double) sum / array.length;
+            result = result * 0.75;
+        } else {
+            result = 0;
+        }
+        //printArr(array);
+        //System.out.print("  patterns: " + patterns);
+        //System.out.print("  sum: " + sum);
+        //System.out.println("    result: " + result);
+        return (int) (result * 100) ;
+    }
+
+    private int retrieveForPhrase (int[] coincidence) {
         int result = 0;
         int foundResult = 0;
         int foundCounter = 0;
