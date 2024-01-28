@@ -6,7 +6,7 @@ import java.util.List;
 public class Difference {
 
     /*min coeff of difference to mark word as a similar*/
-    private static final int MIN_DIFF = 75;
+    private static final int MIN_DIFF = 50;
 
     /*min weight of word to be considered*/
     private static final int MIN_WEIGHT = 5;
@@ -72,16 +72,17 @@ public class Difference {
                             coincidence = compareWords2(first.getWord(), second.getWord());
                             first.setSimilarWords(new HashMap<>());
                             first.getSimilarWords().put(second, coincidence);
-                            System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
+                            //TODO отладочный код
+                            //System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
 
                         } else if (!first.getSimilarWords().containsKey(second)) {
                             coincidence = compareWords2(first.getWord(), second.getWord());
                             first.getSimilarWords().put(second, coincidence);
-                            System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
+                            //TODO отладочный код
+                            //System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
 
                         } else {
                             coincidence = first.getSimilarWords().get(second);
-                            //TODO отладочный код
                         }
                         if (coincidence > coincidences[i]) {
                             coincidences[i] = coincidence;
@@ -188,6 +189,8 @@ public class Difference {
             longWord = word1;
         }
 
+        int shift = 0;
+
         int[] shortArr = new int[shortWord.length()];
         int[] longArr = new int[longWord.length()];
         for (int i = 0; i < shortWord.length(); i++){
@@ -196,6 +199,7 @@ public class Difference {
                     if (longArr[j] != 1) {
                         shortArr[i] = 1;
                         longArr[j] = 1;
+                        shift = shift + extractShift(i, j);
                         break;
                     }
                 }
@@ -209,7 +213,14 @@ public class Difference {
                 result = (resultShort + resultLong) / 2;
             }
         }
+        if (shift == 0 && result > 0) {
+            result = result + 15;
+        } else {
+            result = result - shift * 5;
+        }
         if (result < 0) result = 0;
+        if (result <= MIN_DIFF) result = 0;
+        if (result > 100) result = 100;
         return  result;
     }
 
@@ -240,7 +251,6 @@ public class Difference {
             result = 0;
         }
 
-
         printArr(array);
         System.out.print("  patterns: " + patterns);
         System.out.print("  sum: " + sum);
@@ -270,6 +280,13 @@ public class Difference {
             foundResult = foundResult / foundCounter;
             result = foundResult - (foundResult / (foundCounter + notFoundCounter)) * notFoundCounter;
         }
+        return result;
+    }
+
+    private int extractShift(int i, int j) {
+        int result = 0;
+        if (i > j) result = i - j;
+        else result = j- i;
         return result;
     }
 
