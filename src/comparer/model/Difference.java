@@ -170,10 +170,13 @@ public class Difference {
 
     public int compareWords2(String word1, String word2){
 
+        /*
         double lengthDiff =  ((double)(word1.length()) / word2.length());
         if (lengthDiff == 1.00) {
             if (word1.equals(word2)) return 100;
         }
+
+         */
 
         String shortWord;
         String longWord;
@@ -188,13 +191,13 @@ public class Difference {
         int[] shortArr = new int[shortWord.length()];
         int[] longArr = new int[longWord.length()];
         for (int i = 0; i < shortWord.length(); i++){
-            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
+            for (int j =  0; (j <= i + 1) && (j < longWord.length()) ; j++){
                 if (shortWord.charAt(i) == longWord.charAt(j)) {
                     if (longArr[j] != 1) {
                         shortArr[i] = 1;
                         longArr[j] = 1;
+                        break;
                     }
-                    break;
                 }
             }
         }
@@ -212,7 +215,7 @@ public class Difference {
 
     private int extractCoincidence(int[] array) {
         double result = 0;
-        int patterns = 1;
+        int patterns = 0;
         int previousVal = array[0];
         int sum = 0;
         for (int i : array) {
@@ -224,6 +227,10 @@ public class Difference {
             }
             previousVal = i;
         }
+        result = (double) sum / array.length;
+        result = result - 0.05 * patterns;
+
+        /*
         if (patterns <= 2) {
             result = (double) sum / array.length;
         } else if (patterns == 3) {
@@ -232,10 +239,14 @@ public class Difference {
         } else {
             result = 0;
         }
-        //printArr(array);
-        //System.out.print("  patterns: " + patterns);
-        //System.out.print("  sum: " + sum);
-        //System.out.println("    result: " + result);
+
+
+        printArr(array);
+        System.out.print("  patterns: " + patterns);
+        System.out.print("  sum: " + sum);
+        System.out.println("    result: " + result);
+         */
+
         return (int) (result * 100) ;
     }
 
