@@ -125,14 +125,14 @@ public class AppPreferences {
         return Boolean.parseBoolean(prefs.get("showSimilarityLow", "FALSE"));
     }
 
-    public static void setAnalyseByLetters(boolean toShow){
+    public static void setExactWordMatch(boolean toShow){
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        prefs.put("analyseByLetters", String.valueOf(toShow));
+        prefs.put("exactWordMatch", String.valueOf(toShow));
     }
 
-    public static boolean getAnalyseByLetters() {
+    public static boolean getExactWordMatch() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Boolean.parseBoolean(prefs.get("analyseByLetters", "FALSE"));
+        return Boolean.parseBoolean(prefs.get("exactWordMatch", "FALSE"));
     }
 
     public static void setSplitPaneDividerPosition(Double position) {

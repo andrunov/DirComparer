@@ -3,7 +3,6 @@ package comparer.model;
 import comparer.RowTableData;
 import comparer.controller.MainController;
 import comparer.util.FileFilter;
-import comparer.util.Message;
 import comparer.util.Sorter;
 import javafx.concurrent.Task;
 
@@ -17,7 +16,7 @@ public class FileComparer extends Task<List<RowTableData>> {
     /*
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
-    private static final int WORD_SIMILARITY_COEFF = 75;
+    private static final int WORD_SIMILARITY_COFF = 75;
 
     private MainController controller;
 
@@ -95,8 +94,8 @@ public class FileComparer extends Task<List<RowTableData>> {
     /*show low similarity if true*/
     private boolean showSimilarityLow;
 
-    public boolean isAnalyzeByLetters() {
-        return analyzeByLetters;
+    public boolean isExactWordMatch() {
+        return exactWordMatch;
     }
 
     private Progress progress;
@@ -106,7 +105,7 @@ public class FileComparer extends Task<List<RowTableData>> {
         this.controller = controller;
         String[] extensions = controller.getSettings().getAllowedExtensions();
         this.filter = new FileFilter(extensions);
-        this.analyzeByLetters = controller.getSettings().isAnalyzeByLetters();
+        this.exactWordMatch = controller.getSettings().isExactWordMatch();
      //   this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
      //   this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
         FileComparer.tempDictionary = new HashMap<>();
@@ -232,12 +231,12 @@ public class FileComparer extends Task<List<RowTableData>> {
         return tempDictionary;
     }
 
-    public void setAnalyzeByLetters(boolean analyzeByLetters) {
-        this.analyzeByLetters = analyzeByLetters;
+    public void setExactWordMatch(boolean exactWordMatch) {
+        this.exactWordMatch = exactWordMatch;
     }
 
     /*show analyze by letters*/
-    private boolean analyzeByLetters;
+    private boolean exactWordMatch;
 
     /*this method contains main logic of comparing*/
     public void search(){
@@ -316,7 +315,7 @@ public class FileComparer extends Task<List<RowTableData>> {
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
     private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
         Difference difference = new Difference(phrase1, phrase2);
-        return difference.getСoincidence(this.analyzeByLetters);
+        return difference.getСoincidence(this.exactWordMatch);
     }
 
     private void updateDictionaries() {

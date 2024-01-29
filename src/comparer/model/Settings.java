@@ -6,16 +6,16 @@ public class Settings {
 
     private String[] allowedExtensions;
 
-    private boolean analyzeByLetters;
+    private boolean exactWordMatch;
 
     public void loadFields() {
         this.allowedExtensions = AppPreferences.getFilterExtensions();
-        this.analyzeByLetters = AppPreferences.getAnalyseByLetters();
+        this.exactWordMatch = AppPreferences.getExactWordMatch();
     }
 
     public void saveFields() {
         AppPreferences.setFilterExtensions(this.allowedExtensions);
-        AppPreferences.setAnalyseByLetters(this.analyzeByLetters);
+        AppPreferences.setExactWordMatch(this.exactWordMatch);
     }
 
 
@@ -27,12 +27,12 @@ public class Settings {
         this.allowedExtensions = allowedExtensions;
     }
 
-    public boolean isAnalyzeByLetters() {
-        return analyzeByLetters;
+    public boolean isExactWordMatch() {
+        return exactWordMatch;
     }
 
-    public void setAnalyzeByLetters(boolean analyzeByLetters) {
-        this.analyzeByLetters = analyzeByLetters;
+    public void setExactWordMatch(boolean exactWordMatch) {
+        this.exactWordMatch = exactWordMatch;
     }
 
 

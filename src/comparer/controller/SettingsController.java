@@ -55,7 +55,7 @@ public class SettingsController {
 
     /*checkbox for show analyze by letters*/
     @FXML
-    private CheckBox analyzeByLetters;
+    private CheckBox exactWordMatch;
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -65,7 +65,7 @@ public class SettingsController {
     /*set values of class fields*/
     public void setFieldsValues(){
         this.filterTextField.setText(Formatter.getArrayAsString(settings.getAllowedExtensions()));
-        this.analyzeByLetters.setSelected(settings.isAnalyzeByLetters());
+        this.exactWordMatch.setSelected(settings.isExactWordMatch());
     }
 
 
@@ -103,7 +103,7 @@ public class SettingsController {
                 extensions = this.filterTextField.getText().split(" ");
             }
             this.settings.setAllowedExtensions(extensions);
-            this.settings.setAnalyzeByLetters(this.analyzeByLetters.isSelected());
+            this.settings.setExactWordMatch(this.exactWordMatch.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             dialogStage.close();
@@ -119,7 +119,7 @@ public class SettingsController {
     /*show info about absolute and relative path*/
     @FXML
     private void showPathInfo(){
-        Message.info(this.resourceBundle,"AnalyzeByLettersInfo");
+        Message.info(this.resourceBundle,"ExactWordMatchInfo");
     }
 
     /*check that user input correct data*/
@@ -145,7 +145,7 @@ public class SettingsController {
         this.filterLbl.setStyle(newSize);
         this.pathLbl.setStyle(newSize);
         this.questionPath.setStyle(newSize);
-        this.analyzeByLetters.setStyle(newSize);
+        this.exactWordMatch.setStyle(newSize);
     };
 
 }

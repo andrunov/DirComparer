@@ -26,7 +26,7 @@ public class Difference {
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    public int getСoincidence(boolean analyzeByLetters) {
+    public int getСoincidence(boolean exactWordMatch) {
         double result = 0;
         List<WordInfo> shortList;
         List<WordInfo> longList;
@@ -66,7 +66,7 @@ public class Difference {
                     continue outerCycle;
 
                 } else {
-                    if (analyzeByLetters) {
+                    if (!exactWordMatch) {
                         int coincidence = 0;
                         if (first.getSimilarWords() == null) {
                             coincidence = compareWords(first.getWord(), second.getWord());
