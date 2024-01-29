@@ -144,8 +144,9 @@ public class MainController implements Initializable {
     /*start comparing procedure*/
     @FXML
     private void executeSearch(){
-        this.startTask();
-
+        if (this.checkFields()) {
+            this.startTask();
+        }
     }
 
     public void startTask() {
@@ -181,8 +182,21 @@ public class MainController implements Initializable {
         }
     }
 
+    private boolean checkFields() {
+        boolean result = false;
+        if ((this.fileNameTextField.getText().trim().isEmpty())
+            && (this.firstDirectory == null)) {
+                Message.warningAlert(this.resourceBundle,"SelectDirAndWordAlert");
+        } else  if (this.firstDirectory == null){
+            Message.warningAlert(this.resourceBundle,"SelectDirAlert");
+        } else if (this.fileNameTextField.getText().trim().isEmpty()){
+            Message.warningAlert(this.resourceBundle,"SelectWordAlert");
+        } else result = true;
+        return result;
+    }
+
     public void updateTable(List<RowTableData> report) {
-        //setVisibility(true);
+        setVisibility(true);
         this.progressBar.progressProperty().unbind();
         this.progressBar.setProgress(0);
         this.pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);

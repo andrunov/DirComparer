@@ -240,24 +240,23 @@ public class FileComparer extends Task<List<RowTableData>> {
     private boolean analyzeByLetters;
 
     /*this method contains main logic of comparing*/
-    public boolean search(){
+    public void search(){
 
         /* memory and performance test
         System.gc();
         long startTime = System.currentTimeMillis();
         Runtime runtime = Runtime.getRuntime();
         long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
-         */
+        **/
 
-        boolean result = fillFilenamesForSearch();
-
-        if (result) {
-            compareDirectories();
-
-            Sorter.sort(this.report);
-            //HtmlWriter writer = new HtmlWriter(this,"UTF8");
-            //result = writer.writeHtmlReport();
-        }
+        this.startDirectory = fillDirectory(this.startDirectoryName);
+        this.endDirectory.add(this.fileToSearch);
+        this.singleDirCompare = false;
+        this.updateDictionaries();
+        compareDirectories();
+        Sorter.sort(this.report);
+        //HtmlWriter writer = new HtmlWriter(this,"UTF8");
+        //result = writer.writeHtmlReport();
 
         /*
         long finishTime = System.currentTimeMillis();
@@ -265,29 +264,10 @@ public class FileComparer extends Task<List<RowTableData>> {
         System.out.println("Memory use: " + (memoryAfter - memoryBefore) + " mb");
         System.out.println("Performance: " + (finishTime - startTime) + " ms");
         System.gc();
-         */
+        **/
 
-        return result;
     }
 
-    private boolean fillFilenamesForSearch() {
-        if ((this.startDirectoryName==null)&&(this.fileToSearch==null)){
-            Message.warningAlert(this.resourceBundle,"SelectDirAndWordAlert");
-            return false;
-        } else  if (this.startDirectoryName==null){
-            Message.warningAlert(this.resourceBundle,"SelectDirAlert");
-            return false;
-        } else if (this.fileToSearch==null){
-            Message.warningAlert(this.resourceBundle,"SelectWordAlert");
-            return false;
-        } else {
-            this.startDirectory = fillDirectory(this.startDirectoryName);
-            this.endDirectory.add(this.fileToSearch);
-            this.singleDirCompare = false;
-        }
-        updateDictionaries();
-        return true;
-    }
 
     /*comparing files in directories
     * comparing for full equality is mandatory
@@ -362,32 +342,6 @@ public class FileComparer extends Task<List<RowTableData>> {
         }
 
         tempDictionary.clear();
-
-        //TODO remove later if no need
-    /*
-        double averageQuantity = (double) sumQuantity/counter;
-
-        for (WordInfo wordInfo : dictionary) {
-            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
-            //System.out.println(wordInfo.getWord() +"\t" + wordInfo.getQuantity() + "\t" + wordInfo.getWeight());
-
-            for (WordInfo otherWordInfo : dictionary) {
-
-                if (wordInfo.getID() != otherWordInfo.getID()) {
-
-                    int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
-                    if ((difference >= WORD_SIMILARITY_COEFF)) {
-                        if (wordInfo.getSimilarWords() == null) {
-                            wordInfo.setSimilarWords(new HashMap<>());
-                        }
-                        wordInfo.getSimilarWords().put(otherWordInfo, difference);
-                        //System.out.println(wordInfo.getWord() +"\t" + otherWordInfo.getWord() + "\t" + difference);
-                    }
-                }
-            }
-        }
-
-     */
         dictionary.clear();
     }
 
@@ -430,7 +384,9 @@ public class FileComparer extends Task<List<RowTableData>> {
         return result;
     }
 
-    /*clear fields and collections*/
+    /* clear fields and collections
+    * no need in multi-thread version
+    * */
     public void clean() {
         this.startDirectoryName = null;
         this.endDirectoryName = null;
