@@ -7,7 +7,7 @@ public class Test {
         String string2 = "любовь";
         String string1 = "любите";
         System.out.println(string1 + " & " + string2);
-        int diff = difference.compareWords2(string1, string2);
+        int diff = difference.compareWords(string1, string2);
         System.out.println();
         System.out.println("diff = " + diff);
     }

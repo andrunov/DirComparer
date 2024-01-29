@@ -57,7 +57,7 @@ public class Difference {
                 i++;
                 continue;
             }
-             */
+            */
             for (WordInfo second : shortList) {
                // if (second.isIgnorance()) continue; temporary switch off
                 if (first.getID() == second.getID()) {
@@ -69,14 +69,14 @@ public class Difference {
                     if (analyzeByLetters) {
                         int coincidence = 0;
                         if (first.getSimilarWords() == null) {
-                            coincidence = compareWords2(first.getWord(), second.getWord());
+                            coincidence = compareWords(first.getWord(), second.getWord());
                             first.setSimilarWords(new HashMap<>());
                             first.getSimilarWords().put(second, coincidence);
                             //TODO отладочный код
                             //System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
 
                         } else if (!first.getSimilarWords().containsKey(second)) {
-                            coincidence = compareWords2(first.getWord(), second.getWord());
+                            coincidence = compareWords(first.getWord(), second.getWord());
                             first.getSimilarWords().put(second, coincidence);
                             //TODO отладочный код
                             //System.out.println(first.getWord() +"\t" + second.getWord() + "\t" + coincidence);
@@ -97,88 +97,7 @@ public class Difference {
     }
 
 
-    /*
-     * find quantity of similar letters in two words,
-     * return 100 means words equality
-     * return 0 means that words are definitely different
-     * return value in range from 1 nj 99 means that words are similar in that degree */
     public int compareWords(String word1, String word2){
-
-        double lengthDiff =  ((double)(word1.length()) / word2.length());
-        if (lengthDiff > 1.75 || lengthDiff < 0.55) return 0;
-        if (lengthDiff == 1.00) {
-            if (word1.equals(word2)) return 100;
-        }
-
-        String shortWord;
-        String longWord;
-        if (word1.length() <= word2.length()) {
-            shortWord = word1;
-            longWord = word2;
-        } else {
-            shortWord = word2;
-            longWord = word1;
-        }
-
-        int result = 0;
-        int gap = 0;
-        int shift = 0;
-        int diffChangeCount = 0;
-        int[] foundIndexes = new int[longWord.length()];
-        for (int i = 0; i < shortWord.length(); i++){
-            boolean found = false;
-            //System.out.println(i + "-" + shortWord.charAt(i));
-            for (int j = (i == 0 ? 0 : i - 1); (j <= i + 1) && (j < longWord.length()) ; j++){
-
-                //System.out.print("  " + j + "-" + longWord.charAt(j));
-                if (shortWord.charAt(i) == longWord.charAt(j)) {
-                    found = true;
-
-                    foundIndexes[j] = 1;
-                    //System.out.print("  совп ");
-                    //printArr(foundIndexes);
-                    //System.out.print("i-j=" + (i-j));
-                    if ((i - j) != shift) {
-                        diffChangeCount++;
-                        if (diffChangeCount >= 2) {
-                            //System.out.print("  прер diffChangeCount > 2 ");
-                            return 0;
-                        }
-                        shift = i - j;
-                        //System.out.println("    diff: " + shift);
-                    }
-                    result = result + 1;
-                    //System.out.print("  результат: " + result);
-                    //System.out.println();
-                    break;
-                }
-                //System.out.println();
-            }
-            if (!found) {
-                gap++;
-            }
-            if (gap >= 2) {
-                //System.out.print("  прер gap = " + gap );
-                return 0;
-            }
-
-        }
-        int length = word1.length();
-        result = (int) (Math.round(result  * 100.00 / length));
-        if (result < 0) result = 0;
-        return result;
-    }
-
-    public int compareWords2(String word1, String word2){
-
-        /*
-        double lengthDiff =  ((double)(word1.length()) / word2.length());
-        if (lengthDiff == 1.00) {
-            if (word1.equals(word2)) return 100;
-        }
-
-         */
-
         String shortWord;
         String longWord;
         if (word1.length() <= word2.length()) {
@@ -241,21 +160,13 @@ public class Difference {
         result = (double) sum / array.length;
         result = result - 0.05 * patterns;
 
+        //TODO отладочный код
         /*
-        if (patterns <= 2) {
-            result = (double) sum / array.length;
-        } else if (patterns == 3) {
-            result = (double) sum / array.length;
-            result = result * 0.75;
-        } else {
-            result = 0;
-        }
-
         printArr(array);
         System.out.print("  patterns: " + patterns);
         System.out.print("  sum: " + sum);
         System.out.println("    result: " + result);
-         */
+        */
 
         return (int) (result * 100) ;
     }
