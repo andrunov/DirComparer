@@ -461,7 +461,7 @@ public class MainController implements Initializable {
                 column.setText(this.resourceBundle.getString("FileName"));
             }
             if (column.getId().equals("rowFileSize")) {
-                column.setText(this.resourceBundle.getString("FileSizeB"));
+                column.setText(this.resourceBundle.getString("FileSize"));
             }
         }
     }

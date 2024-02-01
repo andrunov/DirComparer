@@ -214,7 +214,7 @@ public class HtmlWriter {
             writer.printf(tableHeader, //format string
                     resourceBundle.getString("Folder"),   //...parameters
                     resourceBundle.getString("FileName"),
-                    resourceBundle.getString("FileSizeB"));
+                    resourceBundle.getString("FileSize"));
     }
 
     /*
