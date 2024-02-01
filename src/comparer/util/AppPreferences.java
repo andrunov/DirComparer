@@ -72,7 +72,8 @@ public class AppPreferences {
 
     public static double getMainWindowWidth(){
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Double.parseDouble(prefs.get("mainWindowWidth", "600.00"));
+        return Double.parseDouble(prefs.get("mainWindowWidth", "650.00"));
+         //600 for comparer
     }
 
     public static void setMainWindowHeight(Double height){
@@ -82,7 +83,8 @@ public class AppPreferences {
 
     public static double getMainWindowHeight(){
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Double.parseDouble(prefs.get("mainWindowHeight", "200.00"));
+        return Double.parseDouble(prefs.get("mainWindowHeight", "600.00"));
+        //200 for comparer
     }
 
     public static void setSettingsWindowHeight(double height) {
@@ -149,12 +151,14 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         String key = String.format("tableColumnWidth_%s", columnId);
         String def = null;
-        if (columnId.equals("rowSimilar")||columnId.equals("rowFileSize")) {
-            def = "70";
+        if (columnId.equals("rowSimilar")) {
+            def = "50";
         } else if (columnId.equals("rowFolderName")) {
             def = "215";
         } else if (columnId.equals("rowFileName")) {
-            def = "240";
+            def = "275";
+        } else if (columnId.equals("rowFileSize")) {
+            def = "90";
         }
         return Double.parseDouble(prefs.get(key, def));
     }

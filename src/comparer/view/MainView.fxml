@@ -6,7 +6,7 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane fx:id="splitPane" dividerPositions="0.18" minHeight="0.0" minWidth="100.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
+<SplitPane fx:id="splitPane" dividerPositions="0.18" minHeight="0.0" minWidth="100.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="650.0" styleClass="background" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -97,10 +97,10 @@
          <children>
             <TableView fx:id="tableResult" editable="true" minHeight="50.0" minWidth="50.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../style/TableView.css" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                  <TableColumn fx:id="rowSimilar" minWidth="50.0" prefWidth="70.0" text="%Similar" />
+                  <TableColumn fx:id="rowSimilar" minWidth="45.0" prefWidth="50.0" text="%Similar" />
                 <TableColumn fx:id="rowFolderName" minWidth="100.0" prefWidth="215.0" text="%Folder" />
-                <TableColumn fx:id="rowFileName" minWidth="100.0" prefWidth="240.0" text="%FileName" />
-                <TableColumn fx:id="rowFileSize" minWidth="50.0" prefWidth="70.0" text="%FileSizeB" />
+                <TableColumn fx:id="rowFileName" minWidth="100.0" prefWidth="275.0" text="%FileName" />
+                <TableColumn fx:id="rowFileSize" minWidth="50.0" prefWidth="90.0" text="%FileSizeB" />
               </columns>
             </TableView>
             <Pagination fx:id="pagination" layoutX="8.0" layoutY="366.0" prefHeight="20.0" prefWidth="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

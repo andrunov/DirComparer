@@ -23,7 +23,9 @@ import java.util.ResourceBundle;
 //TODO 2. Сделать сообщение "ничего не найдено" и предложение искать похожие слова, если искали бех них
 //TODO 3. Сделать HTML - отчет
 //TODO 4. Сделать сохранение переменных уже при выходе
-//TODO 5. Сделать разделение на comparer и searcher
+//TODO 5. Сделать динамические оповещения при поиске
+//TODO 6. Сделать разделение на comparer и searcher
+//TODO 7. Сделать скины
 
 /*Main app JavaFX class */
 public class MainApp extends Application {
