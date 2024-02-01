@@ -19,6 +19,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+//TODO 1. Сделать хороший дефолтный размер
+//TODO 2. Сделать сообщение "ничего не найдено" и предложение искать похожие слова, если искали бех них
+//TODO 3. Сделать HTML - отчет
+//TODO 4. Сделать сохранение переменных уже при выходе
+//TODO 5. Сделать разделение на comparer и searcher
 
 /*Main app JavaFX class */
 public class MainApp extends Application {
