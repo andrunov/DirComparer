@@ -1,5 +1,6 @@
 package comparer.util;
 
+import comparer.RowTableData;
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
 
@@ -98,22 +99,7 @@ public class HtmlWriter {
             this.printHtmlTableHeader(writer);
 
             /*1-st level - 100 equality*/
-            this.printHtmlTable(writer, this.comparer.getFullEquality());
-
-            /*2 level - 100% names equality*/
-            this.printHtmlTable(writer, this.comparer.getNameEquality());
-
-            /*4 level - very high similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityHighest());
-
-            /*5 level - high similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityHigh());
-
-            /*6 level - middle similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle());
-
-            /*7 level - low similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityLow());
+            this.printHtmlTable(writer, this.comparer.getReport());
 
             this.printHtmlTableEnd(writer);
 
@@ -181,10 +167,10 @@ public class HtmlWriter {
 
     /*
     * HTML table for report*/
-    private void printHtmlTable(PrintWriter writer, List<FileInfo> fileInfoList) {
+    private void printHtmlTable(PrintWriter writer, List<RowTableData> fileInfoList) {
         if (fileInfoList.size() > 0) {
-            for (FileInfo fileInfo : fileInfoList) {
-                this.printHtmlTableRowLeft(writer, fileInfo);
+            for (RowTableData rowTableData : fileInfoList) {
+                this.printHtmlTableRowLeft(writer, rowTableData.getFileInfo());
             }
         }
     }

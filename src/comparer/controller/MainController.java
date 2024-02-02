@@ -105,6 +105,8 @@ public class MainController implements Initializable {
     private Settings settings;
 
 
+    private String reportName;
+
     private int searchAttemptNumber;
 
     /*constructor*/
@@ -307,13 +309,16 @@ public class MainController implements Initializable {
         return this.settings;
     }
 
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
+
     /*open saved txt-result file*/
     @FXML
     private void openResult(){
         try {
             assert this.desktop != null;
-            //TODO remove or rework
-           // this.desktop.open(new File(this.comparer.getReportName()));
+            this.desktop.open(new File(this.reportName));
         } catch (Exception e) {
             Message.errorAlert(this.resourceBundle, "Error in MainController.openResult() ", e);
         }

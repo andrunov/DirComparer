@@ -9,9 +9,14 @@ public class RowTableData {
         this.similarity = similarity;
     }
 
+
     private FileInfo fileInfo;
 
     int similarity;
+
+    public FileInfo getFileInfo() {
+        return fileInfo;
+    }
 
     public int getSimilarity() {
         return similarity;

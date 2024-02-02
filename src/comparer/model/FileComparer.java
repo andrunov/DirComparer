@@ -3,6 +3,7 @@ package comparer.model;
 import comparer.RowTableData;
 import comparer.controller.MainController;
 import comparer.util.FileFilter;
+import comparer.util.HtmlWriter;
 import comparer.util.Sorter;
 import javafx.concurrent.Task;
 
@@ -254,8 +255,8 @@ public class FileComparer extends Task<List<RowTableData>> {
         this.updateDictionaries();
         compareDirectories();
         Sorter.sort(this.report);
-        //HtmlWriter writer = new HtmlWriter(this,"UTF8");
-        //result = writer.writeHtmlReport();
+        HtmlWriter writer = new HtmlWriter(this,"UTF8");
+        writer.writeHtmlReport();
 
         /*
         long finishTime = System.currentTimeMillis();
@@ -396,6 +397,7 @@ public class FileComparer extends Task<List<RowTableData>> {
 
     @Override
     protected void succeeded() {
+        this.controller.setReportName(this.reportName);
         this.controller.showResult(this.getReport());
         Thread.currentThread().interrupt();
     }
