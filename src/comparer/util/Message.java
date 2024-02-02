@@ -1,7 +1,9 @@
 package comparer.util;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -43,6 +45,20 @@ public class Message {
         alert.setHeaderText(resourceBundle.getString("ErrorAlertHeaderTex"));
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /*show error message*/
+    public static boolean confirmationAlert(ResourceBundle resourceBundle, String message){
+        boolean result = false;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(resourceBundle.getString("ConfirmTitle"));
+        alert.setHeaderText(resourceBundle.getString("ConfirmHeaderTex"));
+        alert.setContentText(resourceBundle.getString(message));
+        Optional<ButtonType> button = alert.showAndWait();
+        if(button.isPresent() && button.get().equals(ButtonType.OK)) {
+            result = true;
+        }
+        return result;
     }
 
 }

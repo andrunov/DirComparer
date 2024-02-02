@@ -396,7 +396,7 @@ public class FileComparer extends Task<List<RowTableData>> {
 
     @Override
     protected void succeeded() {
-        this.controller.updateTable(this.getReport());
+        this.controller.showResult(this.getReport());
         Thread.currentThread().interrupt();
     }
 

@@ -26,10 +26,8 @@ import javafx.stage.DirectoryChooser;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /*controller for MainView.fxml window*/
 public class MainController implements Initializable {
@@ -104,8 +102,10 @@ public class MainController implements Initializable {
 
     private  List<RowTableData> rowTableDataList;
 
-
     private Settings settings;
+
+
+    private int searchAttemptNumber;
 
     /*constructor*/
     public MainController() {
@@ -145,13 +145,17 @@ public class MainController implements Initializable {
     @FXML
     private void executeSearch(){
         if (this.checkFields()) {
-            this.startTask();
+            this.searchAttemptNumber = 0;
+            this.startSearchTask(false);
         }
     }
 
-    public void startTask() {
+    public void startSearchTask(boolean deepCompare) {
 
         FileComparer comparer = new FileComparer(this);
+        if (deepCompare) {
+            comparer.setExactWordMatch(false);
+        }
         this.tableResult.getItems().clear();
         this.firstDirLbl.setVisible(false);
         this.progressBar.setVisible(true);
@@ -160,13 +164,9 @@ public class MainController implements Initializable {
         }
 
         String searchPhrase = this.fileNameTextField.getText().trim();
-        if (searchPhrase.isEmpty()) {
-            comparer.setFileToSearch(null);
-        } else {
-            comparer.setFileToSearch(new FileInfo(searchPhrase));
-            //TODO remove later
-            comparer.setEndDirectoryName(searchPhrase);
-        }
+        comparer.setFileToSearch(new FileInfo(searchPhrase));
+        //TODO remove later
+        comparer.setEndDirectoryName(searchPhrase);
 
         comparer.setResourceBundle(this.resourceBundle);
         try{
@@ -174,6 +174,7 @@ public class MainController implements Initializable {
             thread.setDaemon(true);
             thread.start();
             this.progressBar.progressProperty().bind(comparer.progressProperty());
+            this.searchAttemptNumber++;
 
         }
         catch (Exception e){
@@ -195,7 +196,21 @@ public class MainController implements Initializable {
         return result;
     }
 
-    public void updateTable(List<RowTableData> report) {
+    public void showResult(List<RowTableData> report) {
+        if (report.size() == 0
+            && this.searchAttemptNumber < 2
+            && this.getSettings().isExactWordMatch()) {
+            if(Message.confirmationAlert(this.resourceBundle, "DeepSearchMessage")) {
+                this.startSearchTask(true);
+            } else {
+                this.updateTable(report);
+            }
+        } else {
+            this.updateTable(report);
+        }
+    }
+
+    private void updateTable(List<RowTableData> report) {
         setVisibility(true);
         this.progressBar.progressProperty().unbind();
         this.progressBar.setProgress(0);
