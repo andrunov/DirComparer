@@ -16,26 +16,36 @@ public class HtmlWriter {
     private static final String BASE_PATH = "html/";
 
     private static String beginHtml;
+    private static String beginHtmlForSearch;
     private static String singleDirectory;
     private static String twoDirectory;
     private static String beginTableFound;
     private static String beginTableNotFound;
     private static String tableHeader;
+
+    private static String tableHeaderForSearch;
     private static String tableHeaderNotFound;
     private static String tableRowLeft;
+    private static String tableRowForSearchFile;
+
+    private static String tableRowForSearchDir;
     private static String tableRowRight;
     private static String tableRowNotFound;
     private static String endHtml;
 
     static {
         beginHtml = readTemplate("beginTemplate.html");
+        beginHtmlForSearch = readTemplate("searcher/beginTemplate.html");
         singleDirectory = readTemplate("singleDirectoryTemplate.html");
         twoDirectory = readTemplate("twoDirectoryTemplate.html");
         beginTableFound = readTemplate("beginTableTemplate.html");
         beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
         tableHeader = readTemplate("tableHeaderTemplate.html");
+        tableHeaderForSearch = readTemplate("searcher/tableHeaderTemplate.html");
         tableHeaderNotFound = readTemplate("tableHeaderNotFoundTemplate.html");
         tableRowLeft = readTemplate("tableRowLeftTemplate.html");
+        tableRowForSearchFile = readTemplate("searcher/tableRowFileTemplate.html");
+        tableRowForSearchDir = readTemplate("searcher/tableRowDirTemplate.html");
         tableRowRight = readTemplate("tableRowRightTemplate.html");
         tableRowNotFound = readTemplate("tableRowNotFoundTemplate.html");
         endHtml = readTemplate("endTemplate.html");
@@ -84,19 +94,13 @@ public class HtmlWriter {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
-            writer.println(beginHtml);
+            writer.println(beginHtmlForSearch);
             this.printHtmlTitle(writer);
 
-            int filesFound = this.comparer.getFullEquality().size();
-            filesFound = filesFound + this.comparer.getNameEquality().size();
-            filesFound = filesFound + this.comparer.getNameSimilarityHighest().size();
-            filesFound = filesFound + this.comparer.getNameSimilarityHigh().size();
-            filesFound = filesFound + this.comparer.getNameSimilarityMiddle().size();
-            filesFound = filesFound + this.comparer.getNameSimilarityLow().size();
-
+            int filesFound = this.comparer.getReport().size();
 
             this.printHtmlTableBegin(writer, filesFound, this.getShortName(this.comparer.getStartDirectoryName()));
-            this.printHtmlTableHeader(writer);
+            this.printHtmlTableHeaderForSearch(writer);
 
             /*1-st level - 100 equality*/
             this.printHtmlTable(writer, this.comparer.getReport());
@@ -115,7 +119,7 @@ public class HtmlWriter {
 
     /*
      * extract name of directory from file path*/
-    private String getDirectoryName(String filePath) {
+    private String getDirectory(String filePath) {
         int lastSlashFilePosition = filePath.lastIndexOf('\\') + 1;
         int lastSlashDirPosition = filePath.lastIndexOf('\\', lastSlashFilePosition);
         return filePath.substring(0, lastSlashDirPosition);
@@ -128,6 +132,8 @@ public class HtmlWriter {
         int lastSlashPosition = filePath.lastIndexOf('\\') + 1;
         return filePath.substring(lastSlashPosition);
     }
+
+
 
     /* HTML title for single directory case*/
     private void printHtmlTitleSingle(PrintWriter writer) {
@@ -170,7 +176,7 @@ public class HtmlWriter {
     private void printHtmlTable(PrintWriter writer, List<RowTableData> fileInfoList) {
         if (fileInfoList.size() > 0) {
             for (RowTableData rowTableData : fileInfoList) {
-                this.printHtmlTableRowLeft(writer, rowTableData.getFileInfo());
+                this.printHtmlTableRowForSearch(writer, rowTableData.getFileInfo());
             }
         }
     }
@@ -195,6 +201,26 @@ public class HtmlWriter {
 
     /*
      * HTML table header title for report*/
+    private void printHtmlTableHeaderForSearch(PrintWriter writer) {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+        writer.printf(tableHeaderForSearch, //format string
+                resourceBundle.getString("Folder"),   //...parameters
+                resourceBundle.getString("FileName"),
+                resourceBundle.getString("FileSize"));
+    }
+
+    /*
+     * HTML table header title for report*/
+    private void printHtmlTableForSearchHeader(PrintWriter writer) {
+        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
+        writer.printf(tableHeader, //format string
+                resourceBundle.getString("Folder"),   //...parameters
+                resourceBundle.getString("FileName"),
+                resourceBundle.getString("FileSize"));
+    }
+
+    /*
+     * HTML table header title for report*/
     private void printHtmlTableHeader(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
             writer.printf(tableHeader, //format string
@@ -205,18 +231,55 @@ public class HtmlWriter {
 
     /*
      * HTML table left part of row for report*/
+    private void printHtmlTableRowForSearch(PrintWriter writer, FileInfo fileInfo) {
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
+        sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
+        String path = fileInfo.getAbsolutePath();
+        writer.println("<tr>");
+        String formatHTML = null;
+        if (fileInfo.isDirectory()) {
+            formatHTML = tableRowForSearchDir;
+        } else {
+            formatHTML = tableRowForSearchFile;
+        }
+        writer.printf(formatHTML, //format string
+                this.getDirectory(path),
+                this.getShortName(this.getDirectory(path)),
+                path,
+                fileInfo.getName(),
+                sizeFormatted);
+
+    }
+
+    /*
+     * HTML table left part of row for report*/
     private void printHtmlTableRowLeft(PrintWriter writer, FileInfo fileInfo) {
         String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
         sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
         String path = fileInfo.getAbsolutePath();
         writer.println("<tr>");
         writer.printf(tableRowLeft, //format string
-                this.getDirectoryName(path),
-                this.getShortName(this.getDirectoryName(path)),
+                this.getDirectory(path),
+                this.getShortName(this.getDirectory(path)),
                 path,
                 fileInfo.getName(),
                 sizeFormatted);
 
+    }
+
+    /*
+     * HTML table right part of row for report*/
+    private void printHtmlTableRowRight(PrintWriter writer, FileInfo fileInfo) {
+        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize() * 1.0 / 1048576);
+        sizeFormatted = String.format("%s%s", sizeFormatted, "mb");
+        String path = fileInfo.getAbsolutePath();
+        writer.printf(tableRowRight, //format string
+                "",
+                "",
+                path,
+                fileInfo.getName(),
+                sizeFormatted);
+        writer.println("</tr>");
     }
 
     /*
