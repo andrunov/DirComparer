@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-//TODO 3. Сделать HTML - отчет
+//TODO 2. Сделать HTML - отчет
+//TODO 3. Сделать динамический фильтр если указано расширение
 //TODO 4. Сделать сохранение переменных уже при выходе
 //TODO 5. Сделать динамические оповещения при поиске
 //TODO 6. Сделать разделение на comparer и searcher
