@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 //TODO 6. Сделать динамические оповещения при поиске
 //TODO 7. Сделать скины
 //TODO 8. Сделать рефакторинг переменных и методов
-//TODO 9. Сделать разделение на comparer и searcher
+//TODO 9. Сделать разделение на comparer и searcher (не забыть про разные пути сохранения параметров)
 
 
 /*Main app JavaFX class */

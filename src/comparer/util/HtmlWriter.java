@@ -26,9 +26,8 @@ public class HtmlWriter {
     private static String tableHeaderForSearch;
     private static String tableHeaderNotFound;
     private static String tableRowLeft;
-    private static String tableRowForSearchFile;
 
-    private static String tableRowForSearchDir;
+    private static String tdTemplate;
 
     private static String trTemplate;
     private static String tableRowRight;
@@ -46,8 +45,7 @@ public class HtmlWriter {
         tableHeaderForSearch = readTemplate("searcher/tableHeaderTemplate.html");
         tableHeaderNotFound = readTemplate("tableHeaderNotFoundTemplate.html");
         tableRowLeft = readTemplate("tableRowLeftTemplate.html");
-        tableRowForSearchFile = readTemplate("searcher/tableRowFileTemplate.html");
-        tableRowForSearchDir = readTemplate("searcher/tableRowDirTemplate.html");
+        tdTemplate = readTemplate("searcher/td_template.html");
         tableRowRight = readTemplate("tableRowRightTemplate.html");
         trTemplate = readTemplate("searcher/tr_template.html");
         tableRowNotFound = readTemplate("tableRowNotFoundTemplate.html");
@@ -232,28 +230,27 @@ public class HtmlWriter {
         int similarity = rowTableData.getSimilarity();
         String backgroundColor = ColorController.getBgRGBA(similarity, 0.05);
         String borderColor = ColorController.getBgRGBA(similarity, 0.1);
-        //String trTag = String.format("<tr style=\"background-color:%s; border-bottom: 1pt solid %s;\">", backgroundColor, borderColor);
         String trTag = String.format(trTemplate, backgroundColor, borderColor);
         writer.println(trTag);
         FileInfo fileInfo = rowTableData.getFileInfo();
         String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
         sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
         String path = fileInfo.getAbsolutePath();
-        String formatHTML = null;
+        String fileImage = null;
         if (fileInfo.isDirectory()) {
-            formatHTML = tableRowForSearchDir;
+            fileImage = "fa fa-folder-open-o fa-lg";
         } else {
-            formatHTML = tableRowForSearchFile;
+            fileImage = "fa fa-file-o fa-lg";
         }
 
-        writer.printf(formatHTML, //format string
+        writer.printf(tdTemplate, //format string
                 this.getDirectory(path),
                 this.getShortName(this.getDirectory(path)),
                 path,
+                fileImage,
                 fileInfo.getName(),
                 sizeFormatted);
         writer.println("</tr>");
-
     }
 
     /*
