@@ -29,6 +29,8 @@ public class HtmlWriter {
     private static String tableRowForSearchFile;
 
     private static String tableRowForSearchDir;
+
+    private static String trTemplate;
     private static String tableRowRight;
     private static String tableRowNotFound;
     private static String endHtml;
@@ -47,6 +49,7 @@ public class HtmlWriter {
         tableRowForSearchFile = readTemplate("searcher/tableRowFileTemplate.html");
         tableRowForSearchDir = readTemplate("searcher/tableRowDirTemplate.html");
         tableRowRight = readTemplate("tableRowRightTemplate.html");
+        trTemplate = readTemplate("searcher/tr_template.html");
         tableRowNotFound = readTemplate("tableRowNotFoundTemplate.html");
         endHtml = readTemplate("endTemplate.html");
     }
@@ -227,7 +230,10 @@ public class HtmlWriter {
      * HTML table left part of row for report*/
     private void printHtmlTableRowForSearch(PrintWriter writer, RowTableData rowTableData) {
         int similarity = rowTableData.getSimilarity();
-        String trTag = String.format("<tr style=\"background-color:%s;\">", ColorController.getBgRGBA(similarity, 0.05));
+        String backgroundColor = ColorController.getBgRGBA(similarity, 0.05);
+        String borderColor = ColorController.getBgRGBA(similarity, 0.1);
+        //String trTag = String.format("<tr style=\"background-color:%s; border-bottom: 1pt solid %s;\">", backgroundColor, borderColor);
+        String trTag = String.format(trTemplate, backgroundColor, borderColor);
         writer.println(trTag);
         FileInfo fileInfo = rowTableData.getFileInfo();
         String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
