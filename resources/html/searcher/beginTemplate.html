@@ -11,7 +11,7 @@
     }
     table {
         width: 100%;
-        border: 1px solid #69c;
+        border: 1px solid rgba(102, 153, 204, 1.0);
     }
 
     td:nth-child(1n) {  /* значок папки */
@@ -38,6 +38,28 @@
         transition: .3s linear;
     }
     tr:hover td {background: #ccddff;}
+
+    /* unvisited link */
+    a:link {
+        text-decoration: none;
+        color: navy
+    }
+
+    /* visited link */
+    a:visited {
+        color: gray;
+    }
+
+    /* mouse over link */
+    a:hover {
+        text-decoration: underline;
+        color: blue;
+    }
+
+    a:active {
+        color: red;
+    }
+
 </style>
 </head>
 <body>

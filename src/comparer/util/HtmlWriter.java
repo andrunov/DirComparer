@@ -96,19 +96,12 @@ public class HtmlWriter {
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
             writer.println(beginHtmlForSearch);
             this.printHtmlTitle(writer);
-
             int filesFound = this.comparer.getReport().size();
-
             this.printHtmlTableBegin(writer, filesFound, this.getShortName(this.comparer.getStartDirectoryName()));
             this.printHtmlTableHeaderForSearch(writer);
-
-            /*1-st level - 100 equality*/
             this.printHtmlTable(writer, this.comparer.getReport());
-
             this.printHtmlTableEnd(writer);
-
             writer.printf(endHtml);
-
             writer.close();
             result = true;
         } catch (IOException e) {
@@ -176,7 +169,7 @@ public class HtmlWriter {
     private void printHtmlTable(PrintWriter writer, List<RowTableData> fileInfoList) {
         if (fileInfoList.size() > 0) {
             for (RowTableData rowTableData : fileInfoList) {
-                this.printHtmlTableRowForSearch(writer, rowTableData.getFileInfo());
+                this.printHtmlTableRowForSearch(writer, rowTableData);
             }
         }
     }
@@ -207,6 +200,7 @@ public class HtmlWriter {
                 resourceBundle.getString("Folder"),   //...parameters
                 resourceBundle.getString("FileName"),
                 resourceBundle.getString("FileSize"));
+        writer.println();
     }
 
     /*
@@ -231,23 +225,28 @@ public class HtmlWriter {
 
     /*
      * HTML table left part of row for report*/
-    private void printHtmlTableRowForSearch(PrintWriter writer, FileInfo fileInfo) {
+    private void printHtmlTableRowForSearch(PrintWriter writer, RowTableData rowTableData) {
+        int similarity = rowTableData.getSimilarity();
+        String trTag = String.format("<tr style=\"background-color:%s;\">", ColorController.getBgRGBA(similarity, 0.05));
+        writer.println(trTag);
+        FileInfo fileInfo = rowTableData.getFileInfo();
         String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
         sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
         String path = fileInfo.getAbsolutePath();
-        writer.println("<tr>");
         String formatHTML = null;
         if (fileInfo.isDirectory()) {
             formatHTML = tableRowForSearchDir;
         } else {
             formatHTML = tableRowForSearchFile;
         }
+
         writer.printf(formatHTML, //format string
                 this.getDirectory(path),
                 this.getShortName(this.getDirectory(path)),
                 path,
                 fileInfo.getName(),
                 sizeFormatted);
+        writer.println("</tr>");
 
     }
 
@@ -289,5 +288,7 @@ public class HtmlWriter {
         writer.println("</div>");
         writer.println("<br>");
     }
+
+
 
 }
