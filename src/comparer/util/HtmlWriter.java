@@ -229,11 +229,12 @@ public class HtmlWriter {
      * HTML table left part of row for report*/
     private void printHtmlTableRowForSearch(PrintWriter writer, RowTableData rowTableData) {
         int similarity = rowTableData.getSimilarity();
-        String backgroundColor = ColorController.getBgRGBA(similarity, 0.05);
-        String borderColor = ColorController.getBgRGBA(similarity, 0.1);
+        String bgRGB = ColorController.getBgRGBA(similarity);
+        String bgRGBA = String.format("rgba(%s, %s)", bgRGB, 0.05);
+        String borderRGBA = String.format("rgba(%s, %s)", bgRGB, 0.1);
         String textRGB = ColorController.getTextRGB(similarity);
         String textRGBA = String.format("rgba(%s, %s)", textRGB, 1);
-        String trTag = String.format(trTemplate, backgroundColor, borderColor);
+        String trTag = String.format(trTemplate, bgRGBA, borderRGBA);
         writer.println(trTag);
         FileInfo fileInfo = rowTableData.getFileInfo();
         String path = fileInfo.getAbsolutePath();

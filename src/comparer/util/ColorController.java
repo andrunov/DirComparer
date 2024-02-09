@@ -2,7 +2,7 @@ package comparer.util;
 
 public class ColorController {
 
-    public static String getBgRGBA (int similarity, double alpha) {
+    public static String getBgRGBA (int similarity) {
 
         int R = 0;
         int G = 0;
@@ -25,7 +25,7 @@ public class ColorController {
             G = 0;
             B = (255/25) * similarity;
         }
-        return String.format("rgba(%s, %s, %s, %s)", R, G, B, alpha);
+        return String.format("%s, %s, %s", R, G, B);
     }
 
     public static String getTextRGB(int similarity) {
