@@ -198,6 +198,7 @@ public class HtmlWriter {
     private void printHtmlTableHeaderForSearch(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(tableHeaderForSearch, //format string
+                resourceBundle.getString("Similar"),   //...parameters
                 resourceBundle.getString("Folder"),   //...parameters
                 resourceBundle.getString("FileName"),
                 resourceBundle.getString("FileSize"));
@@ -230,25 +231,34 @@ public class HtmlWriter {
         int similarity = rowTableData.getSimilarity();
         String backgroundColor = ColorController.getBgRGBA(similarity, 0.05);
         String borderColor = ColorController.getBgRGBA(similarity, 0.1);
+        String textRGB = ColorController.getTextRGB(similarity);
+        String textRGBA = String.format("rgba(%s, %s)", textRGB, 1);
         String trTag = String.format(trTemplate, backgroundColor, borderColor);
         writer.println(trTag);
         FileInfo fileInfo = rowTableData.getFileInfo();
-        String sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
-        sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
         String path = fileInfo.getAbsolutePath();
-        String fileImage = null;
+        String fileImage;
+        String sizeFormatted = null;
         if (fileInfo.isDirectory()) {
             fileImage = "fa fa-folder-open-o fa-lg";
+            sizeFormatted = "";
         } else {
             fileImage = "fa fa-file-o fa-lg";
+            sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
+            sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
         }
 
+        String similarityRepresentation = String.format("%s %s", similarity, "%");
+
         writer.printf(tdTemplate, //format string
+                textRGBA,
+                similarityRepresentation,
                 this.getDirectory(path),
                 this.getShortName(this.getDirectory(path)),
                 path,
                 fileImage,
                 fileInfo.getName(),
+                textRGBA,
                 sizeFormatted);
         writer.println("</tr>");
     }
