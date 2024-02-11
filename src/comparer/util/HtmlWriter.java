@@ -254,10 +254,12 @@ public class HtmlWriter {
         writer.printf(tdTemplate, //format string
                 textRGBA,
                 similarityRepresentation,
+                textRGBA,
                 this.getDirectory(path),
                 this.getShortName(this.getDirectory(path)),
-                path,
+                textRGBA,
                 fileImage,
+                path,
                 fileInfo.getName(),
                 textRGBA,
                 sizeFormatted);
