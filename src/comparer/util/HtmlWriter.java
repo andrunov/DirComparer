@@ -241,10 +241,10 @@ public class HtmlWriter {
         String fileImage;
         String sizeFormatted = null;
         if (fileInfo.isDirectory()) {
-            fileImage = "fa fa-folder-open-o fa-lg";
+            fileImage = "fa fa-folder-open fa-lg";
             sizeFormatted = "";
         } else {
-            fileImage = "fa fa-file-o fa-lg";
+            fileImage = "fa fa-file fa-lg";
             sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
             sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
         }
