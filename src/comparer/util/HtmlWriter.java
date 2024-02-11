@@ -16,40 +16,51 @@ public class HtmlWriter {
     private static final String BASE_PATH = "html/";
 
     private static String beginHtml;
-    private static String beginHtmlForSearch;
+    private static String head;
     private static String singleDirectory;
     private static String twoDirectory;
     private static String beginTableFound;
     private static String beginTableNotFound;
     private static String tableHeader;
 
-    private static String tableHeaderForSearch;
+    private static String th;
     private static String tableHeaderNotFound;
     private static String tableRowLeft;
 
-    private static String tdTemplate;
+    private static String td;
 
-    private static String trTemplate;
+    private static String tr;
     private static String tableRowRight;
     private static String tableRowNotFound;
-    private static String endHtml;
+    private static String end;
 
     static {
+        //searcher
+        head = readTemplate("searcher/head_template.html");
+        beginTableFound = readTemplate("beginTableTemplate.html");
+        beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
+        singleDirectory = readTemplate("singleDirectoryTemplate.html");
+        th = readTemplate("searcher/th_template.html");
+        td = readTemplate("searcher/td_template.html");
+        tr = readTemplate("searcher/tr_template.html");
+        end = readTemplate("endTemplate.html");
+
+        //comparer
+        //TODO Сделать разделение на comparer и searcher (не забыть про разные пути сохранения параметров)
+        /*
         beginHtml = readTemplate("beginTemplate.html");
-        beginHtmlForSearch = readTemplate("searcher/beginTemplate.html");
         singleDirectory = readTemplate("singleDirectoryTemplate.html");
         twoDirectory = readTemplate("twoDirectoryTemplate.html");
         beginTableFound = readTemplate("beginTableTemplate.html");
         beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
         tableHeader = readTemplate("tableHeaderTemplate.html");
-        tableHeaderForSearch = readTemplate("searcher/tableHeaderTemplate.html");
         tableHeaderNotFound = readTemplate("tableHeaderNotFoundTemplate.html");
         tableRowLeft = readTemplate("tableRowLeftTemplate.html");
-        tdTemplate = readTemplate("searcher/td_template.html");
         tableRowRight = readTemplate("tableRowRightTemplate.html");
-        trTemplate = readTemplate("searcher/tr_template.html");
         tableRowNotFound = readTemplate("tableRowNotFoundTemplate.html");
-        endHtml = readTemplate("endTemplate.html");
+        end = readTemplate("endTemplate.html");
+         */
+
     }
 
     private static String readTemplate(String pathVal) {
@@ -95,14 +106,14 @@ public class HtmlWriter {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
-            writer.println(beginHtmlForSearch);
+            writer.println(head);
             this.printHtmlTitle(writer);
             int filesFound = this.comparer.getReport().size();
             this.printHtmlTableBegin(writer, filesFound, this.getShortName(this.comparer.getStartDirectoryName()));
             this.printHtmlTableHeaderForSearch(writer);
             this.printHtmlTable(writer, this.comparer.getReport());
             this.printHtmlTableEnd(writer);
-            writer.printf(endHtml);
+            writer.printf(end);
             writer.close();
             result = true;
         } catch (IOException e) {
@@ -197,7 +208,7 @@ public class HtmlWriter {
      * HTML table header title for report*/
     private void printHtmlTableHeaderForSearch(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        writer.printf(tableHeaderForSearch, //format string
+        writer.printf(th, //format string
                 resourceBundle.getString("Similar"),   //...parameters
                 resourceBundle.getString("Folder"),   //...parameters
                 resourceBundle.getString("FileName"),
@@ -234,7 +245,7 @@ public class HtmlWriter {
         String borderRGBA = String.format("rgba(%s, %s)", bgRGB, 0.1);
         String textRGB = ColorController.getTextRGB(similarity);
         String textRGBA = String.format("rgba(%s, %s)", textRGB, 1);
-        String trTag = String.format(trTemplate, bgRGBA, borderRGBA);
+        String trTag = String.format(tr, bgRGBA, borderRGBA);
         writer.println(trTag);
         FileInfo fileInfo = rowTableData.getFileInfo();
         String path = fileInfo.getAbsolutePath();
@@ -251,7 +262,7 @@ public class HtmlWriter {
 
         String similarityRepresentation = String.format("%s %s", similarity, "%");
 
-        writer.printf(tdTemplate, //format string
+        writer.printf(td, //format string
                 textRGBA,
                 similarityRepresentation,
                 textRGBA,
