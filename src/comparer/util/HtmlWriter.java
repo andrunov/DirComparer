@@ -17,9 +17,9 @@ public class HtmlWriter {
 
     private static String beginHtml;
     private static String head;
-    private static String singleDirectory;
+    private static String title;
     private static String twoDirectory;
-    private static String beginTableFound;
+    private static String table;
     private static String beginTableNotFound;
     private static String tableHeader;
 
@@ -37,9 +37,8 @@ public class HtmlWriter {
     static {
         //searcher
         head = readTemplate("searcher/head_template.html");
-        beginTableFound = readTemplate("beginTableTemplate.html");
-        beginTableNotFound = readTemplate("beginTableNotFoundTemplate.html");
-        singleDirectory = readTemplate("singleDirectoryTemplate.html");
+        table = readTemplate("searcher/table_template.html");
+        title = readTemplate("searcher/title_template.html");
         th = readTemplate("searcher/th_template.html");
         td = readTemplate("searcher/td_template.html");
         tr = readTemplate("searcher/tr_template.html");
@@ -107,9 +106,9 @@ public class HtmlWriter {
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
             writer.println(head);
-            this.printHtmlTitle(writer);
+            this.printHtmlTitleSingle(writer);
             int filesFound = this.comparer.getReport().size();
-            this.printHtmlTableBegin(writer, filesFound, this.getShortName(this.comparer.getStartDirectoryName()));
+            this.printHtmlTableBegin(writer, filesFound);
             this.printHtmlTableHeaderForSearch(writer);
             this.printHtmlTable(writer, this.comparer.getReport());
             this.printHtmlTableEnd(writer);
@@ -143,13 +142,13 @@ public class HtmlWriter {
     /* HTML title for single directory case*/
     private void printHtmlTitleSingle(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        writer.printf(singleDirectory, //format string
+        writer.printf(title, //format string
                         resourceBundle.getString("Analyzed"),   //...parameters
                         this.comparer.getStartDirectory().size(),
                         resourceBundle.getString("Files"),
                         resourceBundle.getString("InDirectory"),
-                        this.getShortName(this.comparer.getStartDirectoryName()),
-                        this.comparer.getStartDirectoryName());
+                        this.comparer.getStartDirectoryName(),
+                        this.getShortName(this.comparer.getStartDirectoryName()));
     }
 
     /* HTML title for two directory case*/
@@ -171,12 +170,6 @@ public class HtmlWriter {
     }
 
     /*
-    * HTML title for report*/
-    private void printHtmlTitle(PrintWriter writer) {
-        this.printHtmlTitleSingle(writer);
-    }
-
-    /*
     * HTML table for report*/
     private void printHtmlTable(PrintWriter writer, List<RowTableData> fileInfoList) {
         if (fileInfoList.size() > 0) {
@@ -189,19 +182,17 @@ public class HtmlWriter {
 
     /*
      * HTML table title for report*/
-    private void printHtmlTableBegin(PrintWriter writer, int filesFound, String title) {
+    private void printHtmlTableBegin(PrintWriter writer, int filesFound) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        if (filesFound > 0) {
-            writer.printf(beginTableFound, //format string
-                                title,   //...parameters
-                                resourceBundle.getString("Found"),
+        writer.printf(table, //format string
+                    //...parameters
+                    resourceBundle.getString("Found"),
                     filesFound,
-                                resourceBundle.getString("Files"));
-        } else {
-            writer.printf(beginTableNotFound, //format string
-                                title,   //...parameters
-                                resourceBundle.getString("NotFound"));
-        }
+                    resourceBundle.getString("Files"),
+                    resourceBundle.getString("InDirectory"),
+                    this.comparer.getStartDirectoryName(),
+                    this.getShortName(this.comparer.getStartDirectoryName()));
+
     }
 
     /*
@@ -214,16 +205,6 @@ public class HtmlWriter {
                 resourceBundle.getString("FileName"),
                 resourceBundle.getString("FileSize"));
         writer.println();
-    }
-
-    /*
-     * HTML table header title for report*/
-    private void printHtmlTableForSearchHeader(PrintWriter writer) {
-        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        writer.printf(tableHeader, //format string
-                resourceBundle.getString("Folder"),   //...parameters
-                resourceBundle.getString("FileName"),
-                resourceBundle.getString("FileSize"));
     }
 
     /*
@@ -257,7 +238,7 @@ public class HtmlWriter {
         } else {
             fileImage = "fa fa-file fa-lg";
             sizeFormatted = Formatter.doubleFormat("###,###.##",fileInfo.getSize());
-            sizeFormatted = String.format("%s%s", sizeFormatted, "kb");
+            sizeFormatted = String.format("%s %s", sizeFormatted, "kb");
         }
 
         String similarityRepresentation = String.format("%s %s", similarity, "%");
