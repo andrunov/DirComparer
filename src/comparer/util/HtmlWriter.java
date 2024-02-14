@@ -221,7 +221,7 @@ public class HtmlWriter {
      * HTML table left part of row for report*/
     private void printHtmlTableRowForSearch(PrintWriter writer, RowTableData rowTableData) {
         int similarity = rowTableData.getSimilarity();
-        String bgRGB = ColorController.getBgRGBA(similarity);
+        String bgRGB = ColorController.getBgRGB(similarity);
         String bgRGBA = String.format("rgba(%s, %s)", bgRGB, 0.05);
         String borderRGBA = String.format("rgba(%s, %s)", bgRGB, 0.1);
         String textRGB = ColorController.getTextRGB(similarity);

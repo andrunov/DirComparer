@@ -7,6 +7,7 @@ import comparer.model.FileComparer;
 import comparer.model.FileInfo;
 import comparer.model.Settings;
 import comparer.util.AppPreferences;
+import comparer.util.ColorController;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
@@ -406,32 +407,12 @@ public class MainController implements Initializable {
                 @Override
                 protected void updateItem(RowTableData rowTableData, boolean empty) {
                     super.updateItem(rowTableData, empty);
-                    int R = 0;
-                    int G = 0;
-                    int B = 0;
                     if (rowTableData == null) {
                         setStyle("-fx-background-color: white;");
                     } else {
                         int similarity = rowTableData.getSimilarity();
-
-                        if (similarity > 75 && similarity <=100) {
-                            R = 0;
-                            G = 255;
-                            B = (255/25) * (100 - similarity);
-                        } else if (similarity > 50 && similarity <= 75) {
-                            R = 0;
-                            G = (255/25) * (similarity - 50);
-                            B = 255;
-                        } else if (similarity > 25 && similarity <= 50) {
-                            R = (255/25) * (50 - similarity);
-                            G = 0;
-                            B = 255;
-                        } else if (similarity > 0 && similarity <= 25) {
-                            R = 255;
-                            G = 0;
-                            B = (255/25) * similarity;
-                        }
-                        String cssFormatString = String.format("-fx-background-color: rgba(%s,%s,%s,0.05);", R, G, B);
+                        String bgRGB = ColorController.getBgRGB(similarity);
+                        String cssFormatString = String.format("-fx-background-color: rgba(%s,0.05);", bgRGB);
                         if (rowTableData.isDirectory()) {
                             cssFormatString = cssFormatString + "-fx-font-weight: bold;";
                         }

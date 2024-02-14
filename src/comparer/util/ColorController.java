@@ -2,7 +2,7 @@ package comparer.util;
 
 public class ColorController {
 
-    public static String getBgRGBA (int similarity) {
+    public static String getBgRGB(int similarity) {
 
         int R = 0;
         int G = 0;
