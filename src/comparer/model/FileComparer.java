@@ -36,7 +36,19 @@ public class FileComparer extends Task<List<RowTableData>> {
         return comparer;
     }
 
-    /*
+    public static FileComparer createForCompare(MainController controller) {
+        tempDictionary = new HashMap<>();
+        FileComparer comparer = new FileComparer();
+        /*constructor. if extensions undefined filter no use*/
+        comparer.controller = controller;
+        String[] extensions = controller.getSettings().getAllowedExtensions();
+        comparer.filter = new FileFilter(extensions);
+        comparer.exactWordMatch = controller.getSettings().isExactWordMatch();
+        return comparer;
+    }
+
+
+        /*
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
     private static final int WORD_SIMILARITY_COFF = 75;
@@ -128,27 +140,6 @@ public class FileComparer extends Task<List<RowTableData>> {
         this.progress = new Progress();
     }
 
-    /*constructor. if extensions undefined filter no use*/
-    public FileComparer(MainController controller) {
-        this.controller = controller;
-        String[] extensions = controller.getSettings().getAllowedExtensions();
-        this.filter = new FileFilter(extensions);
-        this.exactWordMatch = controller.getSettings().isExactWordMatch();
-        FileComparer.tempDictionary = new HashMap<>();
-        this.dictionary = new ArrayList<>();
-        this.progress = new Progress();
-    }
-
-    public FileComparer(MainController controller, String extensionFilter) {
-        this.controller = controller;
-        String[] extensions = new String[1];
-        extensions[0] = extensionFilter;
-        this.filter = new FileFilter(extensions);
-        this.exactWordMatch = controller.getSettings().isExactWordMatch();
-        FileComparer.tempDictionary = new HashMap<>();
-        this.dictionary = new ArrayList<>();
-        this.progress = new Progress();
-    }
 
     @Override
     protected List<RowTableData> call() throws Exception {

@@ -31,6 +31,7 @@ public class FileFilter {
 
     /*accepts all files according String[] extensions
     * accepts folders*/
+    //TODO rework
     public boolean accept(String absoluteFilePath){
 
         if ((this.extensions==null)||(this.extensions.length == 0)) return true;
