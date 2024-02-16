@@ -31,12 +31,12 @@ public class RowTableData {
     }
 
     public String getBaseFolderPathFormatted() {
-        return String.format("\uD83D\uDDC0 %s",this.fileInfo.getBaseFolderPath());
+        return String.format("\uD83D\uDCC1 %s",this.fileInfo.getBaseFolderPath());
     }
 
     public String getName() {
-        if (this.isDirectory()) return String.format("\uD83D\uDCC2  %s", this.fileInfo.getName());
-        else return this.fileInfo.getName();
+        if (this.isDirectory()) return String.format("\uD83D\uDCC2 %s", this.fileInfo.getName());
+        else return String.format("\uD83D\uDCC4 %s", this.fileInfo.getName());
     }
 
     public String getSizeFormatted() {
