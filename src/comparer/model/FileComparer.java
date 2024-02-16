@@ -14,6 +14,28 @@ import java.util.*;
  * Program for find duplicate files in two different directories
  */
 public class FileComparer extends Task<List<RowTableData>> {
+
+    public static FileComparer createForSearch(MainController controller) {
+        tempDictionary = new HashMap<>();
+        FileComparer comparer = new FileComparer();
+        comparer.controller = controller;
+        String[] extensions = new String[1];
+        String searchPhrase = controller.getSearchPhrase();
+        String extension = FileInfo.extractFileExtension(searchPhrase);
+        if (extension != null) {
+            extensions[0] = extension;
+        } else {
+            extensions = controller.getSettings().getAllowedExtensions();
+        }
+        comparer.filter = new FileFilter(extensions);
+        comparer.exactWordMatch = controller.getSettings().isExactWordMatch();
+        FileInfo fileForSearch = new FileInfo(searchPhrase);
+        comparer.setFileToSearch(fileForSearch);
+        comparer.setStartDirectoryName(controller.getFirstDirectory().getAbsolutePath());
+        comparer.setResourceBundle(controller.getResourceBundle());
+        return comparer;
+    }
+
     /*
     * minimal percent of equal letters in two words
     * that allow considering that words are similar*/
@@ -101,14 +123,28 @@ public class FileComparer extends Task<List<RowTableData>> {
 
     private Progress progress;
 
+    private FileComparer() {
+        this.dictionary = new ArrayList<>();
+        this.progress = new Progress();
+    }
+
     /*constructor. if extensions undefined filter no use*/
     public FileComparer(MainController controller) {
         this.controller = controller;
         String[] extensions = controller.getSettings().getAllowedExtensions();
         this.filter = new FileFilter(extensions);
         this.exactWordMatch = controller.getSettings().isExactWordMatch();
-     //   this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
-     //   this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
+        FileComparer.tempDictionary = new HashMap<>();
+        this.dictionary = new ArrayList<>();
+        this.progress = new Progress();
+    }
+
+    public FileComparer(MainController controller, String extensionFilter) {
+        this.controller = controller;
+        String[] extensions = new String[1];
+        extensions[0] = extensionFilter;
+        this.filter = new FileFilter(extensions);
+        this.exactWordMatch = controller.getSettings().isExactWordMatch();
         FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
         this.progress = new Progress();

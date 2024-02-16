@@ -4,7 +4,6 @@ package comparer.controller;
 import comparer.MainApp;
 import comparer.RowTableData;
 import comparer.model.FileComparer;
-import comparer.model.FileInfo;
 import comparer.model.Settings;
 import comparer.util.AppPreferences;
 import comparer.util.ColorController;
@@ -27,8 +26,10 @@ import javafx.stage.DirectoryChooser;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /*controller for MainView.fxml window*/
 public class MainController implements Initializable {
@@ -155,23 +156,15 @@ public class MainController implements Initializable {
 
     public void startSearchTask(boolean deepCompare) {
 
-        FileComparer comparer = new FileComparer(this);
-        if (deepCompare) {
-            comparer.setExactWordMatch(false);
-        }
+
         this.tableResult.getItems().clear();
         this.firstDirLbl.setVisible(false);
         this.progressBar.setVisible(true);
-        if (this.firstDirectory != null) {
-            comparer.setStartDirectoryName(this.firstDirectory.getAbsolutePath());
+        FileComparer comparer = FileComparer.createForSearch(this);
+        if (deepCompare) {
+            comparer.setExactWordMatch(false);
         }
 
-        String searchPhrase = this.fileNameTextField.getText().trim();
-        comparer.setFileToSearch(new FileInfo(searchPhrase));
-        //TODO remove later
-        comparer.setEndDirectoryName(searchPhrase);
-
-        comparer.setResourceBundle(this.resourceBundle);
         try{
             Thread thread = new Thread(comparer);
             thread.setDaemon(true);
@@ -312,6 +305,18 @@ public class MainController implements Initializable {
 
     public void setReportName(String reportName) {
         this.reportName = reportName;
+    }
+
+    public File getFirstDirectory() {
+        return firstDirectory;
+    }
+
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
+    }
+
+    public String getSearchPhrase() {
+        return this.fileNameTextField.getText().trim();
     }
 
     /*open saved txt-result file*/

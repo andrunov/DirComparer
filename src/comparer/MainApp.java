@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-//TODO 4. Сделать динамический фильтр если указано расширение
+//TODO 3. Сделать сохранение HTML-отчета как опцию
 //TODO 5. Сделать сохранение переменных уже при выходе
 //TODO 6. Сделать динамические оповещения при поиске
 //TODO 7. Сделать скины

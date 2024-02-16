@@ -53,27 +53,30 @@ public class FileInfo implements Comparable<FileInfo>
         return result;
     }
 
-    private static String extractFileName(String fileName){
-        int dotPosition = fileName.lastIndexOf('.');
+    private static String extractFileName(String fileName, String extension){
         String result = null;
-        String name = null;
-        String extension = null;
-        if (dotPosition == -1) {
+        if (extension == null) {
             result = fileName;
         } else {
-            extension = fileName.substring(dotPosition + 1, fileName.length());
-            if ((extension.indexOf(' ') == -1)
-                    || extension.length() < 20) {
-
-                name = fileName.substring(0, dotPosition);
-                result = name;
-            } else {
-                result = fileName;
-            }
+            result = fileName.substring(0, fileName.length() - extension.length() - 1);
         }
         return result;
     }
 
+    public static String extractFileExtension(String fileName){
+        int dotPosition = fileName.lastIndexOf('.');
+        String result = null;
+        String extension = null;
+        if (dotPosition != -1) {
+            extension = fileName.substring(dotPosition + 1);
+            if ((extension.indexOf(' ') == -1)
+                    || extension.length() < 20) {
+
+                result = extension;
+            }
+        }
+        return result;
+    }
 
     /*
     * split phrase into list of words*/
@@ -130,6 +133,8 @@ public class FileInfo implements Comparable<FileInfo>
 
     private List<WordInfo> dWords;
 
+    private String extension;
+
 
     /*field-marker that this object has participate in compares*/
     private boolean accepted;
@@ -156,7 +161,8 @@ public class FileInfo implements Comparable<FileInfo>
         this.absolutePath = name;
         this.size = 0;
         this.isDirectory = false;
-        name = extractFileName(name);
+        this.extension = extractFileExtension(name);
+        name = extractFileName(name, this.extension);
         this.dWords = putWordsIntoDictionary(getSplitString(name));
         this.accepted = false;
     }
@@ -187,6 +193,10 @@ public class FileInfo implements Comparable<FileInfo>
 
     public String getSizeFormatted() {
         return Formatter.doubleFormat("###,###,###,###,###.##",this.getSize());
+    }
+
+    public String getExtension() {
+        return extension;
     }
 
     public void setSize(long size) {
