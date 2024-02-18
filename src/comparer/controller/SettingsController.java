@@ -43,7 +43,7 @@ public class SettingsController {
 
     /*button for info for radiobuttons absolutePathRadBtn and relativePathRadBtn*/
     @FXML
-    private Button questionPath;
+    private Button exactWordMatchBtn;
 
     /*label for for filter field*/
     @FXML
@@ -55,7 +55,12 @@ public class SettingsController {
 
     /*checkbox for show analyze by letters*/
     @FXML
-    private CheckBox exactWordMatch;
+    private CheckBox exactWordMatchLbl;
+/*
+    @FXML
+    private CheckBox saveHtmlBtn;
+
+ */
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -65,7 +70,7 @@ public class SettingsController {
     /*set values of class fields*/
     public void setFieldsValues(){
         this.filterTextField.setText(Formatter.getArrayAsString(settings.getAllowedExtensions()));
-        this.exactWordMatch.setSelected(settings.isExactWordMatch());
+        this.exactWordMatchLbl.setSelected(settings.isExactWordMatch());
     }
 
 
@@ -103,7 +108,7 @@ public class SettingsController {
                 extensions = this.filterTextField.getText().split(" ");
             }
             this.settings.setAllowedExtensions(extensions);
-            this.settings.setExactWordMatch(this.exactWordMatch.isSelected());
+            this.settings.setExactWordMatch(this.exactWordMatchLbl.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             dialogStage.close();
@@ -118,8 +123,13 @@ public class SettingsController {
 
     /*show info about absolute and relative path*/
     @FXML
-    private void showPathInfo(){
-        Message.info(this.resourceBundle,"ExactWordMatchInfo");
+    private void showWordMatchInfo(){
+        Message.info(this.resourceBundle,"WordMatchInfo");
+    }
+
+    @FXML
+    public void showSaveHtmlInfo() {
+        Message.info(this.resourceBundle,"SaveHtmlInfo");
     }
 
     /*check that user input correct data*/
@@ -139,13 +149,14 @@ public class SettingsController {
         double newWidth = Formatter.getTextSize(newHeight);
         String newSize = "-fx-font-size:" +  String.valueOf(newWidth) + ";";
         this.filterTextField.setStyle(newSize);
+        this.exactWordMatchBtn.setStyle(newSize);
         this.saveBtn.setStyle(newSize);
         this.cancelBtn.setStyle(newSize);
+      //  this.saveHtmlBtn.setStyle(newSize);
         this.questionFilter.setStyle(newSize);
         this.filterLbl.setStyle(newSize);
         this.pathLbl.setStyle(newSize);
-        this.questionPath.setStyle(newSize);
-        this.exactWordMatch.setStyle(newSize);
+        this.exactWordMatchLbl.setStyle(newSize);
     };
 
 }

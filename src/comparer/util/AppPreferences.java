@@ -104,7 +104,7 @@ public class AppPreferences {
 
     public static double getSettingsWindowHeight() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Double.parseDouble(prefs.get("settingsWindowHeight", "160.00"));
+        return Double.parseDouble(prefs.get("settingsWindowHeight", "150.00"));
     }
 
     public static void setShowSimilarityMiddle(boolean toShow){
