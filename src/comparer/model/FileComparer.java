@@ -283,7 +283,9 @@ public class FileComparer extends Task<List<RowTableData>> {
         compareDirectories();
         Sorter.sort(this.report);
         HtmlWriter writer = new HtmlWriter(this,"UTF8");
-        writer.writeHtmlReport();
+        if (this.controller.getSettings().isSaveHtmlReport()) {
+            writer.writeHtmlReport();
+        }
 
         /*
         long finishTime = System.currentTimeMillis();

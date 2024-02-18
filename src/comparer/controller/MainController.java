@@ -207,7 +207,9 @@ public class MainController implements Initializable {
     }
 
     private void updateTable(List<RowTableData> report) {
-        setVisibility(true);
+        if (this.getSettings().isSaveHtmlReport()) {
+            this.openResultBtn.setVisible(true);
+        }
         this.progressBar.progressProperty().unbind();
         this.progressBar.setProgress(0);
         this.pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
@@ -236,7 +238,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
-        setVisibility(false);
+        this.openResultBtn.setVisible(false);
     }
 
     /*change pocket language*/
@@ -330,11 +332,6 @@ public class MainController implements Initializable {
         }
     }
 
-    /*set visibility to open result button and label*/
-    private void setVisibility(boolean visibility){
-        this.openResultBtn.setVisible(visibility);
-    }
-
     /*clear fields to default*/
     @FXML
     private void clear(){
@@ -345,7 +342,7 @@ public class MainController implements Initializable {
         this.pagination.setPageCount(1);
         this.fileNameTextField.clear();
         updateTextInfoLbl();
-        setVisibility(false);
+        this.openResultBtn.setVisible(false);
     }
 
     /*open settings window*/
