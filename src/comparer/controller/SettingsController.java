@@ -45,22 +45,30 @@ public class SettingsController {
     @FXML
     private Button exactWordMatchBtn;
 
+    @FXML
+    private Button saveHtmlBtn;
+
     /*label for for filter field*/
     @FXML
     private Label filterLbl;
 
     /*label for for radiobuttons absolutePathRadBtn and relativePathRadBtn*/
     @FXML
-    private Label pathLbl;
+    private Label option1Lbl;
+
+    @FXML
+    private Label option2Lbl;
 
     /*checkbox for show analyze by letters*/
     @FXML
     private CheckBox exactWordMatchLbl;
+
+    @FXML
+    private CheckBox saveHtmlChBox;
 /*
     @FXML
     private CheckBox saveHtmlBtn;
 
- */
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -152,11 +160,13 @@ public class SettingsController {
         this.exactWordMatchBtn.setStyle(newSize);
         this.saveBtn.setStyle(newSize);
         this.cancelBtn.setStyle(newSize);
-      //  this.saveHtmlBtn.setStyle(newSize);
+        this.saveHtmlBtn.setStyle(newSize);
         this.questionFilter.setStyle(newSize);
         this.filterLbl.setStyle(newSize);
-        this.pathLbl.setStyle(newSize);
+        this.option1Lbl.setStyle(newSize);
+        this.option2Lbl.setStyle(newSize);
         this.exactWordMatchLbl.setStyle(newSize);
+        this.saveHtmlChBox.setStyle(newSize);
     };
 
 }

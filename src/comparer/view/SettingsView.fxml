@@ -24,12 +24,12 @@
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="pathLbl" text="%Option1" GridPane.rowIndex="2">
+            <Label fx:id="option1Lbl" text="%Option1" GridPane.rowIndex="2">
                  <GridPane.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                  </GridPane.margin>
             </Label>
-            <Label fx:id="saveHtmlLbl" text="%Option2" GridPane.rowIndex="3">
+            <Label fx:id="option2Lbl" text="%Option2" GridPane.rowIndex="3">
                  <GridPane.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                  </GridPane.margin>
