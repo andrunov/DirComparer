@@ -65,9 +65,6 @@ public class SettingsController {
 
     @FXML
     private CheckBox saveHtmlChBox;
-/*
-    @FXML
-    private CheckBox saveHtmlBtn;
 
 
     /*set language pocket*/
@@ -79,6 +76,7 @@ public class SettingsController {
     public void setFieldsValues(){
         this.filterTextField.setText(Formatter.getArrayAsString(settings.getAllowedExtensions()));
         this.exactWordMatchLbl.setSelected(settings.isExactWordMatch());
+        this.saveHtmlChBox.setSelected(settings.isSaveHtmlReport());
     }
 
 
@@ -117,6 +115,7 @@ public class SettingsController {
             }
             this.settings.setAllowedExtensions(extensions);
             this.settings.setExactWordMatch(this.exactWordMatchLbl.isSelected());
+            this.settings.setSaveHtmlReport(this.saveHtmlChBox.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             dialogStage.close();

@@ -8,6 +8,8 @@ public class Settings {
 
     private boolean exactWordMatch;
 
+    private boolean saveHtmlReport;
+
     public void loadFields() {
         this.allowedExtensions = AppPreferences.getFilterExtensions();
         this.exactWordMatch = AppPreferences.getExactWordMatch();
@@ -35,5 +37,11 @@ public class Settings {
         this.exactWordMatch = exactWordMatch;
     }
 
+    public boolean isSaveHtmlReport() {
+        return saveHtmlReport;
+    }
 
+    public void setSaveHtmlReport(boolean saveHtmlReport) {
+        this.saveHtmlReport = saveHtmlReport;
+    }
 }
