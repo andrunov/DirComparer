@@ -319,9 +319,9 @@ public class FileComparer extends Task<List<RowTableData>> {
                     RowTableData rowTableData = new RowTableData(startFileInfo, 100);
                     this.report.add(rowTableData);
                 } else {
-                    int songSimilarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
-                    if (songSimilarWords > 0) {
-                        RowTableData rowTableData = new RowTableData(startFileInfo, songSimilarWords);
+                    int similarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
+                    if (similarWords > 0) {
+                        RowTableData rowTableData = new RowTableData(startFileInfo, similarWords);
                         this.report.add(rowTableData);
                     }
                 }
@@ -329,7 +329,6 @@ public class FileComparer extends Task<List<RowTableData>> {
                 this.progress.decreaseCompleteWork(decreaseWorkStep);
                 this.progress.increaseStep();
                 this.progress.showProgress();
-
             }
         }
     }

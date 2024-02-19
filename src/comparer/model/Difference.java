@@ -52,14 +52,7 @@ public class Difference {
         int[] coincidences = new int[longList.size()];
         int i = 0;
         outerCycle: for (WordInfo first : longList) {
-            /*  temporary switch off
-            if (first.isIgnorance()) {
-                i++;
-                continue;
-            }
-            */
             for (WordInfo second : shortList) {
-               // if (second.isIgnorance()) continue; temporary switch off
                 if (first.getID() == second.getID()) {
                     coincidences[i] = 100;
                     i++;
@@ -92,7 +85,6 @@ public class Difference {
             }
             i++;
         }
-
         return this.retrieveForPhrase(coincidences);
     }
 
@@ -173,24 +165,25 @@ public class Difference {
 
     private int retrieveForPhrase (int[] coincidence) {
         int result = 0;
-        int foundResult = 0;
-        int foundCounter = 0;
-        int notFoundCounter = 0;
+        int equalsSum = 0;
+        int similarSum = 0;
         for (int i : coincidence) {
-            if (i > 0) {
-                foundCounter++;
-                foundResult = foundResult + i;
+            if (i == 100) {
+                equalsSum = equalsSum + i;
+            } else if (i > 0) {
+                similarSum = similarSum + i;
             }
-            else {
-                notFoundCounter++;
-            }
-            // if i == -1 do nothing, this is an ignorance word marker
         }
 
-        if (foundCounter > 0) {
-            foundResult = foundResult / foundCounter;
-            result = foundResult - (foundResult / (foundCounter + notFoundCounter)) * notFoundCounter;
+        equalsSum = equalsSum / (coincidence.length * 2);
+        similarSum = similarSum / (coincidence.length * 2);
+
+        if (equalsSum > 0) {
+            equalsSum = equalsSum + 50;
         }
+
+        result = equalsSum + similarSum;
+
         return result;
     }
 
