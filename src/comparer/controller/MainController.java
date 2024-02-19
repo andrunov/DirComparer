@@ -128,15 +128,21 @@ public class MainController implements Initializable {
 
     /*choose first directory*/
     @FXML
-    private void choseFirstDirectory(){
-        File initialDirectory = this.firstDirectory == null ? null : this.firstDirectory.getParentFile();
-        File directory = chooseDirectory(initialDirectory, "firstDirectory");
-        if (directory != null) {
-            this.firstDirectory = directory;
-            AppPreferences.setDirectory(directory.getParentFile(), "firstDirectory");
-            //setTextDirLabel(this.firstDirLbl, "FirstDirectory", getDirInfo(directory));
-            this.firstDirLbl.setText(getDirInfo(directory));
-           // updateTextInfoLbl();
+    private void choseFirstDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File initialDirectory = null;
+        if (this.firstDirectory != null) {
+                initialDirectory = this.firstDirectory;
+        } else {
+            initialDirectory = AppPreferences.getDirectory("firstDirectory");
+        }
+        if ((initialDirectory != null)&&(initialDirectory.exists())) {
+            directoryChooser.setInitialDirectory(initialDirectory.getParentFile());
+        }
+        File selected =  directoryChooser.showDialog(null);
+        if (selected != null) {
+            this.firstDirectory = selected;
+            this.firstDirLbl.setText(getDirInfo(selected));
         }
     }
 
@@ -220,18 +226,6 @@ public class MainController implements Initializable {
         this.rowTableDataList = report;
         this.progressBar.setVisible(false);
         this.firstDirLbl.setVisible(true);
-    }
-
-    /*open dialog to choose directory*/
-    private File chooseDirectory(File initialDirectory, String directoryKey) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        if (initialDirectory == null) {
-            initialDirectory = AppPreferences.getDirectory(directoryKey);
-        }
-        if ((initialDirectory != null)&&(initialDirectory.exists())) {
-            directoryChooser.setInitialDirectory(initialDirectory);
-        }
-        return directoryChooser.showDialog(null);
     }
 
     /*initialize language pocket and set visibility to window elements*/
@@ -486,6 +480,7 @@ public class MainController implements Initializable {
     }
 
     public void saveFormSettings() {
+        AppPreferences.setDirectory(this.firstDirectory, "firstDirectory");
         AppPreferences.setSplitPaneDividerPosition(this.splitPane.getDividerPositions()[0]);
         ObservableList<TableColumn<RowTableData, String>> columns = this.tableResult.getColumns();
         for (TableColumn<RowTableData, String> column : columns) {
