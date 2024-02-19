@@ -1,6 +1,5 @@
 package comparer.model;
 
-import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 
 import java.util.ArrayList;
@@ -13,16 +12,11 @@ import java.util.Objects;
  */
 public class FileInfo implements Comparable<FileInfo>
 {
-    /*words shorted than minLength letters not participate in compare*/
-    private static int minLength;
+
 
     /*for increase ID of wordInfo objects*/
     private static int fileInfoCounter;
 
-    /*static getter for minLength*/
-    static {
-        minLength = AppPreferences.getMinStringLength();
-    }
 
     /*copy FileInfo excluding List<FileInfo> similarFiles*/
     public static FileInfo copy(FileInfo fileInfo){
@@ -85,9 +79,9 @@ public class FileInfo implements Comparable<FileInfo>
         if (phrase.isEmpty()) {
             result = new ArrayList<>();
         } else {
-            result = Formatter.splitStringHard(phrase, minLength);
+            result = Formatter.splitStringHard(phrase, 2);
             if (result.size() == 0) {
-                result = Formatter.splitStringLight(phrase, minLength);
+                result = Formatter.splitStringLight(phrase, 2);
             }
             if (result.size() == 0) {
                 result = Formatter.splitStringLight(phrase, 1);
@@ -217,13 +211,6 @@ public class FileInfo implements Comparable<FileInfo>
         return this.absolutePath.substring(0, lastSlash);
     }
 
-    public static int getMinLength() {
-        return minLength;
-    }
-
-    public static void setMinLength(int minLength) {
-        FileInfo.minLength = minLength;
-    }
 
     /*to string method*/
     @Override

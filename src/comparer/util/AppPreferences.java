@@ -44,26 +44,6 @@ public class AppPreferences {
         prefs.put("filterExtensions", Formatter.getArrayAsString(extensions));
     }
 
-    /*get minimum word length*/
-    public static int getMinStringLength() {
-        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        int minLength = 0;
-        try {
-            minLength = Integer.parseInt(prefs.get("minStringLength", "2"));
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-        if (minLength < 1){
-            minLength = 1;
-        }
-        return minLength;
-    }
-
-    /*set minimum word length*/
-    public static void setMinStringLength(String minStringLength) {
-        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        prefs.put("minStringLength", minStringLength);
-    }
 
     public static void setMainWindowWidth(Double width){
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
@@ -105,26 +85,6 @@ public class AppPreferences {
     public static double getSettingsWindowHeight() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Double.parseDouble(prefs.get("settingsWindowHeight", "150.00"));
-    }
-
-    public static void setShowSimilarityMiddle(boolean toShow){
-        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        prefs.put("showSimilarityMiddle", String.valueOf(toShow));
-    }
-
-    public static void setShowSimilarityLow(boolean toShow){
-        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        prefs.put("showSimilarityLow", String.valueOf(toShow));
-    }
-
-    public static boolean getShowSimilarityMiddle() {
-        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Boolean.parseBoolean(prefs.get("showSimilarityMiddle", "FALSE"));
-    }
-
-    public static boolean getShowSimilarityLow() {
-        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Boolean.parseBoolean(prefs.get("showSimilarityLow", "FALSE"));
     }
 
     public static void setExactWordMatch(boolean toShow){

@@ -1,10 +1,7 @@
 package comparer.util;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class for custom formatters and other useful
@@ -19,11 +16,11 @@ public class Formatter {
 
     /*split 1-st par string into words according length of word (2-nd parameter)
    * and sort that list*/
-    public static List<String> splitStringHard(String sentence, int wordLength){
+    public static List<String> splitStringHard(String sentence, int minWordLength){
         String[] arr = sentence.split("([0-9])|([\\s])|(\\.)|(,)|(\\()|(\\))|(-)|(_)|(\\?)|(!)|(:)|(;)|(&)");
         List<String> list = new ArrayList<>();
         for (String word : arr){
-            if (word.length()>=wordLength){
+            if (word.length()>=minWordLength){
                 list.add(word.toLowerCase().replace('ё','е'));
             }
         }
