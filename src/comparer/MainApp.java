@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+//TODO 5. Сделать отдельный класс для словаря
 //TODO 6. Сделать динамические оповещения при поиске
 //TODO 7. Сделать скины
 //TODO 8. Сделать рефакторинг переменных и методов

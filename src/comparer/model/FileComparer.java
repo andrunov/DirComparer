@@ -275,14 +275,18 @@ public class FileComparer extends Task<List<RowTableData>> {
         long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
         **/
 
+        updateMessage("Вычитываю директории ...");
         this.startDirectory = fillDirectory(this.startDirectoryName);
         this.endDirectory.add(this.fileToSearch);
         this.singleDirCompare = false;
+        updateMessage("Систематизирую слова ...");
         this.updateDictionaries();
+        updateMessage("Произвожу сравнение ...");
         compareDirectories();
         Sorter.sort(this.report);
-        HtmlWriter writer = new HtmlWriter(this,"UTF8");
         if (this.controller.getSettings().isSaveHtmlReport()) {
+            updateMessage("Записываю HTML - отчет ...");
+            HtmlWriter writer = new HtmlWriter(this,"UTF8");
             writer.writeHtmlReport();
         }
 

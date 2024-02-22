@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -164,7 +165,6 @@ public class MainController implements Initializable {
 
 
         this.tableResult.getItems().clear();
-        this.firstDirLbl.setVisible(false);
         this.progressBar.setVisible(true);
         FileComparer comparer = FileComparer.createForSearch(this);
         if (deepCompare) {
@@ -176,6 +176,9 @@ public class MainController implements Initializable {
             thread.setDaemon(true);
             thread.start();
             this.progressBar.progressProperty().bind(comparer.progressProperty());
+            this.firstDirLbl.setAlignment(Pos.CENTER);
+            this.firstDirLbl.setStyle("-fx-text-fill: darkred;");
+            this.firstDirLbl.textProperty().bind(comparer.messageProperty());
             this.searchAttemptNumber++;
 
         }
@@ -218,6 +221,10 @@ public class MainController implements Initializable {
         }
         this.progressBar.progressProperty().unbind();
         this.progressBar.setProgress(0);
+        this.firstDirLbl.textProperty().unbind();
+        this.firstDirLbl.setAlignment(Pos.CENTER_LEFT);
+        this.firstDirLbl.setStyle(null);
+        this.firstDirLbl.setText(getDirInfo(firstDirectory));
         this.pagination.setPageCount(report.size()/ROWS_RER_PAGE + 1);
         this.pagination.setMaxPageIndicatorCount(15);
         this.pagination.setCurrentPageIndex(0);
@@ -225,7 +232,6 @@ public class MainController implements Initializable {
         this.tableResult.setItems(FXCollections.observableArrayList(report.subList(0, toIndex)));
         this.rowTableDataList = report;
         this.progressBar.setVisible(false);
-        this.firstDirLbl.setVisible(true);
     }
 
     /*initialize language pocket and set visibility to window elements*/
