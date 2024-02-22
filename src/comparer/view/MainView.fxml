@@ -86,7 +86,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                      <effect>
-                        <GaussianBlur />
+                        <GaussianBlur radius="5.0" />
                      </effect>
                   </ProgressBar>
                </children>

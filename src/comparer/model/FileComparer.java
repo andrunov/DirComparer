@@ -78,6 +78,7 @@ public class FileComparer extends Task<List<RowTableData>> {
     /*another directory where need to find duplicates files */
     private List<FileInfo> endDirectory = new ArrayList<>();
 
+
     public FileInfo getFileToSearch() {
         return fileToSearch;
     }
@@ -275,17 +276,17 @@ public class FileComparer extends Task<List<RowTableData>> {
         long memoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
         **/
 
-        updateMessage("Вычитываю директории ...");
+        updateMessage(this.resourceBundle.getString("ReadDir"));
         this.startDirectory = fillDirectory(this.startDirectoryName);
         this.endDirectory.add(this.fileToSearch);
         this.singleDirCompare = false;
-        updateMessage("Систематизирую слова ...");
+        updateMessage(this.resourceBundle.getString("SystWords"));
         this.updateDictionaries();
-        updateMessage("Произвожу сравнение ...");
+        updateMessage(this.resourceBundle.getString("SearchFiles"));
         compareDirectories();
         Sorter.sort(this.report);
         if (this.controller.getSettings().isSaveHtmlReport()) {
-            updateMessage("Записываю HTML - отчет ...");
+            updateMessage(this.resourceBundle.getString("WriteReport"));
             HtmlWriter writer = new HtmlWriter(this,"UTF8");
             writer.writeHtmlReport();
         }
