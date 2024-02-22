@@ -254,7 +254,11 @@ public class MainController implements Initializable {
 
     /*update text of window elements*/
     private void updateLocalText(){
-        updateTextInfoLbl();
+        if (this.firstDirectory != null) {
+            this.firstDirLbl.setText(getDirInfo(firstDirectory));
+        } else {
+            this.firstDirLbl.setText(this.resourceBundle.getString("FirstDirectory"));
+        }
         this.firstDirSelectBtn.setText(this.resourceBundle.getString("Select"));
         this.changeLocalButton.setText(this.resourceBundle.getString("ChangeLocal"));
         this.clearBtn.setText(this.resourceBundle.getString("Clear"));
@@ -264,17 +268,6 @@ public class MainController implements Initializable {
         this.exitBtn.setText(this.resourceBundle.getString("Exit"));
         this.fileNameTextField.setPromptText(this.resourceBundle.getString("FileName"));
         this.updateResultTable();
-    }
-
-    /*updates text for infoLbl Label depending of
-    * firstDirectory and secondDirectory directories*/
-    private void updateTextInfoLbl(){
-        setTextDirLabel(firstDirLbl,"FirstDirectory",getDirInfo(firstDirectory));
-    }
-
-    /*updates text for several Labels*/
-    private void setTextDirLabel(Label label, String bundleKey, String infoPath){
-         label.setText(resourceBundle.getString(bundleKey) + infoPath);
     }
 
     /**/
@@ -341,7 +334,7 @@ public class MainController implements Initializable {
         this.tableResult.getItems().clear();
         this.pagination.setPageCount(1);
         this.fileNameTextField.clear();
-        updateTextInfoLbl();
+        this.firstDirLbl.setText(this.resourceBundle.getString("FirstDirectory"));
         this.openResultBtn.setVisible(false);
     }
 
