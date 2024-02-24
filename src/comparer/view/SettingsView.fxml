@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="150.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Custom.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.SettingsController">
+<AnchorPane prefHeight="150.0" prefWidth="600.0" styleClass="background" stylesheets="@../style/Cian.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.SettingsController">
    <children>
       <GridPane prefHeight="120.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -44,7 +44,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </Button>
-             <Button fx:id="saveBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#save" stylesheets="@../style/CustomRed.css" text="%Save" GridPane.columnIndex="2">
+             <Button fx:id="saveBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#save" stylesheets="@../style/ButtonRed.css" text="%Save" GridPane.columnIndex="2">
                  <HBox.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                  </HBox.margin>
@@ -64,7 +64,7 @@
             </Button>
             <HBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                   <Button fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" stylesheets="@../style/CustomGray.css" text="%Cancel" GridPane.columnIndex="1">
+                   <Button fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" stylesheets="@../style/ButtonGray.css" text="%Cancel" GridPane.columnIndex="1">
                        <GridPane.margin>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                        </GridPane.margin>
