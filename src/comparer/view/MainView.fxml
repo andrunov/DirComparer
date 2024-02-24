@@ -60,7 +60,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Button fx:id="exitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#doExitApp" stylesheets="@../style/CustomRed.css" text="%Exit" GridPane.columnIndex="1">
+                  <Button fx:id="exitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#doExitApp" stylesheets="@../style/CustomGray.css" text="%Exit" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </GridPane.margin>
@@ -70,7 +70,7 @@
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Button fx:id="goBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="10.0" mnemonicParsing="false" onAction="#executeSearch" prefHeight="37.0" prefWidth="56.0" text="%Go" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="searchBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="10.0" mnemonicParsing="false" onAction="#executeSearch" prefHeight="37.0" prefWidth="56.0" stylesheets="@../style/CustomRed.css" text="%Search" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
                      </GridPane.margin>

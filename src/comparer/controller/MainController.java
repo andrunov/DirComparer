@@ -48,7 +48,7 @@ public class MainController implements Initializable {
     private Label firstDirLbl;
 
     @FXML
-    private Button goBtn;
+    private Button searchBtn;
 
     /*button for firs directory selection*/
     @FXML
@@ -145,6 +145,8 @@ public class MainController implements Initializable {
             this.firstDirectory = selected;
             this.firstDirLbl.setText(getDirInfo(selected));
         }
+        System.out.println(this.splitPane.getStylesheets().get(0));
+
     }
 
     @FXML
@@ -260,6 +262,7 @@ public class MainController implements Initializable {
             this.firstDirLbl.setText(this.resourceBundle.getString("FirstDirectory"));
         }
         this.firstDirSelectBtn.setText(this.resourceBundle.getString("Select"));
+        this.searchBtn.setText(this.resourceBundle.getString("Search"));
         this.changeLocalButton.setText(this.resourceBundle.getString("ChangeLocal"));
         this.clearBtn.setText(this.resourceBundle.getString("Clear"));
         this.openResultBtn.setText(this.resourceBundle.getString("Open"));
@@ -363,7 +366,7 @@ public class MainController implements Initializable {
         double newWidth = Formatter.getTextSize(newHeight);
         String newSize = "-fx-font-size:" +  String.valueOf(newWidth) + ";";
         this.fileNameTextField.setStyle(newSize);
-        this.goBtn.setStyle(newSize);
+        this.searchBtn.setStyle(newSize);
         this.firstDirLbl.setStyle(newSize);
         this.firstDirSelectBtn.setStyle(newSize);
         this.changeLocalButton.setStyle(newSize);
