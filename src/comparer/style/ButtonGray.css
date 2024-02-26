@@ -15,10 +15,3 @@
     -fx-background-color: darkgrey;
 }
 
-.button:focused {
-    -fx-border-color: royalblue;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-}
-

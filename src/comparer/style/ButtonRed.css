@@ -15,10 +15,4 @@
     -fx-text-fill: darkblue;
 }
 
-.button:focused {
-    -fx-border-color: brown;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-}
 

@@ -13,6 +13,6 @@
 
 .button:hover {
     -fx-background-color: rgba(255, 188, 50, 0.5);
-    -fx-text-fill: blue;
+    -fx-text-fill: darkred;
 }
 
