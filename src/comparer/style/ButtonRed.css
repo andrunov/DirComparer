@@ -6,13 +6,13 @@
 -fx-border-radius: 5;
 -fx-background-color: rgba(101, 201, 203, 0.5);
 -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-/*-fx-font-size: 14pt;*/
 -fx-font-weight: bold;
 -fx-text-fill: darkred;
 }
 
 .button:hover {
     -fx-background-color: rgba(208, 103, 103, 0.5);
+    -fx-text-fill: darkblue;
 }
 
 .button:focused {
