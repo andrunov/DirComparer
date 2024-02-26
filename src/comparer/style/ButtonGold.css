@@ -1,0 +1,17 @@
+
+.button {
+    -fx-border-color: #8c7500;
+    -fx-border-width: 2;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-color: rgba(220, 189, 109, 0.4);
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: #165900;
+
+}
+
+.button:hover {
+    -fx-background-color: rgba(255, 188, 50, 0.5);
+}
+
