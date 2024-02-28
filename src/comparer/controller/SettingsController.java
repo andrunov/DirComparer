@@ -5,11 +5,12 @@ import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
@@ -66,6 +67,9 @@ public class SettingsController {
     @FXML
     private CheckBox saveHtmlChBox;
 
+    @FXML
+    private ChoiceBox<String> skinChoiceBox;
+
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -77,6 +81,15 @@ public class SettingsController {
         this.filterTextField.setText(Formatter.getArrayAsString(settings.getAllowedExtensions()));
         this.exactWordMatchLbl.setSelected(settings.isExactWordMatch());
         this.saveHtmlChBox.setSelected(settings.isSaveHtmlReport());
+
+        ObservableList<String> langs = FXCollections.observableArrayList("Cian", "Gray");
+        this.skinChoiceBox.setItems(langs);
+        this.skinChoiceBox.setValue("Cian");
+        this.skinChoiceBox.setOnAction(event -> {
+            String newStyle = String.format("comparer/style/%s.css", this.skinChoiceBox.getValue());
+            this.dialogStage.getScene().getRoot().getStylesheets().clear();
+            this.dialogStage.getScene().getRoot().getStylesheets().add(newStyle);
+        });
     }
 
 
@@ -139,6 +152,7 @@ public class SettingsController {
         Message.info(this.resourceBundle,"SaveHtmlInfo");
     }
 
+
     /*check that user input correct data*/
     private boolean isInputValid() {
         String filterExtensions = this.filterTextField.getText();
@@ -152,7 +166,7 @@ public class SettingsController {
     /*listener for observe change height of settings window */
     public ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
     {
-        double newHeight = this.dialogStage.getHeight() * 4;
+        double newHeight = this.dialogStage.getHeight() * 3.5;
         double newWidth = Formatter.getTextSize(newHeight);
         String newSize = "-fx-font-size:" +  String.valueOf(newWidth) + ";";
         this.filterTextField.setStyle(newSize);
