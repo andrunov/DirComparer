@@ -1,5 +1,7 @@
 package comparer.util;
 
+import comparer.style.Skin;
+
 import java.io.File;
 import java.util.prefs.Preferences;
 
@@ -127,5 +129,16 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         String key = String.format("tableColumnWidth_%s", columnId);
         prefs.put(key, String.valueOf(width));
+    }
+
+    public static Skin getSkin() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        String saved = prefs.get("skin", "CIAN");
+        return Skin.valueOf(saved);
+    }
+
+    public static void saveSkin(Skin skin) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("skin", String.valueOf(skin));
     }
 }

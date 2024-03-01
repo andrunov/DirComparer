@@ -69,6 +69,7 @@ public class SettingsController {
     @FXML
     private ChoiceBox<String> skinChoiceBox;
 
+    private Skin skin;
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -77,19 +78,25 @@ public class SettingsController {
 
     /*set values of class fields*/
     public void setFieldsValues(){
-        this.filterTextField.setText(Formatter.getArrayAsString(settings.getAllowedExtensions()));
-        this.exactWordMatchLbl.setSelected(settings.isExactWordMatch());
-        this.saveHtmlChBox.setSelected(settings.isSaveHtmlReport());
+        this.filterTextField.setText(Formatter.getArrayAsString(this.settings.getAllowedExtensions()));
+        this.exactWordMatchLbl.setSelected(this.settings.isExactWordMatch());
+        this.saveHtmlChBox.setSelected(this.settings.isSaveHtmlReport());
 
         ObservableList<String> langs = FXCollections.observableArrayList(Skin.getLocaleValues(this.resourceBundle));
         this.skinChoiceBox.setItems(langs);
-        this.skinChoiceBox.setValue(Skin.CIAN.getLocale(resourceBundle));
+        this.skinChoiceBox.setValue(this.settings.getSkin().getLocale(this.resourceBundle));
         this.skinChoiceBox.setOnAction(event -> {
-            String baseValue = Skin.getByValue(this.resourceBundle, this.skinChoiceBox.getValue()).toString();
-            String newStyle = String.format("comparer/style/%s.css", baseValue);
-            this.dialogStage.getScene().getRoot().getStylesheets().clear();
-            this.dialogStage.getScene().getRoot().getStylesheets().add(newStyle);
+            String newSkinValue = Skin.getByLocalValue(this.resourceBundle, this.skinChoiceBox.getValue()).toString();
+            this.updateSkin(newSkinValue);
+            this.skin = Skin.valueOf(newSkinValue);
         });
+        this.updateSkin(this.settings.getSkin().toString());
+    }
+
+    private void updateSkin(String skinValue) {
+        String newStyle = String.format("comparer/style/%s.css", skinValue);
+        this.dialogStage.getScene().getRoot().getStylesheets().clear();
+        this.dialogStage.getScene().getRoot().getStylesheets().add(newStyle);
     }
 
 
@@ -129,6 +136,7 @@ public class SettingsController {
             this.settings.setAllowedExtensions(extensions);
             this.settings.setExactWordMatch(this.exactWordMatchLbl.isSelected());
             this.settings.setSaveHtmlReport(this.saveHtmlChBox.isSelected());
+            this.settings.setSkin(this.skin);
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             dialogStage.close();

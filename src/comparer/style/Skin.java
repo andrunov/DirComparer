@@ -16,7 +16,7 @@ public enum Skin {
         return result;
     }
 
-    public static Skin getByValue(ResourceBundle resourceBundle, String value) {
+    public static Skin getByLocalValue(ResourceBundle resourceBundle, String value) {
         Skin[] values = Skin.values();
         Skin result = null;
         for (int i = 0; i < values.length; i++ ) {
