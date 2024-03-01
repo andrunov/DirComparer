@@ -72,6 +72,9 @@ public class SettingsController {
     private CheckBox saveHtmlChBox;
 
     @FXML
+    private Label skinLbl;
+
+    @FXML
     private ChoiceBox<String> skinChoiceBox;
 
 
@@ -203,6 +206,8 @@ public class SettingsController {
         this.option1Lbl.setStyle(newSize);
         this.option2Lbl.setStyle(newSize);
         this.exactWordMatchLbl.setStyle(newSize);
+        this.skinLbl.setStyle(newSize);
+        this.skinChoiceBox.setStyle(newSize);
         this.saveHtmlChBox.setStyle(newSize);
     };
 

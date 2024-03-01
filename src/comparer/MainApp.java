@@ -20,9 +20,10 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-//TODO 6. Сделать скины
-//TODO 7. Вынести все настройки в Settings
-
+//TODO 4. Сделать скины
+//TODO 5. По возможности сделать масштабирование поля ввода на главной форме и чойсбокса на форме настроек
+//TODO 6. Вынести все настройки в Settings
+//TODO 6. Привести в порядок resource bundle
 //TODO 8. Сделать рефакторинг переменных и методов
 //TODO 9. Сделать разделение на comparer и searcher (не забыть про разные пути сохранения параметров)
 

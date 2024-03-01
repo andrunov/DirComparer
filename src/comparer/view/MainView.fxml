@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane fx:id="splitPane" dividerPositions="0.18" minHeight="0.0" minWidth="100.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="650.0" styleClass="background" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
+<SplitPane fx:id="splitPane" dividerPositions="0.18" minHeight="0.0" minWidth="100.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="650.0" styleClass="background" stylesheets="@../style/Cian.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comparer.controller.MainController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -108,8 +107,4 @@
          </children>
       </AnchorPane>
   </items>
-   <stylesheets>
-      <URL value="@../style/Cian.css" />
-      <URL value="@../style/Gold.css" />
-   </stylesheets>
 </SplitPane>

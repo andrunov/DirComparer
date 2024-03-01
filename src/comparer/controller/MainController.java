@@ -376,7 +376,7 @@ public class MainController implements Initializable {
         this.aboutBtn.setStyle(newSize);
         this.exitBtn.setStyle(newSize);
         this.tableResult.setStyle(newSize);
-        this. pagination.setStyle(newSize);
+        this.pagination.setStyle(newSize);
     };
 
     public void setupResultTable() {
