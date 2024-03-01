@@ -1,5 +1,6 @@
 package comparer.controller;
 
+import comparer.MainApp;
 import comparer.model.Settings;
 import comparer.style.Skin;
 import comparer.util.AppPreferences;
@@ -11,12 +12,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.util.ResourceBundle;
 
 //*Controller class for SettingsWiew.fxml window*/
 public class SettingsController {
 
+
+    private MainApp mainApp;
     private Settings settings;
 
     /*window stage*/
@@ -24,6 +28,9 @@ public class SettingsController {
 
     /*language pocket*/
     private ResourceBundle resourceBundle;
+
+    private Skin skin;
+
 
     /*field for filter text*/
     @FXML
@@ -69,11 +76,14 @@ public class SettingsController {
     @FXML
     private ChoiceBox<String> skinChoiceBox;
 
-    private Skin skin;
 
     /*set language pocket*/
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+    }
+
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
     }
 
     /*set values of class fields*/
@@ -137,6 +147,14 @@ public class SettingsController {
             this.settings.setExactWordMatch(this.exactWordMatchLbl.isSelected());
             this.settings.setSaveHtmlReport(this.saveHtmlChBox.isSelected());
             this.settings.setSkin(this.skin);
+
+            //update main stage skin
+            Window primaryStage = this.dialogStage.getOwner();
+            String newStyle = String.format("comparer/style/%s.css", this.skin.toString());
+            primaryStage.getScene().getRoot().getStylesheets().clear();
+            primaryStage.getScene().getRoot().getStylesheets().add(newStyle);
+
+            //TODO remove to settings
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
             dialogStage.close();

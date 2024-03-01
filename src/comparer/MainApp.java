@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-//TODO 6. Сделать отдельный класс для словаря
-//TODO 7. Сделать скины
+//TODO 6. Сделать скины
+//TODO 7. Вынести все настройки в Settings
+
 //TODO 8. Сделать рефакторинг переменных и методов
 //TODO 9. Сделать разделение на comparer и searcher (не забыть про разные пути сохранения параметров)
 
@@ -96,6 +97,7 @@ public class MainApp extends Application {
             mainController.setMainApp(this);
             mainController.setSettings(this.settings);
 
+            this.updateSkin(this.settings.getSkin().toString());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,6 +144,12 @@ public class MainApp extends Application {
     /*getter for primary stage*/
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    private void updateSkin(String skinValue) {
+        String newStyle = String.format("comparer/style/%s.css", skinValue);
+        this.primaryStage.getScene().getRoot().getStylesheets().clear();
+        this.primaryStage.getScene().getRoot().getStylesheets().add(newStyle);
     }
 
 
