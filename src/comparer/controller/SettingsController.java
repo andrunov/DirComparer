@@ -1,14 +1,13 @@
 package comparer.controller;
 
 import comparer.model.Settings;
+import comparer.style.Skin;
 import comparer.util.AppPreferences;
 import comparer.util.Formatter;
 import comparer.util.Message;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -82,11 +81,12 @@ public class SettingsController {
         this.exactWordMatchLbl.setSelected(settings.isExactWordMatch());
         this.saveHtmlChBox.setSelected(settings.isSaveHtmlReport());
 
-        ObservableList<String> langs = FXCollections.observableArrayList("Cian", "Gray");
+        ObservableList<String> langs = FXCollections.observableArrayList(Skin.getLocaleValues(this.resourceBundle));
         this.skinChoiceBox.setItems(langs);
-        this.skinChoiceBox.setValue("Cian");
+        this.skinChoiceBox.setValue(Skin.CIAN.getLocale(resourceBundle));
         this.skinChoiceBox.setOnAction(event -> {
-            String newStyle = String.format("comparer/style/%s.css", this.skinChoiceBox.getValue());
+            String baseValue = Skin.getByValue(this.resourceBundle, this.skinChoiceBox.getValue()).toString();
+            String newStyle = String.format("comparer/style/%s.css", baseValue);
             this.dialogStage.getScene().getRoot().getStylesheets().clear();
             this.dialogStage.getScene().getRoot().getStylesheets().add(newStyle);
         });

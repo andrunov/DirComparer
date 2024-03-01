@@ -123,8 +123,8 @@ public class MainApp extends Application {
             SettingsController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setSettings(this.settings);
-            controller.setFieldsValues();
             controller.setResourceBundle(resourceBundle);
+            controller.setFieldsValues();
 
             dialogStage.heightProperty().addListener(controller.stageSizeListener);
             dialogStage.setWidth(AppPreferences.getSettingsWindowWidth());
