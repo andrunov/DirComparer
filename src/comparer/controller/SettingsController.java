@@ -19,8 +19,6 @@ import java.util.ResourceBundle;
 //*Controller class for SettingsWiew.fxml window*/
 public class SettingsController {
 
-
-    private MainApp mainApp;
     private Settings settings;
 
     /*window stage*/
@@ -83,7 +81,6 @@ public class SettingsController {
     }
 
     public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
     }
 
     /*set values of class fields*/
@@ -100,7 +97,8 @@ public class SettingsController {
             this.updateSkin(newSkinValue);
             this.skin = Skin.valueOf(newSkinValue);
         });
-        this.updateSkin(this.settings.getSkin().toString());
+        this.skin = this.settings.getSkin();
+        this.updateSkin(this.skin.toString());
     }
 
     private void updateSkin(String skinValue) {
