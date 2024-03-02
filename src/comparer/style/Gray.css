@@ -34,3 +34,19 @@
     -fx-opacity: 0.9;
     -fx-font-weight: bold;
 }
+
+
+.combo-box .list-cell
+{
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: rgba(128, 128, 128, 0.25);
+    -fx-text-fill: black;
+}

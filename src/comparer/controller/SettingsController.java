@@ -75,7 +75,7 @@ public class SettingsController {
     private Label skinLbl;
 
     @FXML
-    private ChoiceBox<String> skinChoiceBox;
+    private ComboBox<String> skinChoiceBox;
 
 
     /*set language pocket*/
