@@ -11,7 +11,7 @@
 }
 
 .button:hover {
-    -fx-background-color: rgba(0, 128, 0, 0.5);
+    -fx-background-color: rgba(46, 139, 87, 0.5);
     -fx-text-fill: darkred;
 }
 

@@ -143,9 +143,8 @@ public class HtmlWriter {
     private void printHtmlTitleSingle(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(title, //format string
-                        resourceBundle.getString("Analyzed"),   //...parameters
-                        this.comparer.getStartDirectory().size(),
-                        resourceBundle.getString("Files"),
+                        resourceBundle.getString("SearchTitle"),   //...parameters
+                        this.comparer.getEndDirectory().get(0).getName(),
                         resourceBundle.getString("InDirectory"),
                         this.comparer.getStartDirectoryName(),
                         this.getShortName(this.comparer.getStartDirectoryName()));
@@ -185,13 +184,17 @@ public class HtmlWriter {
     private void printHtmlTableBegin(PrintWriter writer, int filesFound) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(table, //format string
-                    //...parameters
-                    resourceBundle.getString("Found"),
-                    filesFound,
-                    resourceBundle.getString("Files"),
-                    resourceBundle.getString("InDirectory"),
-                    this.comparer.getStartDirectoryName(),
-                    this.getShortName(this.comparer.getStartDirectoryName()));
+                //...parameters
+                resourceBundle.getString("Analyzed"),
+                this.comparer.getStartDirectory().size(),
+                resourceBundle.getString("Files"),
+                resourceBundle.getString("InDirectory"),
+                this.comparer.getStartDirectoryName(),
+                this.getShortName(this.comparer.getStartDirectoryName()),
+                resourceBundle.getString("Found"),
+                filesFound,
+                resourceBundle.getString("Files"))
+        ;
 
     }
 
