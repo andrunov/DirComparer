@@ -5,7 +5,8 @@ import java.util.ResourceBundle;
 public enum Skin {
     CIAN,
     GRAY,
-    GOLD;
+    GOLD,
+    NAVY;
 
 
     public static String[] getLocaleValues(ResourceBundle resourceBundle) {

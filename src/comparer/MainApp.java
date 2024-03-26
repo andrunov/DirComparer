@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-//TODO 5. Сделать скины (в т.ч. в отчетах)
+//TODO 4. Сделать скины (в т.ч. в отчетах)
+//TODO 5. Сделать сохранение локали
 //TODO 6. Вынести все настройки в Settings
 //TODO 6. Привести в порядок resource bundle
 //TODO 8. Сделать рефакторинг переменных и методов
