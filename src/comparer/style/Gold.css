@@ -1,29 +1,29 @@
 .background {
--fx-background-color: rgba(253, 233, 146, 0.65);
+    -fx-background-color: rgba(196, 156, 72, 0.5);
 }
 
 
 .label {
     -fx-font-size: 10pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #8f4407;
+    -fx-text-fill: #54c3a15;
     -fx-opacity: 0.9;
     -fx-font-weight: bold;
 }
 
 
 .button {
--fx-border-color: #8f4407;
--fx-border-width: 2;
--fx-background-radius: 5;
--fx-border-radius: 5;
--fx-background-color: LightYellow;
--fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
--fx-font-weight: bold;
+    -fx-border-color: #8f4407;
+    -fx-border-width: 2;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-color: LightYellow;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-weight: bold;
 }
 
 .button:hover {
-    -fx-background-color: rgba(252, 162, 35, 0.5);
+    -fx-background-color: rgba(183, 154, 86, 0.5);
 }
 
 
@@ -31,7 +31,7 @@
 .check-box {
     -fx-font-size: 10pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #8f4407;
+    -fx-text-fill: #4c3a15;
     -fx-opacity: 0.9;
     -fx-font-weight: bold;
 }
@@ -42,7 +42,7 @@
     -fx-font-family: "Segoe UI Semibold";
     -fx-background: white;
     -fx-background-color: transparent;
-    -fx-text-fill: #8f4407;
+    -fx-text-fill: #4c3a15;
 }
 
 
