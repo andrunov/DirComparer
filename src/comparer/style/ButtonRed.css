@@ -7,12 +7,12 @@
 -fx-background-color: rgba(101, 201, 203, 0.5);
 -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 -fx-font-weight: bold;
--fx-text-fill: darkred;
+-fx-text-fill: darkblue;
 }
 
 .button:hover {
-    -fx-background-color: rgba(208, 103, 103, 0.5);
-    -fx-text-fill: darkblue;
+    -fx-background-color: rgba(0, 128, 0, 0.5);
+    -fx-text-fill: darkred;
 }
 
 
