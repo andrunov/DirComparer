@@ -2,6 +2,7 @@ package comparer.model;
 
 import comparer.RowTableData;
 import comparer.controller.MainController;
+import comparer.style.Skin;
 import comparer.util.FileFilter;
 import comparer.util.HtmlWriter;
 import comparer.util.Sorter;
@@ -77,6 +78,9 @@ public class FileComparer extends Task<List<RowTableData>> {
 
     /*another directory where need to find duplicates files */
     private List<FileInfo> endDirectory = new ArrayList<>();
+
+    /*show analyze by letters*/
+    private boolean exactWordMatch;
 
 
     public FileInfo getFileToSearch() {
@@ -263,8 +267,10 @@ public class FileComparer extends Task<List<RowTableData>> {
         this.exactWordMatch = exactWordMatch;
     }
 
-    /*show analyze by letters*/
-    private boolean exactWordMatch;
+    public Skin getSkin () {
+        return this.controller.getSettings().getSkin();
+    }
+
 
     /*this method contains main logic of comparing*/
     public void search(){

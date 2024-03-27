@@ -3,6 +3,7 @@ package comparer.util;
 import comparer.RowTableData;
 import comparer.model.FileComparer;
 import comparer.model.FileInfo;
+import comparer.style.Skin;
 
 import java.io.*;
 import java.util.List;
@@ -141,8 +142,15 @@ public class HtmlWriter {
 
     /* HTML title for single directory case*/
     private void printHtmlTitleSingle(PrintWriter writer, int filesFound) {
+        Skin skin = this.comparer.getSkin();
+        String textColor = Skin.getTextColor(skin);
+        String bgColor = Skin.getBgColor(skin);
+        String borderColor = Skin.getTableBorderColor(skin);
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(title, //format string
+                        textColor,
+                        bgColor,
+                        borderColor,
                         resourceBundle.getString("SearchTitle"),   //...parameters
                         this.comparer.getEndDirectory().get(0).getName(),
                         resourceBundle.getString("InDirectory"),
@@ -188,16 +196,22 @@ public class HtmlWriter {
     /*
      * HTML table title for report*/
     private void printHtmlTableBegin(PrintWriter writer) {
-        ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        writer.printf(table, "#000435");
+        Skin skin = this.comparer.getSkin();
+        String borderColor = Skin.getTableBorderColor(skin);
+        writer.printf(table, borderColor);
         ;
     }
 
     /*
      * HTML table header title for report*/
     private void printHtmlTableHeaderForSearch(PrintWriter writer) {
+        Skin skin = this.comparer.getSkin();
+        String textColor = Skin.getTextColor(skin);
+        String bgColor = Skin.getBgColor(skin);
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(th, //format string
+                textColor,
+                bgColor,
                 resourceBundle.getString("Similar"),   //...parameters
                 resourceBundle.getString("Folder"),   //...parameters
                 resourceBundle.getString("FileName"),
