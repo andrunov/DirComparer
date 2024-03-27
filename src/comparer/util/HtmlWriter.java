@@ -106,9 +106,9 @@ public class HtmlWriter {
         try{
             PrintWriter writer = new PrintWriter(comparer.getReportName(), "UTF-8");
             writer.println(head);
-            this.printHtmlTitleSingle(writer);
             int filesFound = this.comparer.getReport().size();
-            this.printHtmlTableBegin(writer, filesFound);
+            this.printHtmlTitleSingle(writer, filesFound);
+            this.printHtmlTableBegin(writer);
             this.printHtmlTableHeaderForSearch(writer);
             this.printHtmlTable(writer, this.comparer.getReport());
             this.printHtmlTableEnd(writer);
@@ -140,14 +140,20 @@ public class HtmlWriter {
 
 
     /* HTML title for single directory case*/
-    private void printHtmlTitleSingle(PrintWriter writer) {
+    private void printHtmlTitleSingle(PrintWriter writer, int filesFound) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
         writer.printf(title, //format string
                         resourceBundle.getString("SearchTitle"),   //...parameters
                         this.comparer.getEndDirectory().get(0).getName(),
                         resourceBundle.getString("InDirectory"),
                         this.comparer.getStartDirectoryName(),
-                        this.getShortName(this.comparer.getStartDirectoryName()));
+                        this.getShortName(this.comparer.getStartDirectoryName()),
+                        resourceBundle.getString("Analyzed"),
+                        this.comparer.getStartDirectory().size(),
+                        resourceBundle.getString("Files"),
+                        resourceBundle.getString("Found"),
+                        filesFound,
+                        resourceBundle.getString("Files"));
     }
 
     /* HTML title for two directory case*/
@@ -181,21 +187,10 @@ public class HtmlWriter {
 
     /*
      * HTML table title for report*/
-    private void printHtmlTableBegin(PrintWriter writer, int filesFound) {
+    private void printHtmlTableBegin(PrintWriter writer) {
         ResourceBundle resourceBundle = this.comparer.getResourceBundle();
-        writer.printf(table, //format string
-                //...parameters
-                resourceBundle.getString("Analyzed"),
-                this.comparer.getStartDirectory().size(),
-                resourceBundle.getString("Files"),
-                resourceBundle.getString("InDirectory"),
-                this.comparer.getStartDirectoryName(),
-                this.getShortName(this.comparer.getStartDirectoryName()),
-                resourceBundle.getString("Found"),
-                filesFound,
-                resourceBundle.getString("Files"))
+        writer.printf(table, "#000435");
         ;
-
     }
 
     /*
