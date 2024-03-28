@@ -9,7 +9,7 @@ public class Settings {
 
     private boolean exactWordMatch;
 
-    private boolean saveHtmlReport;
+    private boolean writeHtmlReport;
 
     private Skin skin;
 
@@ -17,12 +17,14 @@ public class Settings {
         this.allowedExtensions = AppPreferences.getFilterExtensions();
         this.exactWordMatch = AppPreferences.getExactWordMatch();
         this.skin = AppPreferences.getSkin();
+        this.writeHtmlReport = AppPreferences.getWriteHtmlReport();
     }
 
     public void saveFields() {
         AppPreferences.setFilterExtensions(this.allowedExtensions);
         AppPreferences.setExactWordMatch(this.exactWordMatch);
         AppPreferences.saveSkin(this.skin);
+        AppPreferences.saveWriteHtmlReport(this.writeHtmlReport);
     }
 
 
@@ -42,12 +44,12 @@ public class Settings {
         this.exactWordMatch = exactWordMatch;
     }
 
-    public boolean isSaveHtmlReport() {
-        return saveHtmlReport;
+    public boolean isWriteHtmlReport() {
+        return writeHtmlReport;
     }
 
-    public void setSaveHtmlReport(boolean saveHtmlReport) {
-        this.saveHtmlReport = saveHtmlReport;
+    public void setWriteHtmlReport(boolean writeHtmlReport) {
+        this.writeHtmlReport = writeHtmlReport;
     }
 
     public Skin getSkin() {

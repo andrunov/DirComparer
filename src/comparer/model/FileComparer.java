@@ -291,7 +291,7 @@ public class FileComparer extends Task<List<RowTableData>> {
         updateMessage(this.resourceBundle.getString("SearchFiles"));
         compareDirectories();
         Sorter.sort(this.report);
-        if (this.controller.getSettings().isSaveHtmlReport()) {
+        if (this.controller.getSettings().isWriteHtmlReport()) {
             updateMessage(this.resourceBundle.getString("WriteReport"));
             HtmlWriter writer = new HtmlWriter(this,"UTF8");
             writer.writeHtmlReport();

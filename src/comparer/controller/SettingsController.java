@@ -90,7 +90,7 @@ public class SettingsController {
     public void setFieldsValues(){
         this.filterTextField.setText(Formatter.getArrayAsString(this.settings.getAllowedExtensions()));
         this.exactWordMatchLbl.setSelected(this.settings.isExactWordMatch());
-        this.saveHtmlChBox.setSelected(this.settings.isSaveHtmlReport());
+        this.saveHtmlChBox.setSelected(this.settings.isWriteHtmlReport());
 
         ObservableList<String> langs = FXCollections.observableArrayList(Skin.getLocaleValues(this.resourceBundle));
         this.skinChoiceBox.setItems(langs);
@@ -146,7 +146,7 @@ public class SettingsController {
             }
             this.settings.setAllowedExtensions(extensions);
             this.settings.setExactWordMatch(this.exactWordMatchLbl.isSelected());
-            this.settings.setSaveHtmlReport(this.saveHtmlChBox.isSelected());
+            this.settings.setWriteHtmlReport(this.saveHtmlChBox.isSelected());
             this.settings.setSkin(this.skin);
 
             //update main stage skin

@@ -218,7 +218,7 @@ public class MainController implements Initializable {
     }
 
     private void updateTable(List<RowTableData> report) {
-        if (this.getSettings().isSaveHtmlReport()) {
+        if (this.getSettings().isWriteHtmlReport()) {
             this.openResultBtn.setVisible(true);
         }
         this.progressBar.progressProperty().unbind();

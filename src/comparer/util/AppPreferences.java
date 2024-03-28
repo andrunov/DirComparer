@@ -141,4 +141,15 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         prefs.put("skin", String.valueOf(skin));
     }
+
+    public static boolean getWriteHtmlReport() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        String saved = prefs.get("HtmlReport", "true");
+        return Boolean.valueOf(saved);
+    }
+
+    public static void saveWriteHtmlReport(boolean isWrite) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("HtmlReport", String.valueOf(isWrite));
+    }
 }
