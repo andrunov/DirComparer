@@ -96,6 +96,7 @@ public class MainApp extends Application {
             mainController.setupPagination();
             mainController.setMainApp(this);
             mainController.setSettings(this.settings);
+            mainController.changeLocale();
 
             this.updateSkin(this.settings.getSkin().toString());
 

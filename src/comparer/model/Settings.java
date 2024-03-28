@@ -5,6 +5,7 @@ import comparer.util.AppPreferences;
 
 public class Settings {
 
+    private String locale;
     private String[] allowedExtensions;
 
     private boolean exactWordMatch;
@@ -14,6 +15,7 @@ public class Settings {
     private Skin skin;
 
     public void loadFields() {
+        this.locale = AppPreferences.getLocale();
         this.allowedExtensions = AppPreferences.getFilterExtensions();
         this.exactWordMatch = AppPreferences.getExactWordMatch();
         this.skin = AppPreferences.getSkin();
@@ -21,6 +23,7 @@ public class Settings {
     }
 
     public void saveFields() {
+        AppPreferences.saveLocale(this.locale);
         AppPreferences.setFilterExtensions(this.allowedExtensions);
         AppPreferences.setExactWordMatch(this.exactWordMatch);
         AppPreferences.saveSkin(this.skin);
@@ -58,5 +61,13 @@ public class Settings {
 
     public void setSkin(Skin skin) {
         this.skin = skin;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 }

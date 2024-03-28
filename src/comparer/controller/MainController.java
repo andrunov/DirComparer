@@ -245,10 +245,12 @@ public class MainController implements Initializable {
 
     /*change pocket language*/
     @FXML
-    private void changeLocale(){
-        if (this.resourceBundle.getLocale().getLanguage().equalsIgnoreCase("ru")){
+    public void changeLocale(){
+        if (this.settings.getLocale().equals("ru")){
+            this.settings.setLocale("en");
             this.resourceBundle = ResourceBundle.getBundle("comparer.resources.bundles.Locale",new Locale("en"));
-        }else {
+        } else if (this.settings.getLocale().equals("en")){
+            this.settings.setLocale("ru");
             this.resourceBundle = ResourceBundle.getBundle("comparer.resources.bundles.Locale",new Locale("ru"));
         }
         updateLocalText();

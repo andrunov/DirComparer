@@ -152,4 +152,14 @@ public class AppPreferences {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         prefs.put("HtmlReport", String.valueOf(isWrite));
     }
+
+    public static String getLocale() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return prefs.get("locale", "ru");
+    }
+
+    public static void saveLocale(String locale) {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("locale", locale);
+    }
 }
