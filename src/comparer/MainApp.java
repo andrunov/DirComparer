@@ -98,7 +98,7 @@ public class MainApp extends Application {
             mainController.setSettings(this.settings);
             mainController.changeLocale();
 
-            this.updateSkin(this.settings.getSkin().toString());
+            this.updateSkin(this.settings.getSkin().getRepr());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,6 +151,7 @@ public class MainApp extends Application {
         String newStyle = String.format("comparer/style/%s.css", skinValue);
         this.primaryStage.getScene().getRoot().getStylesheets().clear();
         this.primaryStage.getScene().getRoot().getStylesheets().add(newStyle);
+
     }
 
 

@@ -3,12 +3,21 @@ package comparer.style;
 import java.util.ResourceBundle;
 
 public enum Skin {
-    CIAN,
-    GRAY,
-    GOLD,
-    NAVY,
-    PURPLE;
+    CIAN("Cian"),
+    GRAY("Gray"),
+    GOLD("Gold"),
+    NAVY("Navy"),
+    PURPLE("Purple");
 
+    private final String repr;
+
+    Skin(String repr) {
+        this.repr = repr;
+    }
+
+    public String getRepr() {
+        return repr;
+    }
 
     public static String[] getLocaleValues(ResourceBundle resourceBundle) {
         Skin[] values = Skin.values();

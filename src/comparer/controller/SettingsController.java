@@ -96,12 +96,11 @@ public class SettingsController {
         this.skinChoiceBox.setItems(langs);
         this.skinChoiceBox.setValue(this.settings.getSkin().getLocale(this.resourceBundle));
         this.skinChoiceBox.setOnAction(event -> {
-            String newSkinValue = Skin.getByLocalValue(this.resourceBundle, this.skinChoiceBox.getValue()).toString();
-            this.updateSkin(newSkinValue);
-            this.skin = Skin.valueOf(newSkinValue);
+            this.skin = Skin.getByLocalValue(this.resourceBundle, this.skinChoiceBox.getValue());
+            this.updateSkin(this.skin.getRepr());
         });
         this.skin = this.settings.getSkin();
-        this.updateSkin(this.skin.toString());
+        this.updateSkin(this.skin.getRepr());
     }
 
     private void updateSkin(String skinValue) {
@@ -151,7 +150,7 @@ public class SettingsController {
 
             //update main stage skin
             Window primaryStage = this.dialogStage.getOwner();
-            String newStyle = String.format("comparer/style/%s.css", this.skin.toString());
+            String newStyle = String.format("comparer/style/%s.css", this.skin.getRepr());
             primaryStage.getScene().getRoot().getStylesheets().clear();
             primaryStage.getScene().getRoot().getStylesheets().add(newStyle);
 
