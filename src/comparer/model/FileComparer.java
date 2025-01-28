@@ -38,31 +38,31 @@ public class FileComparer
     private List<FileInfo> endDirectory = new ArrayList<>();
 
     /*list for files matching by names and size, expect full equality*/
-    private List<FileInfo> fullEquality = new ArrayList<>();
+    private final List<FileInfo> fullEquality = new ArrayList<>();
 
     /*list for files matching by names only*/
-    private List<FileInfo> nameEquality = new ArrayList<>();
+    private final List<FileInfo> nameEquality = new ArrayList<>();
 
     /*list for files matching by sizes*/
-    private List<FileInfo> sizeEquality = new ArrayList<>();
+    private final List<FileInfo> sizeEquality = new ArrayList<>();
 
     /*list for files similar by names with highest similarity */
-    private List<FileInfo> nameSimilarityHighest = new ArrayList<>();
+    private final List<FileInfo> nameSimilarityHighest = new ArrayList<>();
 
     /*list for files similar by names with high similarity */
-    private List<FileInfo> nameSimilarityHigh = new ArrayList<>();
+    private final List<FileInfo> nameSimilarityHigh = new ArrayList<>();
 
     /*list for files similar by part names with high similarity */
     private List<FileInfo> partNameSimilarityHigh = new ArrayList<>();
 
     /*list for files similar by names with middle similarity */
-    private List<FileInfo> nameSimilarityMiddle = new ArrayList<>();
+    private final List<FileInfo> nameSimilarityMiddle = new ArrayList<>();
 
     /*list for files similar by names with low similarity */
-    private List<FileInfo> nameSimilarityLow = new ArrayList<>();
+    private final List<FileInfo> nameSimilarityLow = new ArrayList<>();
 
     /*list for files which no has similarities */
-    private List<FileInfo> noSimilarities = new ArrayList<>();
+    private final List<FileInfo> noSimilarities = new ArrayList<>();
 
     /*filter of file types*/
     private FileFilter filter;
@@ -279,21 +279,23 @@ public class FileComparer
 
                 if (startFileInfo == endFileInfo) continue;
 
-                if (startFileInfo.getSize() == endFileInfo.getSize()) {
-                    if (startFileInfo.nameIsEquals(endFileInfo)) {
+                if (startFileInfo.nameIsEquals(endFileInfo)) {
+                    if (startFileInfo.getSize() == endFileInfo.getSize()) {
                         addEqualities(this.fullEquality, startFileInfo, endFileInfo);
                     } else {
-                        addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
+                        addEqualities(this.nameEquality, startFileInfo, endFileInfo);
                     }
+
+                } else if (startFileInfo.getSize() == endFileInfo.getSize()) {
+                    addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
+
                 } else {
-                    int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords(), true);
-                    if (startFileInfo.getdSingerWords().size() == 0 || endFileInfo.getdSingerWords().size() == 0) {
-                        insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
-                    } else {
-                        int singerSimilarWords = this.comparePhrases(startFileInfo.getdSingerWords(), endFileInfo.getdSingerWords(), false);
-                        insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
+                    int similarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
+                    if (similarWords > 0) {
+                        insertSimilarity(startFileInfo, endFileInfo, similarWords);
                     }
                 }
+
             }
             if ((!this.singleDirCompare)&&(!startFileInfo.isAccepted())){
                 this.noSimilarities.add(startFileInfo);
@@ -338,7 +340,7 @@ public class FileComparer
      * however the order of words may be different)
      * return 0 means that phrases are definitely indifferent
      * return value in range from 1 nj 99 means that phrases are similar in that degree */
-    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2, boolean accountWeight){
+    private int comparePhrases(List<WordInfo> phrase1, List<WordInfo> phrase2){
         Difference difference = new Difference(phrase1, phrase2);
         return difference.getСoincidence(this.analyzeByLetters);
     }
@@ -424,8 +426,7 @@ public class FileComparer
                 }
             }
         }
-        int length = Math.max(shortWord.length(), longWord.length());
-        result = (int) (Math.round(result  * 100.00 / length));
+        result = (int) (Math.round(result  * 100.00 /  longWord.length()));
         return result;
     }
 
@@ -437,61 +438,21 @@ public class FileComparer
     }
 
     /*insert two similar FileInfo in suitable directory depending of similarity found words*/
-    private void insertSimilarity(FileInfo startFileInfo, FileInfo endFileInfo, int songSimilarityDegree, int singerSimilarityDegree){
-
-        if (songSimilarityDegree == 100 && singerSimilarityDegree ==100) {
-            addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (songSimilarityDegree >= 75 && singerSimilarityDegree <= 75) {
-            addSimilarity(this.partNameSimilarityHigh, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (songSimilarityDegree >= 75) {
-            addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (songSimilarityDegree > 60) {
-            addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (songSimilarityDegree > 50) {
-            addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-
-        } else if (this.showSimilarityLow && songSimilarityDegree > 40) {
-            addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
-            startFileInfo.setAccepted(true);
-        }
-    }
-
-    /*insert two similar FileInfo in suitable directory depending of similarity found words*/
     private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int similarityDegree){
 
         if (similarityDegree == 100) {
-
-            if (startFileInfo.getdSingerWords().size() == 0 && endFileInfo.getdSingerWords().size() == 0) {
-                addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
-                startFileInfo.setAccepted(true);
-
-            } else {
-                addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
-                startFileInfo.setAccepted(true);
-            }
-
-        } else if (similarityDegree >= 75) {
             addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (similarityDegree > 60) {
+        } else if (similarityDegree > 90) {
             addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (similarityDegree > 50) {
+        } else if (similarityDegree > 80) {
             addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
 
-        } else if (this.showSimilarityLow && (similarityDegree > 40)) {
+        } else if (this.showSimilarityLow && (similarityDegree > 70)) {
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
         }
@@ -576,7 +537,7 @@ public class FileComparer
 
                         File file = new File(absoluteFilePath);
                         if (file.isFile()) {
-                            result.add(new FileInfo(absoluteFilePath, baseDirectoryPath, filePath, file.length()));
+                            result.add(new FileInfo(absoluteFilePath, filePath, file.length(), false));
                         } else if (file.isDirectory()) {
                             result.addAll(fillDirectory(absoluteFilePath, baseDirectoryPath));
                         }

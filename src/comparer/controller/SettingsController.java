@@ -101,7 +101,6 @@ public class SettingsController {
         if (fileFilter != null) {
             this.filterTextField.setText(Formatter.getArrayAsString(fileFilter.getExtensions()));
         }
-        this.minLengthWordField.setText(String.valueOf(FileInfo.getMinLength()));
         this.showSimilarityMiddle.setSelected(this.comparer.isShowSimilarityMiddle());
         this.showSimilarityLow.setSelected(this.comparer.isShowSimilarityLow());
         this.analyzeByLetters.setSelected(this.comparer.isAnalyzeByLetters());
@@ -142,7 +141,6 @@ public class SettingsController {
             this.comparer.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
             this.comparer.setShowSimilarityLow(this.showSimilarityLow.isSelected());
             this.comparer.setAnalyzeByLetters(this.analyzeByLetters.isSelected());
-            FileInfo.setMinLength(Integer.valueOf(this.minLengthWordField.getText()));
             AppPreferences.setMinStringLength(this.minLengthWordField.getText());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
