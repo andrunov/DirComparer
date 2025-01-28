@@ -104,11 +104,6 @@ public class HtmlWriter {
             /*6 level - middle similarity of names*/
             this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle(), resourceBundle.getString("6thLevelEquality"));
 
-            /*9 level - high similarity of names*/
-            if (this.comparer.isShowSimilarityMiddle()) {
-                this.printHtmlTable(writer, this.comparer.getPartNameSimilarityHigh(), resourceBundle.getString("9thLevelEquality"));
-            }
-
             /*7 level - low similarity of names*/
             if (this.comparer.isShowSimilarityLow()) {
                 this.printHtmlTable(writer, this.comparer.getNameSimilarityLow(), resourceBundle.getString("7thLevelEquality"));

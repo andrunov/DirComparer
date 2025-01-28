@@ -110,7 +110,6 @@ public class MainApp extends Application {
             dialogStage.setWidth(AppPreferences.getSettingsWindowWidth());
             dialogStage.setHeight(AppPreferences.getSettingsWindowHeight());
 
-
             // open dialog stage and wait till user close it
             dialogStage.showAndWait();
 

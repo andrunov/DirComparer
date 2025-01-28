@@ -328,8 +328,10 @@ public class FileComparer
         Sorter.sort(this.nameSimilarityHigh);
         Sorter.sort(this.partNameSimilarityHigh);
         Sorter.sort(this.nameSimilarityMiddle);
-        Sorter.sort(this.nameSimilarityLow);
-        Sorter.sort(this.noSimilarities);
+        if (this.analyzeByLetters) {
+            Sorter.sort(this.nameSimilarityLow);
+        }
+        // Sorter.sort(this.noSimilarities);
     }
 
     /*find quantity of similar words in two List<String>, return 100 means equality */
