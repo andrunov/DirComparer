@@ -52,9 +52,6 @@ public class FileComparer
     /*list for files similar by names with high similarity */
     private final List<FileInfo> nameSimilarityHigh = new ArrayList<>();
 
-    /*list for files similar by part names with high similarity */
-    private List<FileInfo> partNameSimilarityHigh = new ArrayList<>();
-
     /*list for files similar by names with middle similarity */
     private final List<FileInfo> nameSimilarityMiddle = new ArrayList<>();
 
@@ -148,14 +145,6 @@ public class FileComparer
 
     public List<FileInfo> getNameSimilarityHigh() {
         return nameSimilarityHigh;
-    }
-
-    public List<FileInfo> getPartNameSimilarityHigh() {
-        return partNameSimilarityHigh;
-    }
-
-    public void setPartNameSimilarityHigh(List<FileInfo> partNameSimilarityHigh) {
-        this.partNameSimilarityHigh = partNameSimilarityHigh;
     }
 
     public List<FileInfo> getNameSimilarityLow() {
@@ -310,7 +299,6 @@ public class FileComparer
         deleteDuplications(this.nameEquality);
         deleteDuplications(this.nameSimilarityHighest);
         deleteDuplications(this.nameSimilarityHigh);
-        deleteDuplications(this.partNameSimilarityHigh);
         deleteDuplications(this.nameSimilarityMiddle);
         deleteDuplications(this.nameSimilarityLow);
         removeEmpties(this.fullEquality);
@@ -318,7 +306,6 @@ public class FileComparer
         removeEmpties(this.nameEquality);
         removeEmpties(this.nameSimilarityHighest);
         removeEmpties(this.nameSimilarityHigh);
-        removeEmpties(this.partNameSimilarityHigh);
         removeEmpties(this.nameSimilarityMiddle);
         removeEmpties(this.nameSimilarityLow);
         Sorter.sort(this.fullEquality);
@@ -326,7 +313,6 @@ public class FileComparer
         Sorter.sort(this.nameEquality);
         Sorter.sort(this.nameSimilarityHighest);
         Sorter.sort(this.nameSimilarityHigh);
-        Sorter.sort(this.partNameSimilarityHigh);
         Sorter.sort(this.nameSimilarityMiddle);
         if (this.analyzeByLetters) {
             Sorter.sort(this.nameSimilarityLow);
@@ -562,7 +548,6 @@ public class FileComparer
         this.sizeEquality.clear();
         this.nameSimilarityHighest.clear();
         this.nameSimilarityHigh.clear();
-        this.partNameSimilarityHigh.clear();
         this.nameSimilarityMiddle.clear();
         this.nameSimilarityLow.clear();
         this.noSimilarities.clear();
