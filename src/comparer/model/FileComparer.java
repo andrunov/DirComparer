@@ -339,22 +339,17 @@ public class FileComparer
     private void updateDictionaries() {
 
         int counter = 0;
-        int sumQuantity = 0;
 
         for (Map.Entry<String, WordInfo> entry : tempDictionary.entrySet()) {
             WordInfo wordInfo = entry.getValue();
             wordInfo.setID(counter);
             dictionary.add(wordInfo);
-            sumQuantity = sumQuantity + entry.getValue().getQuantity();
             counter++;
         }
 
         tempDictionary.clear();
-        double averageQuantity = (double) sumQuantity/counter;
 
         for (WordInfo wordInfo : dictionary) {
-            wordInfo.setWeight(averageQuantity/wordInfo.getQuantity());
-            //System.out.println(wordInfo.getWord() +"\t" + wordInfo.getQuantity() + "\t" + wordInfo.getWeight());
 
             for (WordInfo otherWordInfo : dictionary) {
 

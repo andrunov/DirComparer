@@ -51,10 +51,6 @@ public class WordInfo {
         this.quantity = quantity;
     }
 
-    public double getWeight() {
-        return weight;
-    }
-
     public void setWeight(double weight) {
         this.weight = weight;
     }
