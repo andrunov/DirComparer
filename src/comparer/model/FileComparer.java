@@ -279,9 +279,12 @@ public class FileComparer
                     addEqualities(this.sizeEquality, startFileInfo, endFileInfo);
 
                 } else {
-                    int similarWords = this.comparePhrases(startFileInfo.getdWords(), endFileInfo.getdWords());
-                    if (similarWords > 0) {
-                        insertSimilarity(startFileInfo, endFileInfo, similarWords);
+                    int songSimilarWords = this.comparePhrases(startFileInfo.getdSongWords(), endFileInfo.getdSongWords());
+                    if (startFileInfo.getdSingerWords().size() == 0 || endFileInfo.getdSingerWords().size() == 0) {
+                        insertSimilarity(startFileInfo, endFileInfo, songSimilarWords);
+                    } else {
+                        int singerSimilarWords = this.comparePhrases(startFileInfo.getdSingerWords(), endFileInfo.getdSingerWords());
+                        insertSimilarity(startFileInfo, endFileInfo, songSimilarWords, singerSimilarWords);
                     }
                 }
 
@@ -443,6 +446,59 @@ public class FileComparer
         } else if (this.showSimilarityLow && (similarityDegree > 70)) {
             addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
             startFileInfo.setAccepted(true);
+        }
+    }
+
+    /*insert two similar FileInfo in suitable directory depending of similarity found words*/
+    private void insertSimilarity (FileInfo startFileInfo, FileInfo endFileInfo, int songSimilarity, int singerSimilarity) {
+
+        if (singerSimilarity == 100) {
+            if (songSimilarity == 100) {
+                addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            } else if (songSimilarity >= 95) {
+                    addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
+                    startFileInfo.setAccepted(true);
+            } else if (songSimilarity > 90) {
+                addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+
+            } else if (songSimilarity > 85) {
+                addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+
+            } else if (this.showSimilarityLow && (songSimilarity > 80)) {
+                addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            }
+
+        } else if (singerSimilarity >= 80) {
+            if (songSimilarity == 100) {
+                addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            } else if (songSimilarity >= 90) {
+                addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            } else if (songSimilarity > 80) {
+                addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+
+            }  else if (this.showSimilarityLow && (songSimilarity > 70)) {
+                addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            }
+        } else {
+            if (songSimilarity == 100) {
+                addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            } else if (songSimilarity > 80) {
+                addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+
+            }  else if (this.showSimilarityLow && (songSimilarity > 70)) {
+                addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
+                startFileInfo.setAccepted(true);
+            }
         }
     }
 
