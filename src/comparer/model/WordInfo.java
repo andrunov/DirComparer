@@ -21,14 +21,6 @@ public class WordInfo {
     private int quantity;
 
     /**
-     * weight of this word in representation.
-     * Than bigger weight, than more unique word.
-     * Small value means that word is very spread in representation.
-     * */
-    private double weight;
-
-
-    /**
      * words similar to this one. Key - similar word itself,
      * value - similarity coefficient (100% means that word is equal)
      * */
@@ -49,10 +41,6 @@ public class WordInfo {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
     }
 
     public int getID() {
@@ -93,7 +81,6 @@ public class WordInfo {
         sb.append('\t');
         sb.append(quantity);
         sb.append('\t');
-        sb.append(weight);
         return sb.toString();
     }
 }

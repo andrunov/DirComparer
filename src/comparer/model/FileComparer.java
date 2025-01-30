@@ -10,10 +10,6 @@ import java.util.*;
  */
 public class FileComparer
 {
-    /*
-    * minimal percent of equal letters in two words
-    * that allow considering that words are similar*/
-    private static final int WORD_SIMILARITY_COEFF = 75;
 
     private static Map<String, WordInfo> tempDictionary;
 
@@ -348,24 +344,6 @@ public class FileComparer
         }
 
         tempDictionary.clear();
-
-        for (WordInfo wordInfo : dictionary) {
-
-            for (WordInfo otherWordInfo : dictionary) {
-
-                if (wordInfo.getID() != otherWordInfo.getID()) {
-
-                    int difference = compareWords(wordInfo.getWord(), otherWordInfo.getWord());
-                    if ((difference >= WORD_SIMILARITY_COEFF)) {
-                        if (wordInfo.getSimilarWords() == null) {
-                            wordInfo.setSimilarWords(new HashMap<>());
-                        }
-                        wordInfo.getSimilarWords().put(otherWordInfo, difference);
-                        //System.out.println(wordInfo.getWord() +"\t" + otherWordInfo.getWord() + "\t" + difference);
-                    }
-                }
-            }
-        }
         dictionary.clear();
     }
 
