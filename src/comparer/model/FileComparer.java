@@ -28,10 +28,10 @@ public class FileComparer
     private ResourceBundle resourceBundle;
 
     /*first directory with files which we want to check for duplicate */
-    private List<FileInfo> startDirectory = new ArrayList<>();
+    protected List<FileInfo> startDirectory = new ArrayList<>();
 
     /*another directory where need to find duplicates files */
-    private List<FileInfo> endDirectory = new ArrayList<>();
+    protected List<FileInfo> endDirectory = new ArrayList<>();
 
     /*list for files matching by names and size, expect full equality*/
     private final List<FileInfo> fullEquality = new ArrayList<>();
@@ -258,7 +258,7 @@ public class FileComparer
     /*comparing files in directories
     * comparing for full equality is mandatory
     * in other case rest comparings will not works properly*/
-    private void compareDirectories(){
+    protected void compareDirectories(){
         for (FileInfo startFileInfo : startDirectory) {
             for (FileInfo endFileInfo : endDirectory) {
 
@@ -332,7 +332,7 @@ public class FileComparer
         return difference.getСoincidence(this.analyzeByLetters);
     }
 
-    private void updateDictionaries() {
+    protected void updateDictionaries() {
 
         int counter = 0;
 
@@ -429,18 +429,18 @@ public class FileComparer
             if (songSimilarity == 100) {
                 addSimilarity(this.nameEquality, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
-            } else if (songSimilarity >= 95) {
+            } else if (songSimilarity >= 90) {
                     addSimilarity(this.nameSimilarityHighest, startFileInfo, endFileInfo);
                     startFileInfo.setAccepted(true);
-            } else if (songSimilarity > 90) {
+            } else if (songSimilarity >= 80) {
                 addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
 
-            } else if (songSimilarity > 85) {
+            } else if (songSimilarity >= 70) {
                 addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
 
-            } else if (this.showSimilarityLow && (songSimilarity > 80)) {
+            } else if (this.showSimilarityLow && (songSimilarity >= 60)) {
                 addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
             }
@@ -452,11 +452,11 @@ public class FileComparer
             } else if (songSimilarity >= 90) {
                 addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
-            } else if (songSimilarity > 80) {
+            } else if (songSimilarity >= 80) {
                 addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
 
-            }  else if (this.showSimilarityLow && (songSimilarity > 70)) {
+            }  else if (this.showSimilarityLow && (songSimilarity >= 70)) {
                 addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
             }
@@ -464,11 +464,11 @@ public class FileComparer
             if (songSimilarity == 100) {
                 addSimilarity(this.nameSimilarityHigh, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
-            } else if (songSimilarity > 80) {
+            } else if (songSimilarity >= 80) {
                 addSimilarity(this.nameSimilarityMiddle, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
 
-            }  else if (this.showSimilarityLow && (songSimilarity > 70)) {
+            }  else if (this.showSimilarityLow && (songSimilarity >= 70)) {
                 addSimilarity(this.nameSimilarityLow, startFileInfo, endFileInfo);
                 startFileInfo.setAccepted(true);
             }
