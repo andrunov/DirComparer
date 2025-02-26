@@ -102,7 +102,7 @@ public class AppPreferences {
 
     public static double getSettingsWindowHeight() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
-        return Double.parseDouble(prefs.get("settingsWindowHeight", "160.00"));
+        return Double.parseDouble(prefs.get("settingsWindowHeight", "200.00"));
     }
 
     public static void setShowSimilarityMiddle(boolean toShow){
@@ -115,6 +115,11 @@ public class AppPreferences {
         prefs.put("showSimilarityLow", String.valueOf(toShow));
     }
 
+    public static void setShowNoSimilarity(boolean toShow){
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        prefs.put("showNoSimilarity", String.valueOf(toShow));
+    }
+
     public static boolean getShowSimilarityMiddle() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Boolean.parseBoolean(prefs.get("showSimilarityMiddle", "FALSE"));
@@ -123,6 +128,11 @@ public class AppPreferences {
     public static boolean getShowSimilarityLow() {
         Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
         return Boolean.parseBoolean(prefs.get("showSimilarityLow", "FALSE"));
+    }
+
+    public static boolean getShowNoSimilarity() {
+        Preferences prefs = Preferences.userNodeForPackage(AppPreferences.class);
+        return Boolean.parseBoolean(prefs.get("showNoSimilarity", "FALSE"));
     }
 
     public static void setAnalyseByLetters(boolean toShow){

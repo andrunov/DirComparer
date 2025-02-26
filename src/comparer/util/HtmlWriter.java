@@ -102,7 +102,9 @@ public class HtmlWriter {
             this.printHtmlTable(writer, this.comparer.getNameSimilarityHigh(), resourceBundle.getString("5thLevelEquality"));
 
             /*6 level - middle similarity of names*/
-            this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle(), resourceBundle.getString("6thLevelEquality"));
+            if (this.comparer.isShowSimilarityMiddle()) {
+                this.printHtmlTable(writer, this.comparer.getNameSimilarityMiddle(), resourceBundle.getString("6thLevelEquality"));
+            }
 
             /*7 level - low similarity of names*/
             if (this.comparer.isShowSimilarityLow()) {
@@ -111,7 +113,7 @@ public class HtmlWriter {
 
             /*8 level - no equalities
             * in this point in this.startDirectory is only filesInfo that no has similarities */
-            if (!this.comparer.isSingleDirCompare()) {
+            if (!this.comparer.isSingleDirCompare() && this.comparer.isShowNoSimilarity()) {
                 this.printHtmlTableNotFound(writer, this.comparer.getNoSimilarity(), resourceBundle.getString("8thLevelEquality"));
             }
 

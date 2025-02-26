@@ -47,21 +47,38 @@ public class SettingsController {
     @FXML
     private Button questionPath;
 
-    /*label for for filter field*/
+    /*label for filter field*/
     @FXML
     private Label filterLbl;
 
-    /*label for for radiobuttons absolutePathRadBtn and relativePathRadBtn*/
+    /*label for radiobuttons absolutePathRadBtn and relativePathRadBtn*/
     @FXML
     private Label pathLbl;
 
-    /*label for for checkbox showSimilarityLow*/
+    /*label for checkbox showSimilarityMiddle*/
+    @FXML
+    private Label showMiddleLbl;
+
+    /*label for checkbox showSimilarityLow*/
     @FXML
     private Label showLowLbl;
+
+    /*label for checkbox showNoSimilarity*/
+    @FXML
+    private Label showNoLbl;
+
+    /*checkbox for show middle similarity boolean*/
+    @FXML
+    private CheckBox showSimilarityMiddle;
 
     /*checkbox for show low similarity boolean*/
     @FXML
     private CheckBox showSimilarityLow;
+
+    /*checkbox for show no similarity boolean*/
+    @FXML
+    private CheckBox showNoSimilarity;
+
 
     /*checkbox for show analyze by letters*/
     @FXML
@@ -83,7 +100,9 @@ public class SettingsController {
         if (fileFilter != null) {
             this.filterTextField.setText(Formatter.getArrayAsString(fileFilter.getExtensions()));
         }
+        this.showSimilarityMiddle.setSelected(this.comparer.isShowSimilarityMiddle());
         this.showSimilarityLow.setSelected(this.comparer.isShowSimilarityLow());
+        this.showNoSimilarity.setSelected(this.comparer.isShowNoSimilarity());
         this.analyzeByLetters.setSelected(this.comparer.isAnalyzeByLetters());
     }
 
@@ -119,11 +138,15 @@ public class SettingsController {
             FileFilter filter = new FileFilter(extensions);
             AppPreferences.setFilterExtensions(extensions);
             this.comparer.setFilter(filter);
+            this.comparer.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
             this.comparer.setShowSimilarityLow(this.showSimilarityLow.isSelected());
+            this.comparer.setShowNoSimilarity(this.showNoSimilarity.isSelected());
             this.comparer.setAnalyzeByLetters(this.analyzeByLetters.isSelected());
             AppPreferences.setSettingsWindowHeight(this.dialogStage.getHeight());
             AppPreferences.setSettingsWindowWidth(this.dialogStage.getWidth());
+            AppPreferences.setShowSimilarityMiddle(this.showSimilarityMiddle.isSelected());
             AppPreferences.setShowSimilarityLow(this.showSimilarityLow.isSelected());
+            AppPreferences.setShowNoSimilarity(this.showNoSimilarity.isSelected());
             AppPreferences.setAnalyseByLetters(this.analyzeByLetters.isSelected());
             dialogStage.close();
         }
@@ -170,9 +193,13 @@ public class SettingsController {
         this.filterLbl.setStyle(newSize);
         this.pathLbl.setStyle(newSize);
         this.questionPath.setStyle(newSize);
+        this.showSimilarityMiddle.setStyle(newSize);
         this.showSimilarityLow.setStyle(newSize);
+        this.showNoSimilarity.setStyle(newSize);
         this.analyzeByLetters.setStyle(newSize);
+        this.showMiddleLbl.setStyle(newSize);
         this.showLowLbl.setStyle(newSize);
+        this.showNoLbl.setStyle(newSize);
     };
 
 }

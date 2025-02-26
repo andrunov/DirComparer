@@ -69,6 +69,9 @@ public class FileComparer
     /*show low similarity if true*/
     private boolean showSimilarityLow;
 
+    /*show no found files if true*/
+    private boolean showNoSimilarity;
+
     public boolean isAnalyzeByLetters() {
         return analyzeByLetters;
     }
@@ -79,6 +82,7 @@ public class FileComparer
         this.filter = new FileFilter(extensions);
         this.showSimilarityMiddle = AppPreferences.getShowSimilarityMiddle();
         this.showSimilarityLow = AppPreferences.getShowSimilarityLow();
+        this.showNoSimilarity = AppPreferences.getShowNoSimilarity();
         this.analyzeByLetters = AppPreferences.getAnalyseByLetters();
         FileComparer.tempDictionary = new HashMap<>();
         this.dictionary = new ArrayList<>();
@@ -185,6 +189,14 @@ public class FileComparer
 
     public void setShowSimilarityLow(boolean showSimilarityLow) {
         this.showSimilarityLow = showSimilarityLow;
+    }
+
+    public boolean isShowNoSimilarity() {
+        return showNoSimilarity;
+    }
+
+    public void setShowNoSimilarity(boolean showNoSimilarity) {
+        this.showNoSimilarity = showNoSimilarity;
     }
 
     public static Map<String, WordInfo> getTempDictionary() {
